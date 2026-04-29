@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms & Conditions — BingoCardGenerator.Online</title>
+<meta name="description" content="Terms and Conditions for BingoCardGenerator.Online — custom bingo card generator service.">
+<link rel="canonical" href="https://bingocardgenerator.online/terms.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0b12;
+  --surface: #111119;
+  --border: rgba(255,255,255,0.07);
+  --green: #1DB954;
+  --orange: #FF6B35;
+  --text: #EEEEF8;
+  --muted: #6B6B90;
+  --r: 10px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* NAV */
+header {
+  background: rgba(11,11,18,0.95);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: 2px;
+  color: var(--text);
+  text-decoration: none;
+}
+.logo span { color: var(--green); }
+.nav-back {
+  font-size: 13.5px;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.nav-back:hover { color: var(--text); }
+
+/* HERO */
+.hero {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 56px 24px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 12px;
+}
+.hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(40px, 7vw, 64px);
+  letter-spacing: 2px;
+  line-height: 0.95;
+  margin-bottom: 18px;
+}
+.hero-meta {
+  font-size: 13.5px;
+  color: var(--muted);
+}
+
+/* CONTENT */
+.content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+/* TABLE OF CONTENTS */
+.toc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 24px 28px;
+  margin-bottom: 48px;
+}
+.toc-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+.toc ol {
+  padding-left: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 24px;
+}
+@media (max-width: 560px) { .toc ol { grid-template-columns: 1fr; } }
+.toc li { font-size: 14px; }
+.toc a {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.toc a:hover { color: var(--green); }
+
+/* SECTIONS */
+.section {
+  margin-bottom: 48px;
+  scroll-margin-top: 24px;
+}
+.section-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: var(--green);
+  margin-bottom: 4px;
+}
+.section h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 1.5px;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.section p {
+  color: #C8C8DC;
+  margin-bottom: 14px;
+  font-size: 15.5px;
+}
+.section p:last-child { margin-bottom: 0; }
+.section ul, .section ol {
+  padding-left: 22px;
+  margin-bottom: 14px;
+}
+.section li {
+  color: #C8C8DC;
+  font-size: 15.5px;
+  margin-bottom: 6px;
+  line-height: 1.6;
+}
+.section strong { color: var(--text); font-weight: 600; }
+
+/* HIGHLIGHT BOX */
+.highlight {
+  background: rgba(29,185,84,0.07);
+  border: 1px solid rgba(29,185,84,0.2);
+  border-radius: var(--r);
+  padding: 16px 20px;
+  margin: 18px 0;
+}
+.highlight p { color: #C8C8DC; margin: 0; font-size: 15px; }
+
+.warn {
+  background: rgba(255,107,53,0.07);
+  border: 1px solid rgba(255,107,53,0.2);
+  border-radius: var(--r);
+  padding: 16px 20px;
+  margin: 18px 0;
+}
+.warn p { color: #C8C8DC; margin: 0; font-size: 15px; }
+
+/* CONTACT */
+.contact-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 24px 28px;
+  margin-top: 48px;
+}
+.contact-card h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 1.5px;
+  margin-bottom: 10px;
+}
+.contact-card p { color: var(--muted); font-size: 14.5px; margin-bottom: 8px; }
+.contact-card a { color: var(--green); text-decoration: none; }
+.contact-card a:hover { text-decoration: underline; }
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 24px;
+  font-size: 12.5px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+footer a { color: var(--muted); text-decoration: none; }
+footer a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">BINGO<span>CARD</span>GENERATOR.ONLINE</a>
+  <a href="/" class="nav-back">← Back to Generator</a>
+</header>
+
+<div class="hero">
+  <div class="eyebrow">Legal</div>
+  <h1>TERMS &<br>CONDITIONS</h1>
+  <div class="hero-meta">
+    Last updated: <strong style="color:var(--text)">April 29, 2025</strong> &nbsp;·&nbsp;
+    Effective: <strong style="color:var(--text)">April 29, 2025</strong>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- INTRO -->
+  <div class="section">
+    <p>These Terms and Conditions ("Terms") govern your access to and use of BingoCardGenerator.Online ("the Service"), operated by <strong>BingoCardGenerator.Online</strong>, a business based in New Brunswick, Canada ("we," "us," or "our"). By accessing or using the Service, you agree to be bound by these Terms. If you do not agree, please do not use the Service.</p>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#s1">The Service</a></li>
+      <li><a href="#s2">Free & Pro Plans</a></li>
+      <li><a href="#s3">Subscriptions & Billing</a></li>
+      <li><a href="#s4">Refund Policy</a></li>
+      <li><a href="#s5">Your Content</a></li>
+      <li><a href="#s6">Acceptable Use</a></li>
+      <li><a href="#s7">Intellectual Property</a></li>
+      <li><a href="#s8">Third-Party Services</a></li>
+      <li><a href="#s9">Disclaimers</a></li>
+      <li><a href="#s10">Limitation of Liability</a></li>
+      <li><a href="#s11">Governing Law</a></li>
+      <li><a href="#s12">Changes to Terms</a></li>
+    </ol>
+  </div>
+
+  <!-- SECTION 1 -->
+  <div class="section" id="s1">
+    <div class="section-num">01</div>
+    <h2>The Service</h2>
+    <p>BingoCardGenerator.Online provides an online tool that allows users to create custom bingo cards for personal, educational, or commercial use. Features include:</p>
+    <ul>
+      <li>Custom square list entry (song titles, words, phrases, or any content)</li>
+      <li>Playlist import via third-party export tools</li>
+      <li>PDF card generation for print</li>
+      <li>Digital card sharing via unique links</li>
+      <li>Font, theme, and branding customization (Pro plan)</li>
+    </ul>
+    <p>The Service is provided "as-is" and features may be added, modified, or removed at any time. We will endeavour to communicate significant changes in advance.</p>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="section" id="s2">
+    <div class="section-num">02</div>
+    <h2>Free & Pro Plans</h2>
+    <p>The Service is available under two tiers:</p>
+    <p><strong>Free Plan</strong> — Available to all users at no cost. Includes card generation with a limit of 10 cards per download, standard Eco Print theme, centered free space, and no branding customization. Cards generated on the free plan are for personal and non-commercial use.</p>
+    <p><strong>Pro Plan</strong> — Available by paid subscription at <strong>USD $24.00 per month</strong> (or the equivalent in your local currency as determined at checkout). Includes unlimited cards, all themes and fonts, custom branding, custom free space, and one (1) pre-made game delivered monthly for up to 48 months.</p>
+    <div class="highlight">
+      <p>💡 Pro features are unlocked on a per-device basis using your subscription ID or access code. You may use your subscription on a reasonable number of personal devices.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="section" id="s3">
+    <div class="section-num">03</div>
+    <h2>Subscriptions & Billing</h2>
+    <p>Pro plan subscriptions are billed monthly on a recurring basis. By subscribing, you authorize us (via our payment processor) to charge your selected payment method each month until you cancel.</p>
+    <ul>
+      <li><strong>Pricing:</strong> USD $24.00/month. Prices are subject to change with 30 days' notice.</li>
+      <li><strong>Currency:</strong> Transactions are processed in USD. If your payment method is in another currency, your bank or card issuer determines the exchange rate and any applicable fees.</li>
+      <li><strong>Renewal:</strong> Subscriptions renew automatically unless cancelled before the next billing date.</li>
+      <li><strong>Cancellation:</strong> You may cancel at any time through your payment provider's subscription management portal. Cancellation takes effect at the end of the current billing period — you retain Pro access until then.</li>
+      <li><strong>Failed Payments:</strong> If a payment fails, your Pro access may be suspended until payment is resolved.</li>
+    </ul>
+    <p>Subscription management is handled through our payment processor. We do not store your payment card details.</p>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="section" id="s4">
+    <div class="section-num">04</div>
+    <h2>Refund Policy</h2>
+    <div class="highlight">
+      <p>We offer a <strong>7-day refund window</strong> from the date of your initial subscription payment.</p>
+    </div>
+    <p>Refunds will be considered if:</p>
+    <ul>
+      <li>A feature described as part of the Pro plan is not functioning as advertised</li>
+      <li>You experience a technical issue that we are unable to resolve within a reasonable timeframe</li>
+      <li>You have another viable reason at our reasonable discretion</li>
+    </ul>
+    <p>Refunds are <strong>not provided</strong> for:</p>
+    <ul>
+      <li>Change of mind after the 7-day window</li>
+      <li>Renewal charges where cancellation was not submitted before the billing date</li>
+      <li>Partial months — subscriptions are billed monthly and no pro-rated refunds are issued</li>
+    </ul>
+    <div class="warn">
+      <p>To request a refund, contact us at <strong>hello@bingocardgenerator.online</strong> within 7 days of your charge, including your subscription ID and the reason for your request. We aim to respond within 2 business days.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div class="section" id="s5">
+    <div class="section-num">05</div>
+    <h2>Your Content</h2>
+    <p>You retain full ownership of any content you enter into the Service, including square lists, game titles, and uploaded logos or brand assets ("Your Content").</p>
+    <p>By using the Service, you grant us a limited, non-exclusive license to process Your Content solely for the purpose of providing the Service to you (e.g., rendering your bingo cards). We do not sell, share, or retain Your Content beyond what is necessary to operate the Service.</p>
+    <p>You represent and warrant that Your Content does not infringe any third-party intellectual property rights, violate any applicable law, or contain any unlawful, defamatory, or harmful material.</p>
+  </div>
+
+  <!-- SECTION 6 -->
+  <div class="section" id="s6">
+    <div class="section-num">06</div>
+    <h2>Acceptable Use</h2>
+    <p>You agree not to use the Service to:</p>
+    <ul>
+      <li>Generate content that is unlawful, defamatory, harassing, obscene, or otherwise objectionable</li>
+      <li>Infringe any intellectual property rights of any person or entity</li>
+      <li>Attempt to circumvent Pro plan restrictions through technical means</li>
+      <li>Resell, sublicense, or redistribute access to the Service without our written consent</li>
+      <li>Use automated tools to scrape, crawl, or extract data from the Service</li>
+      <li>Interfere with or disrupt the integrity or performance of the Service</li>
+    </ul>
+    <p>We reserve the right to suspend or terminate access for any user found to be in violation of these terms.</p>
+  </div>
+
+  <!-- SECTION 7 -->
+  <div class="section" id="s7">
+    <div class="section-num">07</div>
+    <h2>Intellectual Property</h2>
+    <p>All elements of the Service not provided by you — including the software, design, interface, generated card layouts, and pre-made games — are the property of BingoCardGenerator.Online or its licensors and are protected by applicable intellectual property laws.</p>
+    <p>The bingo cards you generate using the Service are yours to use freely for personal or commercial purposes, subject to these Terms and any third-party rights in the content you supply (e.g., song titles, which are not owned by us or you).</p>
+    <p>Pre-made games delivered as part of the Pro plan are licensed to you for personal or event-hosting use. They may not be resold or redistributed without our written permission.</p>
+  </div>
+
+  <!-- SECTION 8 -->
+  <div class="section" id="s8">
+    <div class="section-num">08</div>
+    <h2>Third-Party Services</h2>
+    <p>The Service integrates with or references third-party tools including:</p>
+    <ul>
+      <li><strong>TuneMyMusic</strong> — for playlist export. Their terms apply when you use their platform.</li>
+      <li><strong>Lemon Squeezy / PayPal</strong> — for payment processing. Their terms and privacy policies govern payment transactions.</li>
+      <li><strong>Google Analytics</strong> — for anonymous usage analytics. Data is collected in accordance with Google's privacy policy.</li>
+      <li><strong>Google Fonts</strong> — for typography. Fonts are loaded from Google's servers.</li>
+    </ul>
+    <p>We are not responsible for the content, availability, or practices of any third-party service. Use of third-party services is at your own risk.</p>
+  </div>
+
+  <!-- SECTION 9 -->
+  <div class="section" id="s9">
+    <div class="section-num">09</div>
+    <h2>Disclaimers</h2>
+    <p>The Service is provided <strong>"as is"</strong> and <strong>"as available"</strong> without warranties of any kind, either express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or non-infringement.</p>
+    <p>We do not warrant that:</p>
+    <ul>
+      <li>The Service will be uninterrupted, error-free, or free of viruses</li>
+      <li>The results obtained from using the Service will be accurate or reliable</li>
+      <li>Any errors in the Service will be corrected within a specific timeframe</li>
+    </ul>
+    <p>You use the Service at your own risk. This disclaimer applies to the fullest extent permitted by applicable law in New Brunswick, Canada.</p>
+  </div>
+
+  <!-- SECTION 10 -->
+  <div class="section" id="s10">
+    <div class="section-num">10</div>
+    <h2>Limitation of Liability</h2>
+    <p>To the maximum extent permitted by applicable law, BingoCardGenerator.Online and its operators shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, data, goodwill, or other intangible losses, arising out of or in connection with your use of the Service.</p>
+    <p>Our total cumulative liability to you for any claims arising from your use of the Service shall not exceed the total amount paid by you to us in the three (3) months immediately preceding the event giving rise to the claim.</p>
+  </div>
+
+  <!-- SECTION 11 -->
+  <div class="section" id="s11">
+    <div class="section-num">11</div>
+    <h2>Governing Law</h2>
+    <p>These Terms are governed by and construed in accordance with the laws of the Province of <strong>New Brunswick</strong> and the federal laws of <strong>Canada</strong> applicable therein, without regard to conflict of law principles.</p>
+    <p>Any dispute arising from these Terms or your use of the Service shall be subject to the exclusive jurisdiction of the courts located in New Brunswick, Canada. If you are accessing the Service from outside Canada, you are responsible for compliance with local laws.</p>
+  </div>
+
+  <!-- SECTION 12 -->
+  <div class="section" id="s12">
+    <div class="section-num">12</div>
+    <h2>Changes to Terms</h2>
+    <p>We reserve the right to update these Terms at any time. When we do, we will revise the "Last updated" date at the top of this page. For material changes, we will make reasonable efforts to notify active subscribers via email.</p>
+    <p>Your continued use of the Service after any changes constitutes your acceptance of the revised Terms. If you do not agree with the updated Terms, you must stop using the Service and cancel your subscription if applicable.</p>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="contact-card">
+    <h3>QUESTIONS OR CONCERNS?</h3>
+    <p>If you have any questions about these Terms, want to request a refund, or need to report an issue:</p>
+    <p>📧 <a href="mailto:hello@bingocardgenerator.online">hello@bingocardgenerator.online</a></p>
+    <p style="margin-top:10px;font-size:13px">BingoCardGenerator.Online · New Brunswick, Canada</p>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2025 BingoCardGenerator.Online · New Brunswick, Canada &nbsp;·&nbsp;
+  <a href="/">Generator</a> &nbsp;·&nbsp;
+  <a href="/terms.html">Terms & Conditions</a>
+  </p>
+</footer>
+
+</body>
+</html>
