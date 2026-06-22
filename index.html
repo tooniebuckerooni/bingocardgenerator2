@@ -297,9 +297,10 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 .lfn{font-size:13px;font-weight:500;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
 .lrm{font-size:11.5px;color:var(--or);cursor:pointer;background:none;border:none;padding:0;font-family:'Outfit',sans-serif}
 .lrm:hover{text-decoration:underline}
-.lpls{display:flex;gap:6px;margin-top:10px}
-.lpill{flex:1;padding:6px 4px;background:var(--sf2);border:1px solid var(--bd);border-radius:20px;color:var(--mt);font-family:'Outfit',sans-serif;font-size:12px;cursor:pointer;text-align:center;transition:all var(--t)}
-.lpill.sl{border-color:var(--gn);color:var(--gn);background:var(--gnd)}
+.lpls{display:none;flex-direction:column;gap:6px;margin-top:10px}
+.lpls.show{display:flex}
+.lszr{display:flex;justify-content:space-between;font-size:11.5px;color:var(--dm)}
+.lszr b{color:var(--mt);font-weight:600}
 
 /* TOGGLE */
 .tgr{display:flex;align-items:center;gap:12px;margin-bottom:16px;cursor:pointer}
@@ -602,6 +603,10 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
             <img class="lth" id="lth" src="" alt="Logo">
             <div class="lif"><div class="lfn" id="lfn"></div><button class="lrm" onclick="clrLogo()">Remove logo</button></div>
           </div>
+          <div class="lpls" id="lpls">
+            <div class="lszr">Logo size<b id="lszv">100%</b></div>
+            <input type="range" id="lsz" min="50" max="200" step="5" value="100" oninput="setLogoScale(this.value)">
+          </div>
           <div class="ord" style="margin:12px 0 10px">or type your brand name</div>
           <input type="text" id="brand-text" placeholder="e.g. Game Night with Sarah" oninput="dPrev()" style="margin-bottom:0">
         </div>
@@ -879,7 +884,7 @@ const BETA_CODES = ['FATCITY-PRO-2025', 'FCE-GEN2-PRO'];
 let isPro=false, font='oswald', theme='eco', freeOn=true, freePos='center';
 let pCount=5, sCount=10, mode='print', fontSize=11, layout='portrait', bingoRow=true;
 let spTok=null, spReady=false, selPl=null, spFmt='title';
-let logoUrl=null, logoImg=null, brandingOn=true;
+let logoUrl=null, logoImg=null, brandingOn=true, logoScale=100;
 
 // ============================================================
 // THEMES
@@ -1269,6 +1274,7 @@ function hLogo(inp){
       document.getElementById('lth').src=logoUrl;
       document.getElementById('lfn').textContent=f.name;
       document.getElementById('lpr').classList.add('show');
+      document.getElementById('lpls').classList.add('show');
       document.getElementById('ldt').textContent='Click to replace logo';
       dPrev();
     };
@@ -1277,10 +1283,17 @@ function hLogo(inp){
   rd.readAsDataURL(f);inp.value='';
 }
 function clrLogo(){
-  logoUrl=null;logoImg=null;
+  logoUrl=null;logoImg=null;logoScale=100;
   document.getElementById('lpr').classList.remove('show');
+  document.getElementById('lpls').classList.remove('show');
+  document.getElementById('lsz').value=100;
+  document.getElementById('lszv').textContent='100%';
   document.getElementById('ldt').textContent='Click to upload your logo';
   dPrev();
+}
+function setLogoScale(val){
+  logoScale=parseInt(val,10)||100;
+  document.getElementById('lszv').textContent=logoScale+'%';
 }
 function togBranding(){
   brandingOn=!brandingOn;
@@ -1663,17 +1676,25 @@ function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
   }
 }
 
-// Fixed height (in pt) for the logo/branding strip, used consistently above
-// the card in portrait and below each card in landscape so the logo reads
-// at the same size in every layout. 72pt = 1 inch.
-const BRAND_STRIP_H=72;
+// Height (in pt) of the logo/branding strip, used consistently above the
+// card in portrait and below each card in landscape. Uploaded logos scale
+// continuously via the user's logoScale slider (50%-200%); a typed brand
+// name always gets the small fixed strip since it doesn't need to scale.
+const LOGO_STRIP_BASE=150,LOGO_STRIP_TEXT=60;
+function brandStripHeight(){
+  if(!brandingOn)return 0;
+  return logoUrl?Math.round(LOGO_STRIP_BASE*(logoScale/100)):LOGO_STRIP_TEXT;
+}
 
 // Draws logo or brand text centered in a strip at (ox, oy, w, h)
 function drawBrandingStrip(doc,ff,T,ox,oy,w,h){
   const brandText=document.getElementById('brand-text')?.value?.trim()||'';
   if(logoUrl&&logoImg){
     try{
-      const maxH=h*.9,maxW=w*.75;
+      // maxW must grow with logoScale too, not just maxH — otherwise wide
+      // (horizontal) logos hit the width cap and the scale slider does
+      // nothing, since width was always a fixed fraction of the column.
+      const maxH=h*.9,maxW=Math.min(w*.92,w*.75*(logoScale/100));
       let lh=maxH,lw=(logoImg.width/logoImg.height)*lh;
       if(lw>maxW){lw=maxW;lh=lw*(logoImg.height/logoImg.width);}
       doc.addImage(logoUrl,'PNG',ox+w/2-lw/2,oy+(h-lh)/2,lw,lh);
@@ -1712,7 +1733,7 @@ function genPDF(){
 
       if(!isLand){
         // PORTRAIT: branding strip ABOVE the card, card below it
-        const brandH=brandingOn?BRAND_STRIP_H:0;
+        const brandH=brandStripHeight();
         const gap=brandingOn?12:0;
         const cardW=Math.round(PW*.80);
         const cardH=Math.round(PH*.76)-brandH-gap;
@@ -1732,7 +1753,7 @@ function genPDF(){
       } else {
         // LANDSCAPE: 2 cards per page, branding strip BELOW each card
         const cutX=PW/2,M=18,gap=12;
-        const brandH=brandingOn?BRAND_STRIP_H:0;
+        const brandH=brandStripHeight();
         const cw=(PW/2)-M-gap/2,ch=PH-2*M-brandH;
         const pages=Math.ceil(pCount/2);
         for(let p=0;p<pages;p++){
