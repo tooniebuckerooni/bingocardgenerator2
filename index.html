@@ -297,10 +297,10 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 .lfn{font-size:13px;font-weight:500;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
 .lrm{font-size:11.5px;color:var(--or);cursor:pointer;background:none;border:none;padding:0;font-family:'Outfit',sans-serif}
 .lrm:hover{text-decoration:underline}
-.lpls{display:none;gap:6px;margin-top:10px}
+.lpls{display:none;flex-direction:column;gap:6px;margin-top:10px}
 .lpls.show{display:flex}
-.lpill{flex:1;padding:6px 4px;background:var(--sf2);border:1px solid var(--bd);border-radius:20px;color:var(--mt);font-family:'Outfit',sans-serif;font-size:12px;cursor:pointer;text-align:center;transition:all var(--t)}
-.lpill.sl{border-color:var(--gn);color:var(--gn);background:var(--gnd)}
+.lszr{display:flex;justify-content:space-between;font-size:11.5px;color:var(--dm)}
+.lszr b{color:var(--mt);font-weight:600}
 
 /* TOGGLE */
 .tgr{display:flex;align-items:center;gap:12px;margin-bottom:16px;cursor:pointer}
@@ -604,9 +604,8 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
             <div class="lif"><div class="lfn" id="lfn"></div><button class="lrm" onclick="clrLogo()">Remove logo</button></div>
           </div>
           <div class="lpls" id="lpls">
-            <div class="lpill" data-size="small" onclick="setLogoSize(this)">Small</div>
-            <div class="lpill sl" data-size="medium" onclick="setLogoSize(this)">Medium</div>
-            <div class="lpill" data-size="large" onclick="setLogoSize(this)">Large</div>
+            <div class="lszr">Logo size<b id="lszv">100%</b></div>
+            <input type="range" id="lsz" min="50" max="200" step="5" value="100" oninput="setLogoScale(this.value)">
           </div>
           <div class="ord" style="margin:12px 0 10px">or type your brand name</div>
           <input type="text" id="brand-text" placeholder="e.g. Game Night with Sarah" oninput="dPrev()" style="margin-bottom:0">
@@ -885,7 +884,7 @@ const BETA_CODES = ['FATCITY-PRO-2025', 'FCE-GEN2-PRO'];
 let isPro=false, font='oswald', theme='eco', freeOn=true, freePos='center';
 let pCount=5, sCount=10, mode='print', fontSize=11, layout='portrait', bingoRow=true;
 let spTok=null, spReady=false, selPl=null, spFmt='title';
-let logoUrl=null, logoImg=null, brandingOn=true, logoSize='medium';
+let logoUrl=null, logoImg=null, brandingOn=true, logoScale=100;
 
 // ============================================================
 // THEMES
@@ -1284,16 +1283,17 @@ function hLogo(inp){
   rd.readAsDataURL(f);inp.value='';
 }
 function clrLogo(){
-  logoUrl=null;logoImg=null;
+  logoUrl=null;logoImg=null;logoScale=100;
   document.getElementById('lpr').classList.remove('show');
   document.getElementById('lpls').classList.remove('show');
+  document.getElementById('lsz').value=100;
+  document.getElementById('lszv').textContent='100%';
   document.getElementById('ldt').textContent='Click to upload your logo';
   dPrev();
 }
-function setLogoSize(el){
-  document.querySelectorAll('.lpill').forEach(p=>p.classList.remove('sl'));
-  el.classList.add('sl');
-  logoSize=el.dataset.size;
+function setLogoScale(val){
+  logoScale=parseInt(val,10)||100;
+  document.getElementById('lszv').textContent=logoScale+'%';
 }
 function togBranding(){
   brandingOn=!brandingOn;
@@ -1677,13 +1677,13 @@ function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
 }
 
 // Height (in pt) of the logo/branding strip, used consistently above the
-// card in portrait and below each card in landscape. Uploaded logos use the
-// user-selected Small/Medium/Large size; a typed brand name always gets the
-// small strip since it doesn't need to dominate the page.
-const LOGO_STRIP_H={small:60,medium:100,large:170};
+// card in portrait and below each card in landscape. Uploaded logos scale
+// continuously via the user's logoScale slider (50%-200%); a typed brand
+// name always gets the small fixed strip since it doesn't need to scale.
+const LOGO_STRIP_BASE=150,LOGO_STRIP_TEXT=60;
 function brandStripHeight(){
   if(!brandingOn)return 0;
-  return logoUrl?(LOGO_STRIP_H[logoSize]||LOGO_STRIP_H.medium):LOGO_STRIP_H.small;
+  return logoUrl?Math.round(LOGO_STRIP_BASE*(logoScale/100)):LOGO_STRIP_TEXT;
 }
 
 // Draws logo or brand text centered in a strip at (ox, oy, w, h)
