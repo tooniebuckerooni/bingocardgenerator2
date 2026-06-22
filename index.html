@@ -1663,12 +1663,17 @@ function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
   }
 }
 
+// Fixed height (in pt) for the logo/branding strip, used consistently above
+// the card in portrait and below each card in landscape so the logo reads
+// at the same size in every layout. 72pt = 1 inch.
+const BRAND_STRIP_H=72;
+
 // Draws logo or brand text centered in a strip at (ox, oy, w, h)
 function drawBrandingStrip(doc,ff,T,ox,oy,w,h){
   const brandText=document.getElementById('brand-text')?.value?.trim()||'';
   if(logoUrl&&logoImg){
     try{
-      const maxH=h*.82,maxW=w*.7;
+      const maxH=h*.9,maxW=w*.75;
       let lh=maxH,lw=(logoImg.width/logoImg.height)*lh;
       if(lw>maxW){lw=maxW;lh=lw*(logoImg.height/logoImg.width);}
       doc.addImage(logoUrl,'PNG',ox+w/2-lw/2,oy+(h-lh)/2,lw,lh);
@@ -1707,7 +1712,7 @@ function genPDF(){
 
       if(!isLand){
         // PORTRAIT: branding strip ABOVE the card, card below it
-        const brandH=brandingOn?58:0;
+        const brandH=brandingOn?BRAND_STRIP_H:0;
         const gap=brandingOn?12:0;
         const cardW=Math.round(PW*.80);
         const cardH=Math.round(PH*.76)-brandH-gap;
@@ -1727,7 +1732,7 @@ function genPDF(){
       } else {
         // LANDSCAPE: 2 cards per page, branding strip BELOW each card
         const cutX=PW/2,M=18,gap=12;
-        const brandH=brandingOn?34:0;
+        const brandH=brandingOn?BRAND_STRIP_H:0;
         const cw=(PW/2)-M-gap/2,ch=PH-2*M-brandH;
         const pages=Math.ceil(pCount/2);
         for(let p=0;p<pages;p++){
