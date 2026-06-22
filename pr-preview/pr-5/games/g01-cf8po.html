@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- IMPORTANT: noindex so this page never appears in search or gets crawled -->
+<meta name="robots" content="noindex, nofollow">
+<title>Game Pack — BingoCardGenerator.Online Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0F1B2D;--sf:#152032;--sf2:#1C2E45;--sf3:#243852;--bd:rgba(255,255,255,.08);--gn:#F5A623;--gnd:rgba(245,166,35,.12);--or:#E05C2A;--tx:#E8EDF5;--mt:#6B8599;--r:12px;--rs:8px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--tx);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100vh}
+a{color:var(--gn);text-decoration:none}
+header{background:rgba(15,27,45,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--bd);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--tx)}
+.logo span{color:var(--gn)}
+.wrap{max-width:680px;margin:0 auto;padding:48px 24px 80px}
+
+/* GATE (hidden by default — set GATE_ENABLED=true to use) */
+#gate{display:none;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:32px;text-align:center;margin-top:40px}
+#gate h2{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;margin-bottom:8px}
+#gate p{color:var(--mt);font-size:14.5px;margin-bottom:18px}
+#gate input{width:100%;max-width:380px;background:var(--sf3);border:1px solid var(--bd);border-radius:var(--rs);color:var(--tx);padding:12px 14px;font-size:15px;text-align:center;letter-spacing:.5px;margin-bottom:12px}
+#gate button{background:var(--gn);color:#0F1B2D;border:none;padding:12px 28px;border-radius:24px;font-weight:700;font-size:15px;cursor:pointer}
+#gate-status{font-size:13px;color:var(--mt);margin-top:10px;min-height:18px}
+
+/* CONTENT */
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gn);margin-bottom:12px}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,7vw,60px);letter-spacing:1.5px;line-height:.95;margin-bottom:10px}
+.game-sub{font-size:17px;color:var(--mt);margin-bottom:32px}
+
+.download-card{background:var(--sf);border:1px solid rgba(245,166,35,.25);border-radius:var(--r);padding:28px 32px;margin-bottom:28px;text-align:center}
+.download-card h2{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px;margin-bottom:6px}
+.download-card p{color:var(--mt);font-size:14px;margin-bottom:20px}
+.dl-btn{display:inline-flex;align-items:center;gap:8px;background:var(--gn);color:#0F1B2D;padding:14px 36px;border-radius:30px;font-weight:700;font-size:16px;transition:background .15s}
+.dl-btn:hover{background:#f7bb44}
+
+.section-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--mt);margin:32px 0 14px}
+.link-row{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.link-card{display:flex;align-items:center;gap:14px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);padding:16px 18px;transition:border-color .15s}
+.link-card:hover{border-color:rgba(245,166,35,.35)}
+.link-icon{font-size:24px;flex-shrink:0;width:32px;text-align:center}
+.link-body{flex:1}
+.link-body .lt{font-size:15px;font-weight:600;color:var(--tx)}
+.link-body .ld{font-size:12.5px;color:var(--mt)}
+.link-arrow{color:var(--gn);font-size:18px;flex-shrink:0}
+
+.howto{background:var(--sf2);border:1px solid var(--bd);border-radius:var(--rs);padding:20px 24px;margin-bottom:28px}
+.howto h3{font-size:15px;font-weight:700;margin-bottom:10px;color:var(--tx)}
+.howto ol{padding-left:20px}
+.howto li{font-size:14px;color:#C8D8E8;margin-bottom:6px;line-height:1.55}
+
+.cta-back{display:block;text-align:center;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:20px;margin-top:32px;transition:border-color .15s}
+.cta-back:hover{border-color:rgba(245,166,35,.35)}
+.cta-back strong{color:var(--tx);font-size:16px;display:block;margin-bottom:2px}
+.cta-back span{color:var(--mt);font-size:13px}
+
+footer{text-align:center;padding:24px;font-size:12px;color:var(--mt);border-top:1px solid var(--bd)}
+footer a{color:var(--mt);margin:0 6px}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">BINGO<span>CARD</span>GENERATOR.ONLINE</a>
+  <span style="font-size:12px;color:var(--mt)">Pro Member Game Pack</span>
+</header>
+
+<!-- OPTIONAL LICENSE GATE — toggle GATE_ENABLED in the script below -->
+<div id="gate">
+  <h2>Pro Members Only</h2>
+  <p>Enter your license key to access this month's game pack.</p>
+  <input type="text" id="gate-key" placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX">
+  <br>
+  <button onclick="checkGate()">Unlock Game Pack</button>
+  <div id="gate-status"></div>
+</div>
+
+<!-- GAME PACK CONTENT -->
+<div class="wrap" id="content">
+  <div class="eyebrow">Game Pack · Month 01</div>
+  <h1>GOLDEN OLDIES</h1>
+  <p class="game-sub">All your favorites from way back to the malt shop — the perfect family music bingo game. 250 randomized cards, 33 songs.</p>
+
+  <!-- DOWNLOAD -->
+  <div class="download-card">
+    <h2>📋 This Month's Game</h2>
+    <p>250 ready-to-print cards · landscape format · includes both Artist and Song Title versions + a callsheet</p>
+    <!-- CONFIGURE: replace with your hosted game file link -->
+    <a href="https://drive.google.com/drive/folders/11N6iW-8DGpaCd-U7q0oNjzGPiUh73kSP?usp=sharing" class="dl-btn" target="_blank" rel="noopener">↓ Download Game Cards</a>
+  </div>
+
+  <!-- PLAYLIST LINKS -->
+  <div class="section-title">Stream the Playlist</div>
+  <div class="link-row">
+    <!-- CONFIGURE: replace # with your playlist URLs -->
+    <a href="https://open.spotify.com/playlist/2706dBDwenPUgqGXZYodWu" class="link-card" target="_blank" rel="noopener">
+      <span class="link-icon">🟢</span>
+      <div class="link-body"><div class="lt">Spotify Playlist</div><div class="ld">Open the full Golden Oldies playlist in Spotify</div></div>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://itunes.apple.com/us/playlist/music-bingo-golden-oldies/pl.u-aZb0NJ5t1NkB2rZ" class="link-card" target="_blank" rel="noopener">
+      <span class="link-icon">🍎</span>
+      <div class="link-body"><div class="lt">Apple Music Playlist</div><div class="ld">Open the full Golden Oldies playlist in Apple Music</div></div>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://www.tunemymusic.com" class="link-card" target="_blank" rel="noopener">
+      <span class="link-icon">🔄</span>
+      <div class="link-body"><div class="lt">Other Service? Use TuneMyMusic</div><div class="ld">Convert the playlist to YouTube Music, Tidal, Amazon &amp; more</div></div>
+      <span class="link-arrow">→</span>
+    </a>
+  </div>
+
+  <!-- HOW TO USE -->
+  <div class="howto">
+    <h3>How to run this game</h3>
+    <ol>
+      <li>Download the game file above and print enough cards for your players (landscape, letter paper — colored paper works great)</li>
+      <li>Open the Spotify or Apple Music playlist and hit <strong>Shuffle Play</strong> — play about 60 seconds of each song</li>
+      <li>Hand out cards and (optionally) set up prizes for the winners</li>
+      <li>Players mark off songs as they hear them — call a <strong>Line</strong>, <strong>4 Corners</strong>, or full <strong>Blackout</strong>, or make up your own Bingos!</li>
+      <li>Use the included callsheet to verify winners</li>
+    </ol>
+  </div>
+
+  <a href="/" class="cta-back">
+    <strong>Want to build your own custom game? →</strong>
+    <span>Use the generator any time to create bingo cards from your own song lists</span>
+  </a>
+</div>
+
+<footer>
+  <p>© 2026 BingoCardGenerator.Online · Pro Member Content</p>
+  <p style="margin-top:6px"><a href="/">Generator</a> · <a href="/blog/">Blog</a> · <a href="/refund.html">Refund Policy</a></p>
+</footer>
+
+<script>
+// ============================================================
+// OPTIONAL LICENSE GATE
+// Set GATE_ENABLED = true to require a license key before showing content.
+// Leave false to rely on the unguessable URL alone (Option 1).
+// ============================================================
+const GATE_ENABLED = false;
+const WORKER_URL = 'https://bcg-license-verify.dustinramsbottom.workers.dev';
+
+if (GATE_ENABLED) {
+  document.getElementById('content').style.display = 'none';
+  document.getElementById('gate').style.display = 'block';
+  // Auto-unlock if they already have a verified key in localStorage
+  try {
+    const d = JSON.parse(localStorage.getItem('fce_pro') || 'null');
+    if (d?.ok) { revealContent(); }
+  } catch(e) {}
+}
+
+async function checkGate(){
+  const key = document.getElementById('gate-key').value.trim();
+  const status = document.getElementById('gate-status');
+  if(!key){status.textContent='Please enter your license key.';return;}
+  status.textContent='Verifying...';
+  // Beta codes bypass
+  if(['FATCITY-PRO-2025','FCE-GEN2-PRO'].includes(key.toUpperCase())){revealContent();return;}
+  try{
+    const r = await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'validate',license_key:key})});
+    const data = await r.json();
+    if(data.valid){revealContent();}
+    else{status.textContent = data.error || 'License not valid or subscription expired.';}
+  }catch(e){status.textContent='Could not verify — please try again.';}
+}
+
+function revealContent(){
+  document.getElementById('gate').style.display='none';
+  document.getElementById('content').style.display='block';
+}
+</script>
+</body>
+</html>
