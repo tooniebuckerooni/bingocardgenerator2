@@ -297,7 +297,8 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 .lfn{font-size:13px;font-weight:500;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
 .lrm{font-size:11.5px;color:var(--or);cursor:pointer;background:none;border:none;padding:0;font-family:'Outfit',sans-serif}
 .lrm:hover{text-decoration:underline}
-.lpls{display:flex;gap:6px;margin-top:10px}
+.lpls{display:none;gap:6px;margin-top:10px}
+.lpls.show{display:flex}
 .lpill{flex:1;padding:6px 4px;background:var(--sf2);border:1px solid var(--bd);border-radius:20px;color:var(--mt);font-family:'Outfit',sans-serif;font-size:12px;cursor:pointer;text-align:center;transition:all var(--t)}
 .lpill.sl{border-color:var(--gn);color:var(--gn);background:var(--gnd)}
 
@@ -602,6 +603,11 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
             <img class="lth" id="lth" src="" alt="Logo">
             <div class="lif"><div class="lfn" id="lfn"></div><button class="lrm" onclick="clrLogo()">Remove logo</button></div>
           </div>
+          <div class="lpls" id="lpls">
+            <div class="lpill" data-size="small" onclick="setLogoSize(this)">Small</div>
+            <div class="lpill sl" data-size="medium" onclick="setLogoSize(this)">Medium</div>
+            <div class="lpill" data-size="large" onclick="setLogoSize(this)">Large</div>
+          </div>
           <div class="ord" style="margin:12px 0 10px">or type your brand name</div>
           <input type="text" id="brand-text" placeholder="e.g. Game Night with Sarah" oninput="dPrev()" style="margin-bottom:0">
         </div>
@@ -879,7 +885,7 @@ const BETA_CODES = ['FATCITY-PRO-2025', 'FCE-GEN2-PRO'];
 let isPro=false, font='oswald', theme='eco', freeOn=true, freePos='center';
 let pCount=5, sCount=10, mode='print', fontSize=11, layout='portrait', bingoRow=true;
 let spTok=null, spReady=false, selPl=null, spFmt='title';
-let logoUrl=null, logoImg=null, brandingOn=true;
+let logoUrl=null, logoImg=null, brandingOn=true, logoSize='medium';
 
 // ============================================================
 // THEMES
@@ -1269,6 +1275,7 @@ function hLogo(inp){
       document.getElementById('lth').src=logoUrl;
       document.getElementById('lfn').textContent=f.name;
       document.getElementById('lpr').classList.add('show');
+      document.getElementById('lpls').classList.add('show');
       document.getElementById('ldt').textContent='Click to replace logo';
       dPrev();
     };
@@ -1279,8 +1286,14 @@ function hLogo(inp){
 function clrLogo(){
   logoUrl=null;logoImg=null;
   document.getElementById('lpr').classList.remove('show');
+  document.getElementById('lpls').classList.remove('show');
   document.getElementById('ldt').textContent='Click to upload your logo';
   dPrev();
+}
+function setLogoSize(el){
+  document.querySelectorAll('.lpill').forEach(p=>p.classList.remove('sl'));
+  el.classList.add('sl');
+  logoSize=el.dataset.size;
 }
 function togBranding(){
   brandingOn=!brandingOn;
@@ -1663,10 +1676,15 @@ function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
   }
 }
 
-// Fixed height (in pt) for the logo/branding strip, used consistently above
-// the card in portrait and below each card in landscape so the logo reads
-// at the same size in every layout. 72pt = 1 inch.
-const BRAND_STRIP_H=72;
+// Height (in pt) of the logo/branding strip, used consistently above the
+// card in portrait and below each card in landscape. Uploaded logos use the
+// user-selected Small/Medium/Large size; a typed brand name always gets the
+// small strip since it doesn't need to dominate the page.
+const LOGO_STRIP_H={small:60,medium:100,large:170};
+function brandStripHeight(){
+  if(!brandingOn)return 0;
+  return logoUrl?(LOGO_STRIP_H[logoSize]||LOGO_STRIP_H.medium):LOGO_STRIP_H.small;
+}
 
 // Draws logo or brand text centered in a strip at (ox, oy, w, h)
 function drawBrandingStrip(doc,ff,T,ox,oy,w,h){
@@ -1712,7 +1730,7 @@ function genPDF(){
 
       if(!isLand){
         // PORTRAIT: branding strip ABOVE the card, card below it
-        const brandH=brandingOn?BRAND_STRIP_H:0;
+        const brandH=brandStripHeight();
         const gap=brandingOn?12:0;
         const cardW=Math.round(PW*.80);
         const cardH=Math.round(PH*.76)-brandH-gap;
@@ -1732,7 +1750,7 @@ function genPDF(){
       } else {
         // LANDSCAPE: 2 cards per page, branding strip BELOW each card
         const cutX=PW/2,M=18,gap=12;
-        const brandH=brandingOn?BRAND_STRIP_H:0;
+        const brandH=brandStripHeight();
         const cw=(PW/2)-M-gap/2,ch=PH-2*M-brandH;
         const pages=Math.ceil(pCount/2);
         for(let p=0;p<pages;p++){
