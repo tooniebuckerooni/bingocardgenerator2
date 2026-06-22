@@ -1833,6 +1833,10 @@ function genPDF(){
             drawBrandingStrip(doc,ff,T,ox,brandY,cardW,brandH);
           }
 
+          // Card number label (matches landscape's per-card labels)
+          doc.setFontSize(7);doc.setTextColor(160,160,160);
+          doc.text(`Card #${i+1}`,ox+cardW/2,PH-2,{align:'center'});
+
         }
       } else {
         // LANDSCAPE: 2 cards per page, branding strip BELOW each card
