@@ -1736,10 +1736,14 @@ function genPDF(){
         const brandH=brandStripHeight();
         const gap=brandingOn?12:0;
         const cardW=Math.round(PW*.80);
-        const cardH=Math.round(PH*.76)-brandH-gap;
         const ox=Math.round((PW-cardW)/2);
         const brandY=18;                         // branding at top
         const oy=brandY+brandH+gap;              // card starts below branding
+        const bottomM=18;
+        // Cap at the original 76%-of-page default (keeps the no-branding/
+        // small-strip look unchanged), but never leave the remaining page
+        // height under the strip unused once the strip grows past that cap.
+        const cardH=Math.min(Math.round(PH*.76), PH-oy-bottomM);
 
         for(let i=0;i<pCount;i++){
           if(i>0)doc.addPage();
