@@ -1691,7 +1691,10 @@ function drawBrandingStrip(doc,ff,T,ox,oy,w,h){
   const brandText=document.getElementById('brand-text')?.value?.trim()||'';
   if(logoUrl&&logoImg){
     try{
-      const maxH=h*.9,maxW=w*.75;
+      // maxW must grow with logoScale too, not just maxH — otherwise wide
+      // (horizontal) logos hit the width cap and the scale slider does
+      // nothing, since width was always a fixed fraction of the column.
+      const maxH=h*.9,maxW=Math.min(w*.92,w*.75*(logoScale/100));
       let lh=maxH,lw=(logoImg.width/logoImg.height)*lh;
       if(lw>maxW){lw=maxW;lh=lw*(logoImg.height/logoImg.width);}
       doc.addImage(logoUrl,'PNG',ox+w/2-lw/2,oy+(h-lh)/2,lw,lh);
