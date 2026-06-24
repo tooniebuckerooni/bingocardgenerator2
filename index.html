@@ -1079,18 +1079,18 @@ function importPlaylistFile(input){
       }
     } else {
       // TuneMyMusic TXT: one track per line, format varies
-      // Common formats: "Title - Artist", "Artist - Title", or just "Title"
+      // Spotify-style exports use "Artist - Title" (not "Title - Artist")
       const lines=raw.split('\n').map(l=>l.trim()).filter(l=>l&&!l.startsWith('#'));
       lines.forEach(line=>{
         // Strip leading numbers like "1. " or "1) "
         const stripped=line.replace(/^\d+[\.\)]\s*/,'').trim();
         if(!stripped)return;
-        // Try to split on " - " to get title/artist
+        // Try to split on " - " to get artist/title
         const parts=stripped.split(/\s+[-–—]\s+/);
         let title=stripped,artist='';
         if(parts.length>=2){
-          title=parts[0].trim();
-          artist=parts[1].trim();
+          artist=parts[0].trim();
+          title=parts[1].trim();
         }
         if(spFmt==='title') entries.push(title);
         else if(spFmt==='artist') entries.push(artist||title);
@@ -1486,7 +1486,7 @@ function drawCardCanvas(ctx,W,H,words,seed,opts={}){
   if(bingoRow) ['B','I','N','G','O'].forEach((l,i)=>{
     const x=M+i*cW;
     if(T.eco){
-      ctx.strokeStyle='#aaa';ctx.lineWidth=Math.max(.4,W*.001);
+      ctx.strokeStyle='#000';ctx.lineWidth=Math.max(.4,W*.001);
       ctx.strokeRect(x,M+tH,cW,bH);ctx.fillStyle='#000';
     }else{
       ctx.fillStyle=rgb(drk(T.hd,i%2===0?-16:0));ctx.fillRect(x,M+tH,cW,bH);ctx.fillStyle='#fff';
@@ -1505,8 +1505,8 @@ function drawCardCanvas(ctx,W,H,words,seed,opts={}){
       if(isFree){freeRect={x,y,w:cW,h:cH};ctx.fillStyle=T.eco?'rgb(245,245,245)':rgb(T.fr);}
       else ctx.fillStyle=(r+c)%2===0?rgb(T.st):rgb(T.bg);
       ctx.fillRect(x,y,cW,cH);
-      ctx.strokeStyle=T.eco?'rgb(185,185,185)':rgb(T.bd);
-      ctx.lineWidth=Math.max(.3,W*.0007);
+      ctx.strokeStyle=T.eco?'#000':rgb(T.bd);
+      ctx.lineWidth=T.eco?Math.max(.4,W*.001):Math.max(.3,W*.0007);
       ctx.strokeRect(x,y,cW,cH);
       if(!isFree){
         const{sz,lines}=fitTxt(ctx,word,cW-6,cH,scaledFontSize);
@@ -1695,7 +1695,7 @@ function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
   // BINGO row (only when enabled)
   if(bingoRow) ['B','I','N','G','O'].forEach((l,j)=>{
     const x=ox+M+j*colW;
-    if(T.eco){doc.setDrawColor(170,170,170);doc.setLineWidth(.4);doc.rect(x,oy+M+tH,colW,bH,'S');doc.setTextColor(0,0,0);}
+    if(T.eco){doc.setDrawColor(0,0,0);doc.setLineWidth(.4);doc.rect(x,oy+M+tH,colW,bH,'S');doc.setTextColor(0,0,0);}
     else{doc.setFillColor(...drk(T.hd,j%2===0?-16:0));doc.rect(x,oy+M+tH,colW,bH,'F');doc.setTextColor(255,255,255);}
     doc.setFont(ff,'bold');doc.setFontSize(Math.round(bH*.55));
     doc.text(l,x+colW/2,oy+M+tH+bH*.7,{align:'center'});
@@ -1710,8 +1710,8 @@ function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
       if(isFree){frd={x,y,w:colW,h:rowH};doc.setFillColor(...(T.eco?[245,245,245]:T.fr));}
       else doc.setFillColor(...((r+c)%2===0?T.st:T.bg));
       doc.rect(x,y,colW,rowH,'F');
-      doc.setDrawColor(...(T.eco?[185,185,185]:T.bd));
-      doc.setLineWidth(T.eco?.3:.5);
+      doc.setDrawColor(...(T.eco?[0,0,0]:T.bd));
+      doc.setLineWidth(T.eco?.4:.5);
       doc.rect(x,y,colW,rowH,'S');
 
       if(!isFree){
