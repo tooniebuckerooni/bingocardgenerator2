@@ -1079,18 +1079,18 @@ function importPlaylistFile(input){
       }
     } else {
       // TuneMyMusic TXT: one track per line, format varies
-      // Common formats: "Title - Artist", "Artist - Title", or just "Title"
+      // Spotify-style exports use "Artist - Title" (not "Title - Artist")
       const lines=raw.split('\n').map(l=>l.trim()).filter(l=>l&&!l.startsWith('#'));
       lines.forEach(line=>{
         // Strip leading numbers like "1. " or "1) "
         const stripped=line.replace(/^\d+[\.\)]\s*/,'').trim();
         if(!stripped)return;
-        // Try to split on " - " to get title/artist
+        // Try to split on " - " to get artist/title
         const parts=stripped.split(/\s+[-–—]\s+/);
         let title=stripped,artist='';
         if(parts.length>=2){
-          title=parts[0].trim();
-          artist=parts[1].trim();
+          artist=parts[0].trim();
+          title=parts[1].trim();
         }
         if(spFmt==='title') entries.push(title);
         else if(spFmt==='artist') entries.push(artist||title);
@@ -1294,6 +1294,7 @@ function clrLogo(){
 function setLogoScale(val){
   logoScale=parseInt(val,10)||100;
   document.getElementById('lszv').textContent=logoScale+'%';
+  dPrev();
 }
 function togBranding(){
   brandingOn=!brandingOn;
@@ -1346,7 +1347,7 @@ function pFSize(v){
   document.getElementById('fshint').textContent=`≈ ${Math.floor(cellW/avgCW)} chars per line`;
   dPrev();
 }
-function pLayout(el){document.querySelectorAll('.lcrd').forEach(c=>c.classList.remove('sl'));el.classList.add('sl');layout=el.dataset.layout;}
+function pLayout(el){document.querySelectorAll('.lcrd').forEach(c=>c.classList.remove('sl'));el.classList.add('sl');layout=el.dataset.layout;dPrev();}
 function togFS(){freeOn=!freeOn;document.getElementById('fstg').classList.toggle('on',freeOn);document.getElementById('fso').style.display=freeOn?'':'none';dPrev();}
 function togBingoRow(){bingoRow=!bingoRow;document.getElementById('brtg').classList.toggle('on',bingoRow);dPrev();}
 function pPos(el){document.querySelectorAll('.pp').forEach(b=>b.classList.remove('sl'));el.classList.add('sl');freePos=el.dataset.p;dPrev();}
@@ -1485,7 +1486,7 @@ function drawCardCanvas(ctx,W,H,words,seed,opts={}){
   if(bingoRow) ['B','I','N','G','O'].forEach((l,i)=>{
     const x=M+i*cW;
     if(T.eco){
-      ctx.strokeStyle='#aaa';ctx.lineWidth=Math.max(.4,W*.001);
+      ctx.strokeStyle='#000';ctx.lineWidth=Math.max(.4,W*.001);
       ctx.strokeRect(x,M+tH,cW,bH);ctx.fillStyle='#000';
     }else{
       ctx.fillStyle=rgb(drk(T.hd,i%2===0?-16:0));ctx.fillRect(x,M+tH,cW,bH);ctx.fillStyle='#fff';
@@ -1504,8 +1505,8 @@ function drawCardCanvas(ctx,W,H,words,seed,opts={}){
       if(isFree){freeRect={x,y,w:cW,h:cH};ctx.fillStyle=T.eco?'rgb(245,245,245)':rgb(T.fr);}
       else ctx.fillStyle=(r+c)%2===0?rgb(T.st):rgb(T.bg);
       ctx.fillRect(x,y,cW,cH);
-      ctx.strokeStyle=T.eco?'rgb(185,185,185)':rgb(T.bd);
-      ctx.lineWidth=Math.max(.3,W*.0007);
+      ctx.strokeStyle=T.eco?'#000':rgb(T.bd);
+      ctx.lineWidth=T.eco?Math.max(.4,W*.001):Math.max(.3,W*.0007);
       ctx.strokeRect(x,y,cW,cH);
       if(!isFree){
         const{sz,lines}=fitTxt(ctx,word,cW-6,cH,scaledFontSize);
@@ -1535,12 +1536,67 @@ function drawCardCanvas(ctx,W,H,words,seed,opts={}){
 // ============================================================
 // LIVE PREVIEW
 // ============================================================
+// Mirrors drawBrandingStrip (PDF) but draws straight to a canvas context —
+// ox/oy/w/h are already in canvas px (caller pre-scales from page pt).
+function drawBrandingStripCanvas(ctx,ox,oy,w,h){
+  const brandText=document.getElementById('brand-text')?.value?.trim()||'';
+  if(logoUrl&&logoImg){
+    const maxH=h*.9,maxW=Math.min(w*.92,w*.75*(logoScale/100));
+    let lh=maxH,lw=(logoImg.width/logoImg.height)*lh;
+    if(lw>maxW){lw=maxW;lh=lw*(logoImg.height/logoImg.width);}
+    ctx.drawImage(logoImg,ox+w/2-lw/2,oy+(h-lh)/2,lw,lh);
+  } else if(brandText){
+    const T=THEMES[theme];
+    let sz=Math.min(h*.55,22);
+    ctx.font=cvf(sz,true);
+    while(ctx.measureText(brandText).width>w*.88&&sz>7){sz--;ctx.font=cvf(sz,true);}
+    ctx.fillStyle=rgb(T.tx);
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(brandText,ox+w/2,oy+h/2);
+  }
+}
+
+// Renders the full page layout (branding strip + card, or both landscape
+// cards + cut line) at preview scale, using the same portraitLayout()/
+// landscapeLayout() math as the real PDF so the two can never drift apart.
 function dPrev(){
   const cv=document.getElementById('cp'),ctx=cv.getContext('2d');
-  drawCardCanvas(ctx,cv.width,cv.height,getW(),42,{
-    title:document.getElementById('ct').value,
-    freeLabel:document.getElementById('fst').value||'FREE'
-  });
+  const isLand=layout==='landscape';
+  const PW=isLand?792:612,PH=isLand?612:792;
+  const boxW=316,boxH=Math.round(boxW*PH/PW);
+  cv.width=boxW;cv.height=boxH;
+  const S=boxW/PW;
+  const words=getW();
+  const title=document.getElementById('ct').value;
+  const freeLabel=document.getElementById('fst').value||'FREE';
+  const brandH=brandStripHeight();
+
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,boxW,boxH);
+
+  if(!isLand){
+    const{brandY,ox,oy,cardW,cardH}=portraitLayout(PW,PH,brandH);
+    if(brandingOn) drawBrandingStripCanvas(ctx,ox*S,brandY*S,cardW*S,brandH*S);
+    ctx.save();ctx.translate(ox*S,oy*S);
+    drawCardCanvas(ctx,cardW*S,cardH*S,words,42,{title,freeLabel});
+    ctx.restore();
+  } else {
+    const{cutX,M,gap,cw,ch,stripY}=landscapeLayout(PW,PH,brandH);
+    ctx.save();ctx.translate(M*S,M*S);
+    drawCardCanvas(ctx,cw*S,ch*S,words,42,{title,freeLabel});
+    ctx.restore();
+    ctx.save();ctx.translate((cutX+gap/2)*S,M*S);
+    drawCardCanvas(ctx,cw*S,ch*S,words,43,{title,freeLabel});
+    ctx.restore();
+    if(brandingOn){
+      drawBrandingStripCanvas(ctx,M*S,stripY*S,cw*S,brandH*S);
+      drawBrandingStripCanvas(ctx,(cutX+gap/2)*S,stripY*S,cw*S,brandH*S);
+    }
+    ctx.save();
+    ctx.strokeStyle='#b4b4b4';ctx.lineWidth=Math.max(.5,S*.5);
+    ctx.setLineDash([4*S,4*S]);
+    ctx.beginPath();ctx.moveTo(cutX*S,8*S);ctx.lineTo(cutX*S,PH*S-8*S);ctx.stroke();
+    ctx.restore();
+  }
 }
 
 // Hi-res render for share / zip
@@ -1639,7 +1695,7 @@ function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
   // BINGO row (only when enabled)
   if(bingoRow) ['B','I','N','G','O'].forEach((l,j)=>{
     const x=ox+M+j*colW;
-    if(T.eco){doc.setDrawColor(170,170,170);doc.setLineWidth(.4);doc.rect(x,oy+M+tH,colW,bH,'S');doc.setTextColor(0,0,0);}
+    if(T.eco){doc.setDrawColor(0,0,0);doc.setLineWidth(.4);doc.rect(x,oy+M+tH,colW,bH,'S');doc.setTextColor(0,0,0);}
     else{doc.setFillColor(...drk(T.hd,j%2===0?-16:0));doc.rect(x,oy+M+tH,colW,bH,'F');doc.setTextColor(255,255,255);}
     doc.setFont(ff,'bold');doc.setFontSize(Math.round(bH*.55));
     doc.text(l,x+colW/2,oy+M+tH+bH*.7,{align:'center'});
@@ -1654,8 +1710,8 @@ function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
       if(isFree){frd={x,y,w:colW,h:rowH};doc.setFillColor(...(T.eco?[245,245,245]:T.fr));}
       else doc.setFillColor(...((r+c)%2===0?T.st:T.bg));
       doc.rect(x,y,colW,rowH,'F');
-      doc.setDrawColor(...(T.eco?[185,185,185]:T.bd));
-      doc.setLineWidth(T.eco?.3:.5);
+      doc.setDrawColor(...(T.eco?[0,0,0]:T.bd));
+      doc.setLineWidth(T.eco?.4:.5);
       doc.rect(x,y,colW,rowH,'S');
 
       if(!isFree){
@@ -1719,6 +1775,29 @@ function drawBrandingStrip(doc,ff,T,ox,oy,w,h){
   }
 }
 
+// Single source of truth for portrait page geometry (branding strip ABOVE
+// the card) — shared by genPDF() and the live preview so they can never
+// drift apart the way they did before the squish-bug fix.
+function portraitLayout(PW,PH,brandH){
+  const gap=brandH>0?12:0;
+  const cardW=Math.round(PW*.80);
+  const ox=Math.round((PW-cardW)/2);
+  const brandY=18;
+  const oy=brandY+brandH+gap;
+  const bottomM=18;
+  const cardH=Math.min(Math.round(PH*.76),PH-oy-bottomM);
+  return{brandY,brandH,gap,ox,oy,cardW,cardH};
+}
+
+// Single source of truth for landscape page geometry (2 cards side-by-side,
+// branding strip BELOW each card) — shared by genPDF() and the live preview.
+function landscapeLayout(PW,PH,brandH){
+  const cutX=PW/2,M=18,gap=12;
+  const cw=(PW/2)-M-gap/2,ch=PH-2*M-brandH;
+  const stripY=M+ch;
+  return{cutX,M,gap,brandH,cw,ch,stripY};
+}
+
 function genPDF(){
   pCount=Math.max(1,Math.min(isPro?999:10,parseInt(document.getElementById('cnp').value)||1));
   document.getElementById('cnp').value=pCount;
@@ -1744,16 +1823,7 @@ function genPDF(){
       if(!isLand){
         // PORTRAIT: branding strip ABOVE the card, card below it
         const brandH=brandStripHeight();
-        const gap=brandingOn?12:0;
-        const cardW=Math.round(PW*.80);
-        const ox=Math.round((PW-cardW)/2);
-        const brandY=18;                         // branding at top
-        const oy=brandY+brandH+gap;              // card starts below branding
-        const bottomM=18;
-        // Cap at the original 76%-of-page default (keeps the no-branding/
-        // small-strip look unchanged), but never leave the remaining page
-        // height under the strip unused once the strip grows past that cap.
-        const cardH=Math.min(Math.round(PH*.76), PH-oy-bottomM);
+        const{brandY,ox,oy,cardW,cardH}=portraitLayout(PW,PH,brandH);
 
         for(let i=0;i<pCount;i++){
           if(i>0)doc.addPage();
@@ -1763,12 +1833,15 @@ function genPDF(){
             drawBrandingStrip(doc,ff,T,ox,brandY,cardW,brandH);
           }
 
+          // Card number label (matches landscape's per-card labels)
+          doc.setFontSize(7);doc.setTextColor(160,160,160);
+          doc.text(`Card #${i+1}`,ox+cardW/2,PH-2,{align:'center'});
+
         }
       } else {
         // LANDSCAPE: 2 cards per page, branding strip BELOW each card
-        const cutX=PW/2,M=18,gap=12;
         const brandH=brandStripHeight();
-        const cw=(PW/2)-M-gap/2,ch=PH-2*M-brandH;
+        const{cutX,M,gap,cw,ch,stripY}=landscapeLayout(PW,PH,brandH);
         const pages=Math.ceil(pCount/2);
         for(let p=0;p<pages;p++){
           if(p>0)doc.addPage();
@@ -1777,7 +1850,6 @@ function genPDF(){
           if(ri<pCount) pdfDrawCard(doc,T,ff,fs,title,fl,words,5000+ri,cutX+gap/2,M,cw,ch);
 
           if(brandingOn){
-            const stripY=M+ch;
             if(li<pCount) drawBrandingStrip(doc,ff,T,M,stripY,cw,brandH);
             if(ri<pCount) drawBrandingStrip(doc,ff,T,cutX+gap/2,stripY,cw,brandH);
           }
