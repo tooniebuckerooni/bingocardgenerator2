@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bingo Card Generator | Create Custom Printable &amp; Digital Bingo Cards</title>
-<meta name="description" content="Create custom bingo cards in minutes. Make printable and digital bingo cards for classrooms, parties, events, and training. Easy to customize, share, and print.">
+<meta name="description" content="Create custom bingo cards in minutes — no login required. Make printable and digital bingo cards for classrooms, parties, events, and training. Easy to customize, share, and print.">
 <meta name="robots" content="index, follow">
 <meta name="keywords" content="bingo card generator, music bingo, custom bingo cards, printable bingo cards, free bingo generator, trivia bingo, bingo card maker">
 <link rel="canonical" href="https://bingocardgenerator.online/">
 <meta property="og:title" content="Bingo Card Generator | Create Custom Printable &amp; Digital Bingo Cards">
-<meta property="og:description" content="Create custom bingo cards in minutes for classrooms, parties, events, and training. Easy to customize, share, and print. Free to start.">
+<meta property="og:description" content="Create custom bingo cards in minutes for classrooms, parties, events, and training. No login required. Easy to customize, share, and print. Free to start.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://bingocardgenerator.online/">
 <meta property="og:image" content="https://bingocardgenerator.online/og-image.png">
@@ -18,7 +18,7 @@
 <meta property="og:site_name" content="BingoCardGenerator.Online">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Free Bingo Card Generator">
-<meta name="twitter:description" content="Custom bingo cards for music nights, trivia, events and more. Print or share online. Free to start.">
+<meta name="twitter:description" content="Custom bingo cards for music nights, trivia, events and more. No login required — print or share online. Free to start.">
 <meta name="twitter:image" content="https://bingocardgenerator.online/og-image.png">
 
 <!-- Structured data — WebApplication schema -->
@@ -95,6 +95,11 @@
   "mainEntity": [
     {
       "@type": "Question",
+      "name": "What is a bingo card generator?",
+      "acceptedAnswer": {"@type": "Answer", "text": "A bingo card generator is an online tool that creates custom bingo cards with your own words, phrases, or themes. Instead of designing cards manually in Word or Excel, you type your content, choose a layout, and the generator produces unique, randomized cards ready to print or share digitally."}
+    },
+    {
+      "@type": "Question",
       "name": "What can I use bingo cards for?",
       "acceptedAnswer": {"@type": "Answer", "text": "Use them for classrooms, parties, events, team building, training sessions, icebreakers, and more."}
     },
@@ -122,6 +127,33 @@
       "@type": "Question",
       "name": "What is the monthly game that comes with Pro?",
       "acceptedAnswer": {"@type": "Answer", "text": "Every month, Pro members receive a complete, ready-to-run music bingo game — professionally designed bingo cards plus matching Spotify and Apple Music playlists. These are real games tested on live audiences at actual events. Just download, print, hit shuffle on the playlist, and host."}
+    }
+  ]
+}
+</script>
+
+<!-- HowTo schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to create custom bingo cards",
+  "description": "Create custom bingo cards in three steps using BingoCardGenerator.Online.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Enter your content",
+      "text": "Type your words, songs, or phrases into the square list — one item per line. You need at least 25 items to fill a 5×5 card."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Customize your card",
+      "text": "Choose a font, color theme, and card title. Toggle the free space on or off and adjust the font size for print legibility."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Download or share",
+      "text": "Print cards as a PDF (portrait or landscape layout) or generate shareable digital card links for online play."
     }
   ]
 }
@@ -477,7 +509,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 <div class="hero">
   <div class="ey">BingoCardGenerator.Online</div>
   <h1>Create Custom Bingo<br>Cards in Minutes</h1>
-  <p class="hs">Build bingo cards for any use case with fast, flexible customization. Make printable or digital bingo cards for classrooms, parties, events, training sessions, and more.</p>
+  <p class="hs">Build bingo cards for any use case with fast, flexible customization — no account needed. Make printable or digital bingo cards for classrooms, parties, events, training sessions, and more.</p>
   <a href="#tool" class="hero-cta">Start Creating ↓</a>
 </div>
 
@@ -729,6 +761,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
       <div class="benefit-item"><div class="benefit-dot"></div><p>Generate printable or digital bingo cards.</p></div>
       <div class="benefit-item"><div class="benefit-dot"></div><p>Use simple tools to edit text, themes, and layouts.</p></div>
       <div class="benefit-item"><div class="benefit-dot"></div><p>Make one card or many unique cards in minutes.</p></div>
+      <div class="benefit-item"><div class="benefit-dot"></div><p>No login required — start creating right away.</p></div>
     </div>
   </div>
 
@@ -772,6 +805,10 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
   <!-- FAQ -->
   <div class="faq-section">
     <h2>Frequently Asked Questions</h2>
+    <div class="faq-item" onclick="togFaq(this)">
+      <button class="faq-q">What is a bingo card generator? <span class="faq-chev">▼</span></button>
+      <div class="faq-a">A bingo card generator is an online tool that creates custom bingo cards with your own words, phrases, or themes. Instead of designing cards manually in Word or Excel, you type your content, choose a layout, and the generator produces unique, randomized cards ready to print or share digitally.</div>
+    </div>
     <div class="faq-item" onclick="togFaq(this)">
       <button class="faq-q">What can I use bingo cards for? <span class="faq-chev">▼</span></button>
       <div class="faq-a">Use them for classrooms, parties, events, team building, training sessions, icebreakers, and more.</div>
@@ -1834,8 +1871,8 @@ function genPDF(){
           }
 
           // Card number label (matches landscape's per-card labels)
-          doc.setFontSize(7);doc.setTextColor(160,160,160);
-          doc.text(`Card #${i+1}`,ox+cardW/2,PH-2,{align:'center'});
+          doc.setFontSize(9);doc.setTextColor(160,160,160);
+          doc.text(`Card #${i+1}`,ox+cardW/2,PH-10,{align:'center'});
 
         }
       } else {
@@ -1863,9 +1900,9 @@ function genPDF(){
           doc.text('✂',cutX,7,{align:'center'});
 
           // Card number labels
-          doc.setFontSize(7);doc.setTextColor(160,160,160);
-          if(li<pCount)doc.text(`Card #${li+1}`,M+cw/2,PH-2,{align:'center'});
-          if(ri<pCount)doc.text(`Card #${ri+1}`,cutX+gap/2+cw/2,PH-2,{align:'center'});
+          doc.setFontSize(9);doc.setTextColor(160,160,160);
+          if(li<pCount)doc.text(`Card #${li+1}`,M+cw/2,PH-10,{align:'center'});
+          if(ri<pCount)doc.text(`Card #${ri+1}`,cutX+gap/2+cw/2,PH-10,{align:'center'});
 
         }
       }
