@@ -1,0 +1,46 @@
+name: Keyword Monitor
+
+on:
+  schedule:
+    # GitHub's actual minimum is 5 minutes, and busy periods can delay runs
+    # further - treat this as "as fast as GitHub will go," not a guarantee.
+    - cron: "*/5 * * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: keyword-monitor
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    defaults:
+      run:
+        working-directory: keyword-monitor
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - run: npm install
+
+      - run: node src/index.js
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          REDDIT_USER_AGENT: ${{ secrets.REDDIT_USER_AGENT }}
+          MASTODON_SOCIAL_TOKEN: ${{ secrets.MASTODON_SOCIAL_TOKEN }}
+
+      - name: Commit updated state
+        run: |
+          git config user.name "keyword-monitor-bot"
+          git config user.email "actions@github.com"
+          git add state.json
+          git diff --cached --quiet || git commit -m "Update keyword monitor state"
+          git push
