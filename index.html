@@ -59,14 +59,14 @@
       "name": "Free Plan",
       "price": "0",
       "priceCurrency": "USD",
-      "description": "Up to 10 cards per download, eco print theme"
+      "description": "Unlimited cards, all fonts and color themes, eco print theme"
     },
     {
       "@type": "Offer",
       "name": "Bingo Card Generator Pro 2",
       "price": "24.00",
       "priceCurrency": "USD",
-      "description": "Unlimited cards, custom branding, all themes, monthly pre-made game included",
+      "description": "Custom branding and logo, monthly pre-made game included",
       "priceSpecification": {
         "@type": "RecurringChargeSpecification",
         "price": "24.00",
@@ -649,17 +649,14 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
       <div class="ot">Free Space</div>
       <div class="tgr" onclick="togFS()"><div class="tg on" id="fstg"></div><span class="ttx">Include Free Space</span></div>
       <div id="fso">
-        <div id="free-pro-section" class="pro-lockable">
-          <div class="pro-cover" id="free-cover" onclick="goCheckout()">
-            <div class="pro-cover-badge">⚡ Pro feature · $24/mo — Click to subscribe</div>
-          </div>
-          <label class="fl">Free Space Label</label>
-          <input type="text" id="fst" value="FREE" oninput="dPrev()" style="margin-bottom:10px">
-          <div class="ot" style="margin-bottom:8px">Placement</div>
-          <div class="ppills">
-            <button class="pp sl" data-p="center" onclick="pPos(this)">Center</button>
-            <button class="pp" data-p="random" onclick="pPos(this)">Random</button>
-          </div>
+        <label class="fl">Free Space Label</label>
+        <input type="text" id="fst" value="FREE" oninput="dPrev()" style="margin-bottom:10px">
+        <label class="fl">Free Space Description <span style="text-transform:none;font-weight:400;color:var(--dm)">(optional)</span></label>
+        <input type="text" id="fsd" placeholder="e.g. Mark this one off automatically" oninput="dPrev()" style="margin-bottom:10px">
+        <div class="ot" style="margin-bottom:8px">Placement</div>
+        <div class="ppills">
+          <button class="pp sl" data-p="center" onclick="pPos(this)">Center</button>
+          <button class="pp" data-p="random" onclick="pPos(this)">Random</button>
         </div>
       </div>
     </div>
@@ -701,7 +698,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
           <div class="ccb" onclick="adjC(1,'p')">+</div>
         </div>
       </div>
-      <div class="fn2" id="fnp">Free plan: max 10 · <a href="#" onclick="goCheckout();return false">Upgrade for unlimited →</a></div>
+      <div class="fn2" id="fnp">Unlimited cards on every plan · <a href="#" onclick="goCheckout();return false">Upgrade for branding &amp; monthly games →</a></div>
       <button class="bdl" id="dlb" onclick="genPDF()" disabled>↓ Download PDF</button>
     </div>
     <div id="sp2" style="display:none">
@@ -716,7 +713,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
           <div class="ccb" onclick="adjC(1,'s')">+</div>
         </div>
       </div>
-      <div class="fn2" id="fns">Free plan: max 10 · <a href="#" onclick="goCheckout();return false">Upgrade for unlimited →</a></div>
+      <div class="fn2" id="fns">Unlimited cards on every plan · <a href="#" onclick="goCheckout();return false">Upgrade for branding &amp; monthly games →</a></div>
       <button class="bsg" id="sgb" onclick="openGal()" disabled>📲 Generate Share Cards</button>
     </div>
   </div>
@@ -736,10 +733,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
     <div class="pric">🎵 Includes 1 ready-to-run Music Bingo game every month</div>
     <ul class="prfl">
       <li><span class="fd"></span><strong>1 Pro-tested game delivered monthly</strong> — proven on real audiences, with matching Spotify &amp; Apple Music playlists</li>
-      <li><span class="fd"></span>Unlimited print &amp; share cards</li>
       <li><span class="fd"></span>Custom branding &amp; logo on every card</li>
-      <li><span class="fd"></span>Custom free space label &amp; random placement</li>
-      <li><span class="fd"></span>All fonts &amp; themes</li>
       <li><span class="fd"></span>Priority support</li>
     </ul>
     <a href="javascript:void(0)" onclick="goCheckout()" class="bsub">⚡ Upgrade to Pro</a>
@@ -1035,21 +1029,12 @@ async function chkPro(){
 }
 function goCheckout(){gev('upgrade_click',{method:'lemonsqueezy'});window.location.href=LS_CHECKOUT_URL;}
 function applyProLocks(){
-  // Branding section
+  // Branding section — legitimately Pro-only (old Pro never had logo/branding)
   const bs=document.getElementById('branding-section');
   const bc=document.getElementById('brand-cover');
   if(bs){bs.classList.toggle('locked',!isPro);}
   if(bc){bc.classList.toggle('show',!isPro);}
-  // Free space customization
-  const fp=document.getElementById('free-pro-section');
-  const fc=document.getElementById('free-cover');
-  if(fp){fp.classList.toggle('locked',!isPro);}
-  if(fc){fc.classList.toggle('show',!isPro);}
-  // Force free users to center free space
-  if(!isPro){
-    freePos='center';
-    document.querySelectorAll('.pp').forEach(b=>b.classList.toggle('sl',b.dataset.p==='center'));
-  }
+  // Free-space label + placement are free on every plan — old Pro already had these
   // Branding off for free users
   if(!isPro&&brandingOn){
     brandingOn=false;
@@ -1343,7 +1328,7 @@ function togBranding(){
 // ============================================================
 // WORD LIST
 // ============================================================
-function getW(){return document.getElementById('wl').value.split('\n').map(w=>w.trim()).filter(Boolean);}
+function getW(){return document.getElementById('wl').value.split(/[\n,]+/).map(w=>w.trim()).filter(Boolean);}
 function updW(){
   const n=getW().length,ok=n>=25;
   const el=document.getElementById('wst');
@@ -1395,7 +1380,7 @@ function sMode(el){
   document.getElementById('sp2').style.display=mode==='share'?'':'none';
 }
 function adjC(d,m){
-  const max=isPro?999:10;
+  const max=999; // unlimited cards on every plan — 999 is a browser-perf guard, not a tier gate
   const el=document.getElementById(m==='p'?'cnp':'cns');
   const cur=parseInt(el.value)||1;
   const next=Math.max(1,Math.min(max,cur+d));
@@ -1403,7 +1388,7 @@ function adjC(d,m){
   if(m==='p')pCount=next; else sCount=next;
 }
 function setC(el,m){
-  const max=isPro?999:10;
+  const max=999; // unlimited cards on every plan — 999 is a browser-perf guard, not a tier gate
   let v=parseInt(el.value)||1;
   v=Math.max(1,Math.min(max,v));
   if(m==='p')pCount=v; else sCount=v;
@@ -1487,7 +1472,7 @@ function drk(a,d){return a.map(v=>Math.max(0,Math.min(255,v+d)));}
 
 // drawCardCanvas: renders to any canvas context
 function drawCardCanvas(ctx,W,H,words,seed,opts={}){
-  const{title='',freeLabel='FREE'}=opts;
+  const{title='',freeLabel='FREE',freeDesc=''}=opts;
   const T=THEMES[theme];
   const M=Math.max(6,Math.round(W*.025));
   // Scale font size proportionally to canvas width (preview reference = 316px)
@@ -1555,15 +1540,27 @@ function drawCardCanvas(ctx,W,H,words,seed,opts={}){
         lines.forEach((ln,li)=>ctx.fillText(ln,x+cW/2,sy+li*lh));
         ctx.restore();
       }else{
-        // run free label through fitTxt so long text scales and wraps inside the cell
-        const lbl=freeLabel||'FREE';
-        const{sz,lines}=fitTxt(ctx,lbl,cW-10,cH-8,scaledFontSize);
+        // run free label (+ optional description) through fitTxt so long text scales and wraps inside the cell
+        const lbl=freeLabel||'FREE',desc=(freeDesc||'').trim();
         ctx.fillStyle=T.eco?'#000':'#fff';
-        ctx.font=cvf(sz,true);
-        ctx.textAlign='center';ctx.textBaseline='middle';
-        const lh=sz*1.35,sy=y+cH/2-(lines.length*lh)/2+lh/2;
         ctx.save();ctx.beginPath();ctx.rect(x,y,cW,cH);ctx.clip();
-        lines.forEach((ln,li)=>ctx.fillText(ln,x+cW/2,sy+li*lh));
+        ctx.textAlign='center';ctx.textBaseline='middle';
+        if(desc){
+          const lblH=cH*.55,descH=cH-lblH;
+          const lblZone=fitTxt(ctx,lbl,cW-10,lblH-4,scaledFontSize);
+          ctx.font=cvf(lblZone.sz,true);
+          let lh=lblZone.sz*1.35,sy=y+lblH/2-(lblZone.lines.length*lh)/2+lh/2;
+          lblZone.lines.forEach((ln,li)=>ctx.fillText(ln,x+cW/2,sy+li*lh));
+          const descZone=fitTxt(ctx,desc,cW-10,descH-4,Math.max(5,Math.round(scaledFontSize*.78)));
+          ctx.font=cvf(descZone.sz,false);
+          lh=descZone.sz*1.35;sy=y+lblH+descH/2-(descZone.lines.length*lh)/2+lh/2;
+          descZone.lines.forEach((ln,li)=>ctx.fillText(ln,x+cW/2,sy+li*lh));
+        } else {
+          const{sz,lines}=fitTxt(ctx,lbl,cW-10,cH-8,scaledFontSize);
+          ctx.font=cvf(sz,true);
+          const lh=sz*1.35,sy=y+cH/2-(lines.length*lh)/2+lh/2;
+          lines.forEach((ln,li)=>ctx.fillText(ln,x+cW/2,sy+li*lh));
+        }
         ctx.restore();
       }
     }
@@ -1606,6 +1603,7 @@ function dPrev(){
   const words=getW();
   const title=document.getElementById('ct').value;
   const freeLabel=document.getElementById('fst').value||'FREE';
+  const freeDesc=document.getElementById('fsd').value||'';
   const brandH=brandStripHeight();
 
   ctx.fillStyle='#fff';ctx.fillRect(0,0,boxW,boxH);
@@ -1614,15 +1612,15 @@ function dPrev(){
     const{brandY,ox,oy,cardW,cardH}=portraitLayout(PW,PH,brandH);
     if(brandingOn) drawBrandingStripCanvas(ctx,ox*S,brandY*S,cardW*S,brandH*S);
     ctx.save();ctx.translate(ox*S,oy*S);
-    drawCardCanvas(ctx,cardW*S,cardH*S,words,42,{title,freeLabel});
+    drawCardCanvas(ctx,cardW*S,cardH*S,words,42,{title,freeLabel,freeDesc});
     ctx.restore();
   } else {
     const{cutX,M,gap,cw,ch,stripY}=landscapeLayout(PW,PH,brandH);
     ctx.save();ctx.translate(M*S,M*S);
-    drawCardCanvas(ctx,cw*S,ch*S,words,42,{title,freeLabel});
+    drawCardCanvas(ctx,cw*S,ch*S,words,42,{title,freeLabel,freeDesc});
     ctx.restore();
     ctx.save();ctx.translate((cutX+gap/2)*S,M*S);
-    drawCardCanvas(ctx,cw*S,ch*S,words,43,{title,freeLabel});
+    drawCardCanvas(ctx,cw*S,ch*S,words,43,{title,freeLabel,freeDesc});
     ctx.restore();
     if(brandingOn){
       drawBrandingStripCanvas(ctx,M*S,stripY*S,cw*S,brandH*S);
@@ -1642,7 +1640,8 @@ function renderHR(words,seed,cardNum){
   cv.width=W;cv.height=H;const ctx=cv.getContext('2d');
   drawCardCanvas(ctx,W,H,words,seed,{
     title:document.getElementById('ct').value,
-    freeLabel:document.getElementById('fst').value||'FREE'
+    freeLabel:document.getElementById('fst').value||'FREE',
+    freeDesc:document.getElementById('fsd').value||''
   });
   // card number badge
   ctx.fillStyle='rgba(0,0,0,.28)';
@@ -1706,7 +1705,7 @@ function pdfFitTxt(doc,text,maxW,maxH,baseSz){
 }
 
 // Draw one bingo card into a jsPDF doc at given offset (ox, oy) and size (cw x ch area)
-function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
+function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch,fd=''){
   const M=14;
   const footH=0; // footer handled by genPDF caller
   const tH=Math.round(ch*.09),bH=bingoRow?Math.round(ch*.06):0;
@@ -1762,18 +1761,30 @@ function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
           doc.text(ln,x+colW/2,sy+li*lh,{align:'center'});
         });
       } else {
-        // wrap the free label so long text never overflows the cell
-        const lbl=fl||'FREE';
-        const freeSz=Math.min(fontSize,Math.round(rowH*.14));
-        const fLines=pdfWrap(doc,lbl,colW-8,freeSz);
-        const fLh=freeSz*1.35;
-        const maxFLines=Math.floor((rowH-6)/fLh);
-        const visFLines=fLines.slice(0,maxFLines);
-        const fTotalH=visFLines.length*fLh;
-        const fSy=y+rowH/2-fTotalH/2+freeSz*.75;
-        doc.setFont(ff,'bold');doc.setFontSize(freeSz);
+        // wrap the free label (+ optional description) so long text never overflows the cell
+        const lbl=fl||'FREE',desc=(fd||'').trim();
         doc.setTextColor(...(T.eco?[0,0,0]:[255,255,255]));
-        visFLines.forEach((ln,li)=>doc.text(ln,x+colW/2,fSy+li*fLh,{align:'center'}));
+        if(desc){
+          const lblH=rowH*.55,descH=rowH-lblH;
+          const{sz:lSz,lines:lLines}=pdfFitTxt(doc,lbl,colW-8,lblH-4,Math.min(fontSize,Math.round(lblH*.26)));
+          const lLh=lSz*1.35,lTotalH=lLines.length*lLh,lSy=y+lblH/2-lTotalH/2+lSz*.75;
+          doc.setFont(ff,'bold');
+          lLines.forEach((ln,li)=>{doc.setFontSize(lSz);doc.text(ln,x+colW/2,lSy+li*lLh,{align:'center'});});
+          const{sz:dSz,lines:dLines}=pdfFitTxt(doc,desc,colW-8,descH-4,Math.min(fontSize,Math.round(descH*.22)));
+          const dLh=dSz*1.35,dTotalH=dLines.length*dLh,dSy=y+lblH+descH/2-dTotalH/2+dSz*.75;
+          doc.setFont(ff,fs);
+          dLines.forEach((ln,li)=>{doc.setFontSize(dSz);doc.text(ln,x+colW/2,dSy+li*dLh,{align:'center'});});
+        } else {
+          const freeSz=Math.min(fontSize,Math.round(rowH*.14));
+          const fLines=pdfWrap(doc,lbl,colW-8,freeSz);
+          const fLh=freeSz*1.35;
+          const maxFLines=Math.floor((rowH-6)/fLh);
+          const visFLines=fLines.slice(0,maxFLines);
+          const fTotalH=visFLines.length*fLh;
+          const fSy=y+rowH/2-fTotalH/2+freeSz*.75;
+          doc.setFont(ff,'bold');doc.setFontSize(freeSz);
+          visFLines.forEach((ln,li)=>doc.text(ln,x+colW/2,fSy+li*fLh,{align:'center'}));
+        }
       }
     }
   }
@@ -1836,7 +1847,7 @@ function landscapeLayout(PW,PH,brandH){
 }
 
 function genPDF(){
-  pCount=Math.max(1,Math.min(isPro?999:10,parseInt(document.getElementById('cnp').value)||1));
+  pCount=Math.max(1,Math.min(999,parseInt(document.getElementById('cnp').value)||1)); // unlimited cards on every plan
   document.getElementById('cnp').value=pCount;
   const words=getW();if(words.length<25){toast('Need at least 25 songs.','err');return;}
   const btn=document.getElementById('dlb');
@@ -1850,6 +1861,7 @@ function genPDF(){
       const[ff,fs]=PFONTS[font];
       const title=(document.getElementById('ct').value||'Music Bingo').toUpperCase();
       const fl=document.getElementById('fst').value||'FREE';
+      const fd=document.getElementById('fsd').value||'';
       const isLand=layout==='landscape';
 
       // Portrait: 612 x 792 (letter), 1 card per page
@@ -1864,7 +1876,7 @@ function genPDF(){
 
         for(let i=0;i<pCount;i++){
           if(i>0)doc.addPage();
-          pdfDrawCard(doc,T,ff,fs,title,fl,words,5000+i,ox,oy,cardW,cardH);
+          pdfDrawCard(doc,T,ff,fs,title,fl,words,5000+i,ox,oy,cardW,cardH,fd);
 
           if(brandingOn){
             drawBrandingStrip(doc,ff,T,ox,brandY,cardW,brandH);
@@ -1883,8 +1895,8 @@ function genPDF(){
         for(let p=0;p<pages;p++){
           if(p>0)doc.addPage();
           const li=p*2,ri=p*2+1;
-          if(li<pCount) pdfDrawCard(doc,T,ff,fs,title,fl,words,5000+li,M,M,cw,ch);
-          if(ri<pCount) pdfDrawCard(doc,T,ff,fs,title,fl,words,5000+ri,cutX+gap/2,M,cw,ch);
+          if(li<pCount) pdfDrawCard(doc,T,ff,fs,title,fl,words,5000+li,M,M,cw,ch,fd);
+          if(ri<pCount) pdfDrawCard(doc,T,ff,fs,title,fl,words,5000+ri,cutX+gap/2,M,cw,ch,fd);
 
           if(brandingOn){
             if(li<pCount) drawBrandingStrip(doc,ff,T,M,stripY,cw,brandH);
@@ -1922,7 +1934,7 @@ function genPDF(){
 let galCvs=[],galSeeds=[];
 
 async function openGal(){
-  sCount=Math.max(1,Math.min(isPro?999:10,parseInt(document.getElementById('cns').value)||1));
+  sCount=Math.max(1,Math.min(999,parseInt(document.getElementById('cns').value)||1)); // unlimited cards on every plan
   document.getElementById('cns').value=sCount;
   const words=getW();if(words.length<25){toast('Need at least 25 songs.','err');return;}
   const btn=document.getElementById('sgb');
@@ -1967,7 +1979,7 @@ function dlCardPng(cv,n,title){
 function buildLink(words,seed,n,title){
   try{
     const w=words.length>300?words.slice(0,300):words; // cap for URL safety
-    const st={t:title,w,fn:font,th:theme,fo:freeOn,fp:freePos,ft:document.getElementById("fst").value||"FREE",s:seed,n};
+    const st={t:title,w,fn:font,th:theme,fo:freeOn,fp:freePos,ft:document.getElementById("fst").value||"FREE",fd:document.getElementById("fsd").value||"",s:seed,n};
     const url=location.origin+location.pathname+"?card="+btoa(encodeURIComponent(JSON.stringify(st)));
     return url.length>6000?null:url;
   }catch(e){return null;}
@@ -2009,13 +2021,14 @@ function showCard(enc){
     // apply state to renderer
     font=st.fn||'oswald';theme=st.th||'classic';freeOn=st.fo!==false;freePos=st.fp||'center';
     document.getElementById('fst').value=st.ft||'FREE';
+    document.getElementById('fsd').value=st.fd||'';
     document.getElementById('gen').style.display='none';
     document.getElementById('cview').style.display='block';
     document.title=`${st.t||'Music Bingo'} — Card #${st.n}`;
     document.getElementById('cvtt').textContent=(st.t||'MUSIC BINGO').toUpperCase();
     document.getElementById('cvcn').textContent=`Card #${st.n}`;
     const cv=document.getElementById('cvc'),ctx=cv.getContext('2d');
-    drawCardCanvas(ctx,cv.width,cv.height,st.w||[],st.s||42,{title:st.t,freeLabel:st.ft||'FREE'});
+    drawCardCanvas(ctx,cv.width,cv.height,st.w||[],st.s||42,{title:st.t,freeLabel:st.ft||'FREE',freeDesc:st.fd||''});
   }catch(e){toast('Invalid card link.','err');}
 }
 function dlShared(){
