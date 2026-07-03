@@ -1,0 +1,18 @@
+{
+  "keywords": ["bingo cards"],
+  "reddit": {
+    "limitPerPoll": 100
+  },
+  "bluesky": {
+    "listenMs": 240000
+  },
+  "mastodon": {
+    "listenMs": 240000,
+    "instances": [
+      { "baseUrl": "https://mastodon.social", "accessTokenEnv": "MASTODON_SOCIAL_TOKEN" }
+    ]
+  },
+  "youtube": {
+    "maxResultsPerKeyword": 10
+  }
+}

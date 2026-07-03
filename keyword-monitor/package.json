@@ -1,0 +1,14 @@
+{
+  "name": "keyword-monitor",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Polls/streams Reddit, Bluesky, Mastodon, and YouTube for keyword mentions and alerts to Discord.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0",
+    "eventsource": "^2.0.2"
+  }
+}
