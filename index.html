@@ -181,7 +181,7 @@ function gev(name,params){try{gtag('event',name,params||{});}catch(e){}}
 <style>
 /* ================================================================
    CONFIGURE before deploy — search the JS for:
-   SPOTIFY_CLIENT_ID  |  LS_CHECKOUT_URL  |  WORKER_URL  |  BETA_CODES
+   SPOTIFY_CLIENT_ID | LS_CHECKOUT_URL | WORKER_URL | EXPORT_TOKEN_PUBKEY_SPKI_B64
    ================================================================ */
 :root {
   --bg:#0F1B2D;--sf:#152032;--sf2:#1C2E45;--sf3:#243852;
@@ -906,15 +906,29 @@ async function loadZipLib(){await loadScript(JSZIP_SRC);}
 
 // ============================================================
 // CONFIGURE — edit before deploying
-// 1. Set LS_CHECKOUT_URL to your LemonSqueezy product checkout URL
-// 2. Set WORKER_URL to your Cloudflare Worker URL after deploying worker.js
-// 3. BETA_CODES: promo/beta codes that bypass LS verification
+// 1. LS_CHECKOUT_URL — Lemon Squeezy product checkout URL
+// 2. WORKER_URL — Cloudflare Worker URL (source: worker.js in this repo)
+// 3. EXPORT_TOKEN_PUBKEY_SPKI_B64 — base64 of the Worker's ECDSA P-256 PUBLIC
+//    key (SPKI DER). The matching PRIVATE key lives ONLY as a Worker secret and
+//    signs short-lived export tokens. See worker.js for keygen instructions.
+//
+// Licensing model: clean/unlimited exports are authorized server-side and
+// FAIL CLOSED. If the Worker cannot confirm a live, valid license at export
+// time (offline, lapsed, or tampered localStorage), the export falls back to
+// free limits. Residual risk: PDF rendering is client-side and can be patched
+// in devtools; full enforcement (server-side rendering) is consciously
+// deferred at current scale. Do NOT reintroduce client-side bypass codes.
+//
+// NOTE: export authorization stays disabled (Pro users get free-tier exports)
+// until BOTH the Worker `export_token` endpoint is deployed AND the public key
+// below is filled in — ship them together.
 // ============================================================
 const SPOTIFY_CLIENT_ID = '95f347a2b34d43968084d2ec49900cc3'; // kept for future Spotify OAuth
 const REDIRECT_URI = location.origin + location.pathname;
 const LS_CHECKOUT_URL = 'https://bingocardgenerator.lemonsqueezy.com/checkout/buy/dc206378-e5ea-47eb-a33c-1a8ddfd340e5';
 const WORKER_URL = 'https://bcg-license-verify.dustinramsbottom.workers.dev';
-const BETA_CODES = ['FATCITY-PRO-2025', 'FCE-GEN2-PRO'];
+// base64-encoded SPKI DER of the Worker's ECDSA P-256 public key (see worker.js)
+const EXPORT_TOKEN_PUBKEY_SPKI_B64 = 'REPLACE_WITH_WORKER_ECDSA_P256_PUBLIC_KEY_SPKI_BASE64';
 // ============================================================
 // STATE
 // ============================================================
@@ -978,12 +992,6 @@ async function tryAct(){
   const btn=document.getElementById('activate-btn');
   if(!key){toast('Please enter your license key.','err');return;}
 
-  // Beta/promo codes bypass LS verification
-  if(BETA_CODES.map(c=>c.toUpperCase()).includes(key.toUpperCase())){
-    localStorage.setItem('fce_pro',JSON.stringify({ok:true,key,type:'beta',verified:Date.now()}));
-    cModal();actPro();gev('pro_activated',{method:'beta_code'});toast('Pro activated!','ok');return;
-  }
-
   btn.innerHTML='<span class="sp"></span> Verifying...';btn.disabled=true;
   status.textContent='Checking with Lemon Squeezy...';status.style.color='var(--mt)';
 
@@ -1008,13 +1016,15 @@ async function tryAct(){
 async function chkPro(){
   try{
     const d=JSON.parse(localStorage.getItem('fce_pro')||'null');
-    if(!d?.ok) return;
-    // Beta codes: no re-verification needed
-    if(d.type==='beta'){actPro();return;}
-    // LS license: re-verify if last check was >24 hours ago
+    if(!d?.ok||!d.key) return;
+    // Fast path: recently verified → optimistic UI unlock ONLY. This reveals
+    // the Pro controls without a network round-trip on every load, but it is
+    // NOT the authority for exports — every export re-authorizes server-side
+    // via authorizeExport(), so a tampered cache still can't produce a clean
+    // export.
     const hoursSince=(Date.now()-(d.verified||0))/3600000;
     if(hoursSince<24){actPro();return;}
-    // Re-verify with worker
+    // Stale cache — re-verify with the worker.
     try{
       const data=await callWorker({action:'validate',license_key:d.key,instance_id:d.instance_id||undefined});
       if(data.valid){
@@ -1028,10 +1038,62 @@ async function chkPro(){
         gev('pro_expired');
       }
     } catch(e){
-      // Worker unreachable — fail open, don't lock out valid users
-      actPro();
+      // FAIL CLOSED: worker unreachable and the cached check is stale → do not
+      // unlock the UI. Leave fce_pro in place so a later successful verify can
+      // restore Pro. Exports are gated independently regardless (see below).
     }
   }catch(e){}
+}
+
+// ---- Server-verified export authorization (fail closed) --------------------
+// Clean/unlimited exports must be authorized live by the Worker at export time,
+// not read from isPro/localStorage. The Worker returns a short-lived ECDSA
+// P-256 signed token that the client verifies with the embedded public key,
+// which defeats a local proxy spoofing {valid:true}.
+function b64ToBytes(b64){const bin=atob(b64);const out=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)out[i]=bin.charCodeAt(i);return out;}
+function b64urlToBytes(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return b64ToBytes(s);}
+
+let _exportPubKey=null;
+async function getExportPubKey(){
+  if(_exportPubKey) return _exportPubKey;
+  if(!EXPORT_TOKEN_PUBKEY_SPKI_B64||EXPORT_TOKEN_PUBKEY_SPKI_B64.startsWith('REPLACE_')) return null;
+  try{
+    _exportPubKey=await crypto.subtle.importKey('spki',b64ToBytes(EXPORT_TOKEN_PUBKEY_SPKI_B64),{name:'ECDSA',namedCurve:'P-256'},false,['verify']);
+    return _exportPubKey;
+  }catch(e){return null;}
+}
+
+// Token format: base64url(payloadJSON) + "." + base64url(signature).
+// payload = {device_id, exp(ms)}. Signature is ECDSA P-256 / SHA-256 (IEEE
+// P1363 r||s, as produced by WebCrypto) over the UTF-8 bytes of the payload
+// segment string. Returns true only if the signature is valid, the token is
+// unexpired, and device_id matches this browser.
+async function verifyExportToken(token){
+  try{
+    const key=await getExportPubKey();
+    if(!key||typeof token!=='string'||token.indexOf('.')<0) return false;
+    const [p,s]=token.split('.');
+    const sig=b64urlToBytes(s);
+    const signingInput=new TextEncoder().encode(p);
+    const ok=await crypto.subtle.verify({name:'ECDSA',hash:'SHA-256'},key,sig,signingInput);
+    if(!ok) return false;
+    const payload=JSON.parse(new TextDecoder().decode(b64urlToBytes(p)));
+    if(!payload||typeof payload.exp!=='number'||Date.now()>payload.exp) return false;
+    if(payload.device_id&&payload.device_id!==getDeviceId()) return false;
+    return true;
+  }catch(e){return false;}
+}
+
+// FAIL CLOSED: any failure (no license, network error, invalid license,
+// bad/expired/forged token, unconfigured public key) → {pro:false}.
+async function authorizeExport(){
+  try{
+    const d=JSON.parse(localStorage.getItem('fce_pro')||'null');
+    if(!d?.ok||!d.key) return {pro:false};
+    const data=await callWorker({action:'export_token',license_key:d.key,instance_id:d.instance_id||undefined,device_id:getDeviceId()});
+    if(!data||!data.valid||!data.token) return {pro:false};
+    return {pro:await verifyExportToken(data.token)};
+  }catch(e){return {pro:false};}
 }
 function goCheckout(){gev('upgrade_click',{method:'lemonsqueezy'});window.location.href=LS_CHECKOUT_URL;}
 function applyProLocks(){
@@ -1835,12 +1897,20 @@ function landscapeLayout(PW,PH,brandH){
   return{cutX,M,gap,brandH,cw,ch,stripY};
 }
 
-function genPDF(){
-  pCount=Math.max(1,Math.min(isPro?999:10,parseInt(document.getElementById('cnp').value)||1));
-  document.getElementById('cnp').value=pCount;
+async function genPDF(){
   const words=getW();if(words.length<25){toast('Need at least 25 songs.','err');return;}
   const btn=document.getElementById('dlb');
-  btn.innerHTML='<span class="sp"></span> Loading...';btn.disabled=true;
+  btn.innerHTML='<span class="sp"></span> Checking license...';btn.disabled=true;
+  // Fail closed: unlimited count + branding require a live server authorization.
+  const {pro}=await authorizeExport();
+  pCount=Math.max(1,Math.min(pro?999:10,parseInt(document.getElementById('cnp').value)||1));
+  document.getElementById('cnp').value=pCount;
+  if(!pro&&brandingOn){
+    brandingOn=false;
+    const t=document.getElementById('brand-tg');if(t)t.classList.remove('on');
+    const bo=document.getElementById('brand-opts');if(bo)bo.style.display='none';
+  }
+  btn.innerHTML='<span class="sp"></span> Loading...';
   loadPdfLib().then(()=>{
   btn.innerHTML='<span class="sp"></span> Generating...';
   setTimeout(()=>{
@@ -1908,7 +1978,7 @@ function genPDF(){
       }
       const safe=(document.getElementById('ct').value||'bingo').replace(/[^a-z0-9]/gi,'-').replace(/-+/g,'-').toLowerCase();
       doc.save(`${safe}-cards.pdf`);
-      gev('pdf_downloaded',{card_count:pCount,layout,theme,is_pro:isPro});
+      gev('pdf_downloaded',{card_count:pCount,layout,theme,is_pro:pro});
       toast(`Downloaded ${pCount} card${pCount>1?'s':''}!`,'ok');
     }catch(err){console.error(err);toast('PDF generation failed.','err');}
     finally{btn.innerHTML='↓ Download PDF';btn.disabled=getW().length<25;}
@@ -1922,11 +1992,14 @@ function genPDF(){
 let galCvs=[],galSeeds=[];
 
 async function openGal(){
-  sCount=Math.max(1,Math.min(isPro?999:10,parseInt(document.getElementById('cns').value)||1));
-  document.getElementById('cns').value=sCount;
   const words=getW();if(words.length<25){toast('Need at least 25 songs.','err');return;}
   const btn=document.getElementById('sgb');
-  btn.innerHTML='<span class="sp"></span> Generating...';btn.disabled=true;
+  btn.innerHTML='<span class="sp"></span> Checking license...';btn.disabled=true;
+  // Fail closed: batch size beyond the free cap requires live server authorization.
+  const {pro}=await authorizeExport();
+  sCount=Math.max(1,Math.min(pro?999:10,parseInt(document.getElementById('cns').value)||1));
+  document.getElementById('cns').value=sCount;
+  btn.innerHTML='<span class="sp"></span> Generating...';
   setTimeout(async ()=>{
     galCvs=[];galSeeds=[];
     const grid=document.getElementById('ggrid');grid.innerHTML='';
@@ -1951,7 +2024,7 @@ async function openGal(){
       cell.appendChild(hdr);cell.appendChild(img);grid.appendChild(cell);
     }
     document.getElementById('gov').classList.add('open');
-    gev('share_cards_generated',{card_count:sCount,theme,is_pro:isPro});
+    gev('share_cards_generated',{card_count:sCount,theme,is_pro:pro});
     btn.innerHTML='📲 Generate Share Cards';btn.disabled=false;
   },50);
 }
@@ -1981,6 +2054,8 @@ async function cpLink(words,seed,n,title,btn){
 }
 
 async function dlZip(){
+  // galCvs is produced by openGal(), which already caps the batch to the
+  // server-authorized size — so this zip can only contain authorized cards.
   if(!galCvs.length){toast('Generate cards first.','err');return;}
   const btn=document.querySelector('.bzip');btn.innerHTML='<span class="sp"></span> Loading...';btn.disabled=true;
   await loadZipLib();
