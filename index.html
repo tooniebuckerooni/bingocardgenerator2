@@ -63,15 +63,22 @@
     },
     {
       "@type": "Offer",
-      "name": "Bingo Card Generator Pro 2",
-      "price": "24.00",
+      "name": "Pro Day Pass",
+      "price": "6.99",
       "priceCurrency": "USD",
-      "description": "Unlimited cards, custom branding, all themes, monthly pre-made game included",
+      "description": "24 hours of full Pro access — unlimited cards, custom branding, all themes"
+    },
+    {
+      "@type": "Offer",
+      "name": "Pro Annual",
+      "price": "79.99",
+      "priceCurrency": "USD",
+      "description": "One year of full Pro access — unlimited cards, custom branding, all themes",
       "priceSpecification": {
         "@type": "RecurringChargeSpecification",
-        "price": "24.00",
+        "price": "79.99",
         "priceCurrency": "USD",
-        "billingDuration": "P1M"
+        "billingDuration": "P1Y"
       }
     }
   ],
@@ -125,8 +132,8 @@
     },
     {
       "@type": "Question",
-      "name": "What is the monthly game that comes with Pro?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Every month, Pro members receive a complete, ready-to-run music bingo game — professionally designed bingo cards plus matching Spotify and Apple Music playlists. These are real games tested on live audiences at actual events. Just download, print, hit shuffle on the playlist, and host."}
+      "name": "How much does Pro cost?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Pro comes in two options: a Day Pass at $6.99 for 24 hours of full access, or an Annual plan at $79.99 for a full year. Both unlock unlimited cards, custom branding, all fonts and themes, and every export option."}
     }
   ]
 }
@@ -181,7 +188,7 @@ function gev(name,params){try{gtag('event',name,params||{});}catch(e){}}
 <style>
 /* ================================================================
    CONFIGURE before deploy — search the JS for:
-   SPOTIFY_CLIENT_ID  |  LS_CHECKOUT_URL  |  WORKER_URL  |  BETA_CODES
+   SPOTIFY_CLIENT_ID  |  LS_DAYPASS_URL / LS_ANNUAL_URL  |  WORKER_URL  |  BETA_CODES
    ================================================================ */
 :root {
   --bg:#0F1B2D;--sf:#152032;--sf2:#1C2E45;--sf3:#243852;
@@ -385,6 +392,15 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 .prp{font-size:34px;font-weight:700;color:var(--or)}
 .prpe{font-size:14px;color:var(--mt)}
 .pric{font-size:12.5px;color:var(--mt);margin-bottom:18px}
+.prpick{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+.prplan{background:var(--sf2);border:1px solid var(--bd);border-radius:var(--rs);padding:13px 14px}
+.prplan.best{border-color:rgba(224,92,42,.55)}
+.prplan-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:4px}
+.prplan-n{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:.8px;color:var(--tx)}
+.prplan-tag{font-family:'Outfit',sans-serif;font-size:9.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--or);background:var(--ord);border:1px solid rgba(224,92,42,.35);padding:2px 7px;border-radius:10px;margin-left:6px;vertical-align:middle}
+.prplan-p{font-size:24px;font-weight:700;color:var(--or);white-space:nowrap}
+.prplan-p small{font-size:12px;color:var(--mt);font-weight:600}
+.prplan-s{font-size:12px;color:var(--mt);line-height:1.45;margin-bottom:11px}
 .prfl{list-style:none;margin-bottom:22px}
 .prfl li{font-size:13.5px;padding:5px 0;display:flex;align-items:flex-start;gap:9px;border-bottom:1px solid var(--bd)}
 .prfl li:last-child{border:none}
@@ -619,7 +635,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
       <div class="ot">Branding</div>
       <div id="branding-section" class="pro-lockable">
         <div class="pro-cover" id="brand-cover" onclick="goCheckout()">
-          <div class="pro-cover-badge">⚡ Pro feature · $24/mo — Click to subscribe</div>
+          <div class="pro-cover-badge">⚡ Pro feature — Click to unlock</div>
         </div>
         <div class="tgr" onclick="togBranding()">
           <div class="tg on" id="brand-tg"></div>
@@ -651,7 +667,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
       <div id="fso">
         <div id="free-pro-section" class="pro-lockable">
           <div class="pro-cover" id="free-cover" onclick="goCheckout()">
-            <div class="pro-cover-badge">⚡ Pro feature · $24/mo — Click to subscribe</div>
+            <div class="pro-cover-badge">⚡ Pro feature — Click to unlock</div>
           </div>
           <label class="fl">Free Space Label</label>
           <input type="text" id="fst" value="FREE" oninput="dPrev()" style="margin-bottom:10px">
@@ -730,20 +746,28 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
     <canvas id="cp" width="316" height="360"></canvas>
   </div>
   <div class="procard" id="pros">
-    <div class="proe">⚡ Pro Plan</div>
+    <div class="proe">⚡ Go Pro</div>
     <h3>BINGO CARD<br>GENERATOR PRO</h3>
-    <div class="prpr"><div class="prp">$24</div><div class="prpe">USD / month</div></div>
-    <div class="pric">🎵 Includes 1 ready-to-run Music Bingo game every month</div>
+    <div class="prpick">
+      <div class="prplan">
+        <div class="prplan-h"><span class="prplan-n">Day Pass</span><span class="prplan-p">$6.99</span></div>
+        <div class="prplan-s">24 hours of full Pro access — perfect for a single event</div>
+        <a href="javascript:void(0)" onclick="goCheckout('day')" class="bsub">Get Day Pass</a>
+      </div>
+      <div class="prplan best">
+        <div class="prplan-h"><span class="prplan-n">Annual <span class="prplan-tag">Best value</span></span><span class="prplan-p">$79.99<small>/yr</small></span></div>
+        <div class="prplan-s">A full year of unlimited Pro access — for year-round hosts</div>
+        <a href="javascript:void(0)" onclick="goCheckout('annual')" class="bsub">Get Annual</a>
+      </div>
+    </div>
     <ul class="prfl">
-      <li><span class="fd"></span><strong>1 Pro-tested game delivered monthly</strong> — proven on real audiences, with matching Spotify &amp; Apple Music playlists</li>
       <li><span class="fd"></span>Unlimited print &amp; share cards</li>
       <li><span class="fd"></span>Custom branding &amp; logo on every card</li>
       <li><span class="fd"></span>Custom free space label &amp; random placement</li>
       <li><span class="fd"></span>All fonts &amp; themes</li>
       <li><span class="fd"></span>Priority support</li>
     </ul>
-    <a href="javascript:void(0)" onclick="goCheckout()" class="bsub">⚡ Upgrade to Pro</a>
-    <button class="bult" onclick="oUnlock()">Already subscribed? Unlock Pro here</button>
+    <button class="bult" onclick="oUnlock()">Already purchased? Unlock Pro here</button>
   </div>
 </div>
 </div>
@@ -783,11 +807,11 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
     <p>Add your own words, themes, and titles to build bingo cards that feel personal and relevant. Use the generator to create a simple game for kids, adults, teams, guests, or students.</p>
   </div>
 
-  <!-- PRO MONTHLY GAME FEATURE -->
+  <!-- PRO PRICING FEATURE -->
   <div class="content-card-full" style="border-color:rgba(245,166,35,.3);background-image:radial-gradient(ellipse at top right,rgba(245,166,35,.06) 0%,transparent 60%)">
-    <span style="display:inline-block;background:var(--gnd);color:var(--gn);border:1px solid rgba(245,166,35,.25);padding:3px 12px;border-radius:20px;font-size:11.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:14px">Pro · New Game Every Month</span>
-    <h2>Pro-Tested Games, <span>Played on Real Audiences</span></h2>
-    <p>Every month, Pro members get a brand-new, ready-to-run music bingo game — not auto-generated filler, but real games refined in front of live crowds at actual events. Each pack includes professionally matched bingo cards plus the full playlist on Spotify and Apple Music. Just download, print, hit shuffle, and host. No prep, no guesswork — these games are proven to work.</p>
+    <span style="display:inline-block;background:var(--gnd);color:var(--gn);border:1px solid rgba(245,166,35,.25);padding:3px 12px;border-radius:20px;font-size:11.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:14px">Pro · Simple Pricing</span>
+    <h2>Unlock Everything, <span>Your Way</span></h2>
+    <p>Only need cards for one event? Grab a <strong>Day Pass for $6.99</strong> and get 24 hours of full Pro access — unlimited cards, custom branding, every font and theme, and all export options. Hosting all year? The <strong>Annual plan is $79.99</strong> for a full year of unlimited use. No accounts to manage, no surprises — just the cards you need, when you need them.</p>
   </div>
 
   <!-- Sections 4 + 5 -->
@@ -830,8 +854,8 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
       <div class="faq-a">Yes. You can add your own words, titles, and themes. The content is entirely up to you — songs, trivia questions, vocabulary words, office terms, or anything else.</div>
     </div>
     <div class="faq-item" onclick="togFaq(this)">
-      <button class="faq-q">What is the monthly game that comes with Pro? <span class="faq-chev">▼</span></button>
-      <div class="faq-a">Every month, Pro members receive a complete, ready-to-run music bingo game — professionally designed bingo cards plus matching Spotify and Apple Music playlists. These are real games tested on live audiences at actual events. Just download, print, hit shuffle on the playlist, and host. No setup required.</div>
+      <button class="faq-q">How much does Pro cost? <span class="faq-chev">▼</span></button>
+      <div class="faq-a">Pro comes in two options: a Day Pass at $6.99 for 24 hours of full access — perfect for a single event — or an Annual plan at $79.99 for a full year of unlimited use. Both unlock unlimited cards, custom branding, all fonts and themes, and every export option.</div>
     </div>
   </div>
 
@@ -869,7 +893,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 <div class="mbg" id="um" onclick="mMaybeClose(event)">
   <div class="mbox">
     <h4>UNLOCK PRO</h4>
-    <p>After subscribing, Lemon Squeezy will email you a <strong>License Key</strong>. Check your inbox for an email from Lemon Squeezy — the key looks like <code style="background:var(--sf3);padding:2px 6px;border-radius:4px;font-size:12px">XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX</code>. Paste it below.</p>
+    <p>After your purchase, Lemon Squeezy will email you a <strong>License Key</strong>. Check your inbox for an email from Lemon Squeezy — the key looks like <code style="background:var(--sf3);padding:2px 6px;border-radius:4px;font-size:12px">XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX</code>. Paste it below.</p>
     <label class="fl">License Key</label>
     <input type="text" id="ai" placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" style="margin-bottom:4px;letter-spacing:.5px">
     <div id="unlock-status" style="font-size:12.5px;color:var(--mt);margin-bottom:14px;min-height:18px"></div>
@@ -906,13 +930,15 @@ async function loadZipLib(){await loadScript(JSZIP_SRC);}
 
 // ============================================================
 // CONFIGURE — edit before deploying
-// 1. Set LS_CHECKOUT_URL to your LemonSqueezy product checkout URL
+// 1. Set the LemonSqueezy checkout URLs for each plan below
 // 2. Set WORKER_URL to your Cloudflare Worker URL after deploying worker.js
 // 3. BETA_CODES: promo/beta codes that bypass LS verification
 // ============================================================
 const SPOTIFY_CLIENT_ID = '95f347a2b34d43968084d2ec49900cc3'; // kept for future Spotify OAuth
 const REDIRECT_URI = location.origin + location.pathname;
-const LS_CHECKOUT_URL = 'https://bingocardgenerator.lemonsqueezy.com/checkout/buy/dc206378-e5ea-47eb-a33c-1a8ddfd340e5';
+// Day Pass — $6.99, 24h access · Annual — $79.99 / year
+const LS_DAYPASS_URL = 'https://bingocardgenerator.lemonsqueezy.com/checkout/buy/57e0d1f5-52cc-4ba7-820e-383b7393eacf';
+const LS_ANNUAL_URL  = 'https://bingocardgenerator.lemonsqueezy.com/checkout/buy/dc206378-e5ea-47eb-a33c-1a8ddfd340e5';
 const WORKER_URL = 'https://bcg-license-verify.dustinramsbottom.workers.dev';
 const BETA_CODES = ['FATCITY-PRO-2025', 'FCE-GEN2-PRO'];
 // ============================================================
@@ -1011,9 +1037,9 @@ async function chkPro(){
     if(!d?.ok) return;
     // Beta codes: no re-verification needed
     if(d.type==='beta'){actPro();return;}
-    // LS license: re-verify if last check was >24 hours ago
+    // LS license: re-verify hourly so short passes (e.g. the 24h Day Pass) expire on time
     const hoursSince=(Date.now()-(d.verified||0))/3600000;
-    if(hoursSince<24){actPro();return;}
+    if(hoursSince<1){actPro();return;}
     // Re-verify with worker
     try{
       const data=await callWorker({action:'validate',license_key:d.key,instance_id:d.instance_id||undefined});
@@ -1024,7 +1050,7 @@ async function chkPro(){
       } else {
         // Subscription lapsed — remove Pro
         localStorage.removeItem('fce_pro');
-        toast('Your Pro subscription has expired. Renew to restore access.','err');
+        toast('Your Pro access has expired. Purchase again to restore access.','err');
         gev('pro_expired');
       }
     } catch(e){
@@ -1033,7 +1059,14 @@ async function chkPro(){
     }
   }catch(e){}
 }
-function goCheckout(){gev('upgrade_click',{method:'lemonsqueezy'});window.location.href=LS_CHECKOUT_URL;}
+function goCheckout(plan){
+  const url = plan==='annual' ? LS_ANNUAL_URL : (plan==='day' ? LS_DAYPASS_URL : null);
+  gev('upgrade_click',{method:'lemonsqueezy',plan:plan||'choose'});
+  if(url){window.location.href=url;return;}
+  // No plan specified — send the user to the pricing card to choose.
+  const p=document.getElementById('pros');
+  if(p){p.scrollIntoView({behavior:'smooth',block:'center'});}
+}
 function applyProLocks(){
   // Branding section
   const bs=document.getElementById('branding-section');
@@ -1064,7 +1097,7 @@ function actPro(){
   document.getElementById('fnp').style.display='none';
   document.getElementById('fns').style.display='none';
   applyProLocks();
-  document.getElementById('pros').innerHTML=`<div class="proe">⚡ Pro Active</div><h3>YOU'RE PRO!</h3><p style="color:var(--mt);font-size:13.5px;margin-top:8px;line-height:1.55">Unlimited cards, branding, and your monthly game arrives by email on each billing date.</p><button class="bult" style="margin-top:18px" onclick="dePro()">Remove Pro from this device</button>`;
+  document.getElementById('pros').innerHTML=`<div class="proe">⚡ Pro Active</div><h3>YOU'RE PRO!</h3><p style="color:var(--mt);font-size:13.5px;margin-top:8px;line-height:1.55">Unlimited cards, custom branding, all fonts and themes, and every export option are unlocked.</p><button class="bult" style="margin-top:18px" onclick="dePro()">Remove Pro from this device</button>`;
   dPrev();
 }
 function dePro(){localStorage.removeItem('fce_pro');location.reload();}
