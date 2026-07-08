@@ -56,22 +56,29 @@
   "offers": [
     {
       "@type": "Offer",
-      "name": "Free Plan",
+      "name": "Free Demo",
       "price": "0",
       "priceCurrency": "USD",
-      "description": "Up to 10 cards per download, eco print theme"
+      "description": "Every design feature free to try — unlimited cards, branding, all themes, live preview. Downloads require a pass."
     },
     {
       "@type": "Offer",
-      "name": "Bingo Card Generator Pro 2",
-      "price": "24.00",
+      "name": "Pro Day Pass",
+      "price": "6.99",
       "priceCurrency": "USD",
-      "description": "Unlimited cards, custom branding, all themes, monthly pre-made game included",
+      "description": "24 hours of full Pro access — unlimited cards, custom branding, all themes"
+    },
+    {
+      "@type": "Offer",
+      "name": "Pro Annual",
+      "price": "79.99",
+      "priceCurrency": "USD",
+      "description": "One year of full Pro access — unlimited cards, custom branding, all themes",
       "priceSpecification": {
         "@type": "RecurringChargeSpecification",
-        "price": "24.00",
+        "price": "79.99",
         "priceCurrency": "USD",
-        "billingDuration": "P1M"
+        "billingDuration": "P1Y"
       }
     }
   ],
@@ -106,12 +113,12 @@
     {
       "@type": "Question",
       "name": "Can I print the bingo cards?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Yes. You can create bingo cards that are ready to print at home, in the classroom, or at work. Choose portrait for one card per page or landscape for two cards with a cut line."}
+      "acceptedAnswer": {"@type": "Answer", "text": "Yes. You can create bingo cards that are ready to print at home, in the classroom, or at work. Choose portrait for one card per page or landscape for two cards with a cut line. Downloading the print-ready PDF requires a Day Pass or Annual pass."}
     },
     {
       "@type": "Question",
       "name": "Can I make digital bingo cards too?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Yes. You can also share bingo cards online for digital use. Each card gets a unique shareable link that players open on any device."}
+      "acceptedAnswer": {"@type": "Answer", "text": "Yes. You can also share bingo cards online for digital use. Each card gets a unique shareable link that players open on any device. Copying share links and downloading card images requires a Day Pass or Annual pass."}
     },
     {
       "@type": "Question",
@@ -125,8 +132,8 @@
     },
     {
       "@type": "Question",
-      "name": "What is the monthly game that comes with Pro?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Every month, Pro members receive a complete, ready-to-run music bingo game — professionally designed bingo cards plus matching Spotify and Apple Music playlists. These are real games tested on live audiences at actual events. Just download, print, hit shuffle on the playlist, and host."}
+      "name": "How much does Pro cost?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Every feature is free to demo — designing and previewing cards costs nothing. Downloading your finished cards requires a pass: a Day Pass at $6.99 for 24 hours of downloads, or an Annual plan at $79.99 for a full year. Both unlock PDF, PNG, and ZIP downloads plus shareable card links."}
     }
   ]
 }
@@ -181,7 +188,7 @@ function gev(name,params){try{gtag('event',name,params||{});}catch(e){}}
 <style>
 /* ================================================================
    CONFIGURE before deploy — search the JS for:
-   SPOTIFY_CLIENT_ID | LS_CHECKOUT_URL | WORKER_URL | EXPORT_TOKEN_PUBKEY_SPKI_B64
+   SPOTIFY_CLIENT_ID | LS_DAYPASS_URL / LS_ANNUAL_URL | WORKER_URL | EXPORT_TOKEN_PUBKEY_SPKI_B64
    ================================================================ */
 :root {
   --bg:#0F1B2D;--sf:#152032;--sf2:#1C2E45;--sf3:#243852;
@@ -385,6 +392,15 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 .prp{font-size:34px;font-weight:700;color:var(--or)}
 .prpe{font-size:14px;color:var(--mt)}
 .pric{font-size:12.5px;color:var(--mt);margin-bottom:18px}
+.prpick{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+.prplan{background:var(--sf2);border:1px solid var(--bd);border-radius:var(--rs);padding:13px 14px}
+.prplan.best{border-color:rgba(224,92,42,.55)}
+.prplan-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:4px}
+.prplan-n{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:.8px;color:var(--tx)}
+.prplan-tag{font-family:'Outfit',sans-serif;font-size:9.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--or);background:var(--ord);border:1px solid rgba(224,92,42,.35);padding:2px 7px;border-radius:10px;margin-left:6px;vertical-align:middle}
+.prplan-p{font-size:24px;font-weight:700;color:var(--or);white-space:nowrap}
+.prplan-p small{font-size:12px;color:var(--mt);font-weight:600}
+.prplan-s{font-size:12px;color:var(--mt);line-height:1.45;margin-bottom:11px}
 .prfl{list-style:none;margin-bottom:22px}
 .prfl li{font-size:13.5px;padding:5px 0;display:flex;align-items:flex-start;gap:9px;border-bottom:1px solid var(--bd)}
 .prfl li:last-child{border:none}
@@ -441,13 +457,6 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 .tsw-eco{width:100%;background:var(--sf2);border:2px solid rgba(245,166,35,.35);border-radius:var(--rs);padding:12px 14px;cursor:pointer;margin-bottom:4px;transition:all var(--t)}
 .tsw-eco:hover{border-color:var(--gn);background:var(--gnd)}
 .tsw-eco.sl{border-color:var(--gn);background:var(--gnd)}
-
-/* PRO LOCK */
-.pro-lockable{position:relative}
-.pro-lockable.locked{opacity:.45;pointer-events:none;user-select:none}
-.pro-cover{display:none;position:absolute;inset:-4px;z-index:10;cursor:pointer;border-radius:var(--rs);align-items:center;justify-content:center;background:rgba(15,27,45,.55)}
-.pro-cover.show{display:flex}
-.pro-cover-badge{background:var(--or);color:#fff;font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:700;padding:6px 16px;border-radius:20px;white-space:nowrap;pointer-events:none}
 
 /* FONT SIZE CONTROL */
 .fsrow{display:flex;align-items:center;gap:10px;margin-top:12px}
@@ -617,10 +626,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 
     <div class="og">
       <div class="ot">Branding</div>
-      <div id="branding-section" class="pro-lockable">
-        <div class="pro-cover" id="brand-cover" onclick="goCheckout()">
-          <div class="pro-cover-badge">⚡ Pro feature · $24/mo — Click to subscribe</div>
-        </div>
+      <div id="branding-section">
         <div class="tgr" onclick="togBranding()">
           <div class="tg on" id="brand-tg"></div>
           <span class="ttx">Show branding on printed cards</span>
@@ -649,10 +655,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
       <div class="ot">Free Space</div>
       <div class="tgr" onclick="togFS()"><div class="tg on" id="fstg"></div><span class="ttx">Include Free Space</span></div>
       <div id="fso">
-        <div id="free-pro-section" class="pro-lockable">
-          <div class="pro-cover" id="free-cover" onclick="goCheckout()">
-            <div class="pro-cover-badge">⚡ Pro feature · $24/mo — Click to subscribe</div>
-          </div>
+        <div id="free-pro-section">
           <label class="fl">Free Space Label</label>
           <input type="text" id="fst" value="FREE" oninput="dPrev()" style="margin-bottom:10px">
           <div class="ot" style="margin-bottom:8px">Placement</div>
@@ -701,8 +704,8 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
           <div class="ccb" onclick="adjC(1,'p')">+</div>
         </div>
       </div>
-      <div class="fn2" id="fnp">Free plan: max 10 · <a href="#" onclick="goCheckout();return false">Upgrade for unlimited →</a></div>
-      <button class="bdl" id="dlb" onclick="genPDF()" disabled>↓ Download PDF</button>
+      <div class="fn2" id="fnp">Demo mode — every feature is free to try. PDF download unlocks with a pass · <a href="#" onclick="goCheckout();return false">See pricing →</a></div>
+      <button class="bdl" id="dlb" onclick="genPDF()" disabled>🔒 Download PDF</button>
     </div>
     <div id="sp2" style="display:none">
       <div style="background:var(--sf2);border:1px solid var(--bd);border-radius:var(--rs);padding:14px 16px;margin-bottom:16px;font-size:13.5px;color:var(--mt);line-height:1.55">
@@ -716,7 +719,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
           <div class="ccb" onclick="adjC(1,'s')">+</div>
         </div>
       </div>
-      <div class="fn2" id="fns">Free plan: max 10 · <a href="#" onclick="goCheckout();return false">Upgrade for unlimited →</a></div>
+      <div class="fn2" id="fns">Demo mode — generate and preview freely. PNG/ZIP downloads &amp; share links unlock with a pass · <a href="#" onclick="goCheckout();return false">See pricing →</a></div>
       <button class="bsg" id="sgb" onclick="openGal()" disabled>📲 Generate Share Cards</button>
     </div>
   </div>
@@ -730,20 +733,28 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
     <canvas id="cp" width="316" height="360"></canvas>
   </div>
   <div class="procard" id="pros">
-    <div class="proe">⚡ Pro Plan</div>
+    <div class="proe">⚡ Go Pro</div>
     <h3>BINGO CARD<br>GENERATOR PRO</h3>
-    <div class="prpr"><div class="prp">$24</div><div class="prpe">USD / month</div></div>
-    <div class="pric">🎵 Includes 1 ready-to-run Music Bingo game every month</div>
+    <div class="prpick">
+      <div class="prplan">
+        <div class="prplan-h"><span class="prplan-n">Day Pass</span><span class="prplan-p">$6.99</span></div>
+        <div class="prplan-s">24 hours of full Pro access — perfect for a single event</div>
+        <a href="javascript:void(0)" onclick="goCheckout('day')" class="bsub">Get Day Pass</a>
+      </div>
+      <div class="prplan best">
+        <div class="prplan-h"><span class="prplan-n">Annual <span class="prplan-tag">Best value</span></span><span class="prplan-p">$79.99<small>/yr</small></span></div>
+        <div class="prplan-s">A full year of unlimited Pro access — for year-round hosts</div>
+        <a href="javascript:void(0)" onclick="goCheckout('annual')" class="bsub">Get Annual</a>
+      </div>
+    </div>
     <ul class="prfl">
-      <li><span class="fd"></span><strong>1 Pro-tested game delivered monthly</strong> — proven on real audiences, with matching Spotify &amp; Apple Music playlists</li>
-      <li><span class="fd"></span>Unlimited print &amp; share cards</li>
-      <li><span class="fd"></span>Custom branding &amp; logo on every card</li>
-      <li><span class="fd"></span>Custom free space label &amp; random placement</li>
-      <li><span class="fd"></span>All fonts &amp; themes</li>
+      <li><span class="fd"></span><strong>Download print-ready PDFs</strong> — as many cards as you need</li>
+      <li><span class="fd"></span>Download share cards as PNG or bulk ZIP</li>
+      <li><span class="fd"></span>Copy shareable card links for online play</li>
+      <li><span class="fd"></span>Full print quality — branding, all fonts &amp; themes included</li>
       <li><span class="fd"></span>Priority support</li>
     </ul>
-    <a href="javascript:void(0)" onclick="goCheckout()" class="bsub">⚡ Upgrade to Pro</a>
-    <button class="bult" onclick="oUnlock()">Already subscribed? Unlock Pro here</button>
+    <button class="bult" onclick="oUnlock()">Already purchased? Unlock Pro here</button>
   </div>
 </div>
 </div>
@@ -783,11 +794,11 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
     <p>Add your own words, themes, and titles to build bingo cards that feel personal and relevant. Use the generator to create a simple game for kids, adults, teams, guests, or students.</p>
   </div>
 
-  <!-- PRO MONTHLY GAME FEATURE -->
+  <!-- PRO PRICING FEATURE -->
   <div class="content-card-full" style="border-color:rgba(245,166,35,.3);background-image:radial-gradient(ellipse at top right,rgba(245,166,35,.06) 0%,transparent 60%)">
-    <span style="display:inline-block;background:var(--gnd);color:var(--gn);border:1px solid rgba(245,166,35,.25);padding:3px 12px;border-radius:20px;font-size:11.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:14px">Pro · New Game Every Month</span>
-    <h2>Pro-Tested Games, <span>Played on Real Audiences</span></h2>
-    <p>Every month, Pro members get a brand-new, ready-to-run music bingo game — not auto-generated filler, but real games refined in front of live crowds at actual events. Each pack includes professionally matched bingo cards plus the full playlist on Spotify and Apple Music. Just download, print, hit shuffle, and host. No prep, no guesswork — these games are proven to work.</p>
+    <span style="display:inline-block;background:var(--gnd);color:var(--gn);border:1px solid rgba(245,166,35,.25);padding:3px 12px;border-radius:20px;font-size:11.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:14px">Pro · Simple Pricing</span>
+    <h2>Try Everything Free, <span>Pay When You're Ready</span></h2>
+    <p>Every feature is free to demo — design unlimited cards with custom branding, any font and theme, and preview exactly what you'll get. When you're ready to download your finished cards, grab a <strong>Day Pass for $6.99</strong> (24 hours of downloads — perfect for a single event) or go <strong>Annual for $79.99</strong> and download all year. No accounts to manage, no surprises — just the cards you need, when you need them.</p>
   </div>
 
   <!-- Sections 4 + 5 -->
@@ -815,11 +826,11 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
     </div>
     <div class="faq-item" onclick="togFaq(this)">
       <button class="faq-q">Can I print the bingo cards? <span class="faq-chev">▼</span></button>
-      <div class="faq-a">Yes. You can create bingo cards that are ready to print at home, in the classroom, or at work. Choose portrait for one card per page or landscape for two cards with a cut line.</div>
+      <div class="faq-a">Yes. You can create bingo cards that are ready to print at home, in the classroom, or at work. Choose portrait for one card per page or landscape for two cards with a cut line. Downloading the print-ready PDF requires a Day Pass or Annual pass.</div>
     </div>
     <div class="faq-item" onclick="togFaq(this)">
       <button class="faq-q">Can I make digital bingo cards too? <span class="faq-chev">▼</span></button>
-      <div class="faq-a">Yes. You can also share bingo cards online for digital use. Each card gets a unique shareable link that players open on any device.</div>
+      <div class="faq-a">Yes. You can also share bingo cards online for digital use. Each card gets a unique shareable link that players open on any device. Copying share links and downloading card images requires a Day Pass or Annual pass.</div>
     </div>
     <div class="faq-item" onclick="togFaq(this)">
       <button class="faq-q">Do I need design experience? <span class="faq-chev">▼</span></button>
@@ -830,8 +841,8 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
       <div class="faq-a">Yes. You can add your own words, titles, and themes. The content is entirely up to you — songs, trivia questions, vocabulary words, office terms, or anything else.</div>
     </div>
     <div class="faq-item" onclick="togFaq(this)">
-      <button class="faq-q">What is the monthly game that comes with Pro? <span class="faq-chev">▼</span></button>
-      <div class="faq-a">Every month, Pro members receive a complete, ready-to-run music bingo game — professionally designed bingo cards plus matching Spotify and Apple Music playlists. These are real games tested on live audiences at actual events. Just download, print, hit shuffle on the playlist, and host. No setup required.</div>
+      <button class="faq-q">How much does Pro cost? <span class="faq-chev">▼</span></button>
+      <div class="faq-a">Every feature is free to demo — designing and previewing cards costs nothing. Downloading your finished cards requires a pass: a Day Pass at $6.99 for 24 hours of downloads — perfect for a single event — or an Annual plan at $79.99 for a full year. Both unlock PDF, PNG, and ZIP downloads plus shareable card links.</div>
     </div>
   </div>
 
@@ -869,7 +880,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 <div class="mbg" id="um" onclick="mMaybeClose(event)">
   <div class="mbox">
     <h4>UNLOCK PRO</h4>
-    <p>After subscribing, Lemon Squeezy will email you a <strong>License Key</strong>. Check your inbox for an email from Lemon Squeezy — the key looks like <code style="background:var(--sf3);padding:2px 6px;border-radius:4px;font-size:12px">XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX</code>. Paste it below.</p>
+    <p>After your purchase, Lemon Squeezy will email you a <strong>License Key</strong>. Check your inbox for an email from Lemon Squeezy — the key looks like <code style="background:var(--sf3);padding:2px 6px;border-radius:4px;font-size:12px">XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX</code>. Paste it below.</p>
     <label class="fl">License Key</label>
     <input type="text" id="ai" placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" style="margin-bottom:4px;letter-spacing:.5px">
     <div id="unlock-status" style="font-size:12.5px;color:var(--mt);margin-bottom:14px;min-height:18px"></div>
@@ -906,26 +917,28 @@ async function loadZipLib(){await loadScript(JSZIP_SRC);}
 
 // ============================================================
 // CONFIGURE — edit before deploying
-// 1. LS_CHECKOUT_URL — Lemon Squeezy product checkout URL
+// 1. LS_DAYPASS_URL / LS_ANNUAL_URL — Lemon Squeezy checkout URLs per plan
 // 2. WORKER_URL — Cloudflare Worker URL (source: worker.js in this repo)
 // 3. EXPORT_TOKEN_PUBKEY_SPKI_B64 — base64 of the Worker's ECDSA P-256 PUBLIC
 //    key (SPKI DER). The matching PRIVATE key lives ONLY as a Worker secret and
 //    signs short-lived export tokens. See worker.js for keygen instructions.
 //
-// Licensing model: clean/unlimited exports are authorized server-side and
-// FAIL CLOSED. If the Worker cannot confirm a live, valid license at export
-// time (offline, lapsed, or tampered localStorage), the export falls back to
-// free limits. Residual risk: PDF rendering is client-side and can be patched
-// in devtools; full enforcement (server-side rendering) is consciously
-// deferred at current scale. Do NOT reintroduce client-side bypass codes.
+// Licensing model: clean downloads are authorized server-side and FAIL CLOSED.
+// If the Worker cannot confirm a live, valid license at download time (offline,
+// lapsed, or tampered localStorage), no clean file is produced. Residual risk:
+// rendering is client-side and can be patched in devtools; full enforcement
+// (server-side rendering) is consciously deferred at current scale. Do NOT
+// reintroduce client-side bypass codes.
 //
-// NOTE: export authorization stays disabled (Pro users get free-tier exports)
-// until BOTH the Worker `export_token` endpoint is deployed AND the public key
-// below is filled in — ship them together.
+// NOTE: download authorization stays disabled (Pro users can't download) until
+// BOTH the Worker `export_token` endpoint is deployed AND the public key below
+// is filled in — ship them together.
 // ============================================================
 const SPOTIFY_CLIENT_ID = '95f347a2b34d43968084d2ec49900cc3'; // kept for future Spotify OAuth
 const REDIRECT_URI = location.origin + location.pathname;
-const LS_CHECKOUT_URL = 'https://bingocardgenerator.lemonsqueezy.com/checkout/buy/dc206378-e5ea-47eb-a33c-1a8ddfd340e5';
+// Day Pass — $6.99, 24h access · Annual — $79.99 / year
+const LS_DAYPASS_URL = 'https://bingocardgenerator.lemonsqueezy.com/checkout/buy/57e0d1f5-52cc-4ba7-820e-383b7393eacf';
+const LS_ANNUAL_URL  = 'https://bingocardgenerator.lemonsqueezy.com/checkout/buy/dc206378-e5ea-47eb-a33c-1a8ddfd340e5';
 const WORKER_URL = 'https://bcg-license-verify.dustinramsbottom.workers.dev';
 // base64-encoded SPKI DER of the Worker's ECDSA P-256 public key (see worker.js)
 const EXPORT_TOKEN_PUBKEY_SPKI_B64 = 'MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE74W23gyUW17VQkbRkQvd1AUttrE5qHsVeTNDgg4nFogvCiT4GB7AwUwfzo7pAYWUF9bM6X7BKmxmH2XmtEgj5g==';
@@ -1019,11 +1032,12 @@ async function chkPro(){
     if(!d?.ok||!d.key) return;
     // Fast path: recently verified → optimistic UI unlock ONLY. This reveals
     // the Pro controls without a network round-trip on every load, but it is
-    // NOT the authority for exports — every export re-authorizes server-side
-    // via authorizeExport(), so a tampered cache still can't produce a clean
-    // export.
+    // NOT the authority for downloads — every download re-authorizes
+    // server-side via authorizeExport(), so a tampered cache still can't
+    // produce a clean file. Re-verify hourly so short passes (24h Day Pass)
+    // expire on time.
     const hoursSince=(Date.now()-(d.verified||0))/3600000;
-    if(hoursSince<24){actPro();return;}
+    if(hoursSince<1){actPro();return;}
     // Stale cache — re-verify with the worker.
     try{
       const data=await callWorker({action:'validate',license_key:d.key,instance_id:d.instance_id||undefined});
@@ -1034,7 +1048,7 @@ async function chkPro(){
       } else {
         // Subscription lapsed — remove Pro
         localStorage.removeItem('fce_pro');
-        toast('Your Pro subscription has expired. Renew to restore access.','err');
+        toast('Your Pro access has expired. Purchase again to restore access.','err');
         gev('pro_expired');
       }
     } catch(e){
@@ -1095,29 +1109,39 @@ async function authorizeExport(){
     return {pro:await verifyExportToken(data.token)};
   }catch(e){return {pro:false};}
 }
-function goCheckout(){gev('upgrade_click',{method:'lemonsqueezy'});window.location.href=LS_CHECKOUT_URL;}
+// UI upsell (fast, no network) for users who aren't claiming Pro, then a live
+// FAIL-CLOSED server check for anyone who is. Gate every download with this.
+async function authorizeDownload(feature){
+  if(!requirePro(feature)) return false;
+  const {pro}=await authorizeExport();
+  if(pro) return true;
+  toast('Couldn’t verify your Pro access — please re-activate or renew.','err');
+  gev('pro_verify_failed',{feature});
+  return false;
+}
+function goCheckout(plan){
+  const url = plan==='annual' ? LS_ANNUAL_URL : (plan==='day' ? LS_DAYPASS_URL : null);
+  gev('upgrade_click',{method:'lemonsqueezy',plan:plan||'choose'});
+  if(url){window.location.href=url;return;}
+  // No plan specified — send the user to the pricing card to choose.
+  const p=document.getElementById('pros');
+  if(p){p.scrollIntoView({behavior:'smooth',block:'center'});}
+}
+function pdfBtnLabel(){return (isPro?'↓':'🔒')+' Download PDF';}
 function applyProLocks(){
-  // Branding section
-  const bs=document.getElementById('branding-section');
-  const bc=document.getElementById('brand-cover');
-  if(bs){bs.classList.toggle('locked',!isPro);}
-  if(bc){bc.classList.toggle('show',!isPro);}
-  // Free space customization
-  const fp=document.getElementById('free-pro-section');
-  const fc=document.getElementById('free-cover');
-  if(fp){fp.classList.toggle('locked',!isPro);}
-  if(fc){fc.classList.toggle('show',!isPro);}
-  // Force free users to center free space
-  if(!isPro){
-    freePos='center';
-    document.querySelectorAll('.pp').forEach(b=>b.classList.toggle('sl',b.dataset.p==='center'));
-  }
-  // Branding off for free users
-  if(!isPro&&brandingOn){
-    brandingOn=false;
-    const t=document.getElementById('brand-tg');if(t)t.classList.remove('on');
-    const bo=document.getElementById('brand-opts');if(bo)bo.style.display='none';
-  }
+  // Every design feature is free to demo — only finished-card downloads are gated
+  const dlb=document.getElementById('dlb');
+  if(dlb&&!dlb.querySelector('.sp')) dlb.innerHTML=pdfBtnLabel();
+  document.getElementById('fnp').style.display=isPro?'none':'';
+  document.getElementById('fns').style.display=isPro?'none':'';
+}
+function requirePro(feature){
+  if(isPro) return true;
+  gev('paywall_hit',{feature});
+  cGal();
+  toast('Downloading finished cards requires a Day Pass or Annual — pick a plan to unlock.','err');
+  goCheckout();
+  return false;
 }
 function actPro(){
   isPro=true;
@@ -1126,7 +1150,7 @@ function actPro(){
   document.getElementById('fnp').style.display='none';
   document.getElementById('fns').style.display='none';
   applyProLocks();
-  document.getElementById('pros').innerHTML=`<div class="proe">⚡ Pro Active</div><h3>YOU'RE PRO!</h3><p style="color:var(--mt);font-size:13.5px;margin-top:8px;line-height:1.55">Unlimited cards, branding, and your monthly game arrives by email on each billing date.</p><button class="bult" style="margin-top:18px" onclick="dePro()">Remove Pro from this device</button>`;
+  document.getElementById('pros').innerHTML=`<div class="proe">⚡ Pro Active</div><h3>YOU'RE PRO!</h3><p style="color:var(--mt);font-size:13.5px;margin-top:8px;line-height:1.55">Unlimited cards, custom branding, all fonts and themes, and every export option are unlocked.</p><button class="bult" style="margin-top:18px" onclick="dePro()">Remove Pro from this device</button>`;
   dPrev();
 }
 function dePro(){localStorage.removeItem('fce_pro');location.reload();}
@@ -1457,17 +1481,15 @@ function sMode(el){
   document.getElementById('sp2').style.display=mode==='share'?'':'none';
 }
 function adjC(d,m){
-  const max=isPro?999:10;
   const el=document.getElementById(m==='p'?'cnp':'cns');
   const cur=parseInt(el.value)||1;
-  const next=Math.max(1,Math.min(max,cur+d));
+  const next=Math.max(1,Math.min(999,cur+d));
   el.value=next;
   if(m==='p')pCount=next; else sCount=next;
 }
 function setC(el,m){
-  const max=isPro?999:10;
   let v=parseInt(el.value)||1;
-  v=Math.max(1,Math.min(max,v));
+  v=Math.max(1,Math.min(999,v));
   if(m==='p')pCount=v; else sCount=v;
   // don't clamp the input while typing — let them finish
 }
@@ -1898,19 +1920,13 @@ function landscapeLayout(PW,PH,brandH){
 }
 
 async function genPDF(){
+  // FAIL CLOSED: downloads require a live-authorized license (not just isPro).
+  if(!(await authorizeDownload('pdf')))return;
   const words=getW();if(words.length<25){toast('Need at least 25 songs.','err');return;}
-  const btn=document.getElementById('dlb');
-  btn.innerHTML='<span class="sp"></span> Checking license...';btn.disabled=true;
-  // Fail closed: unlimited count + branding require a live server authorization.
-  const {pro}=await authorizeExport();
-  pCount=Math.max(1,Math.min(pro?999:10,parseInt(document.getElementById('cnp').value)||1));
+  pCount=Math.max(1,Math.min(999,parseInt(document.getElementById('cnp').value)||1));
   document.getElementById('cnp').value=pCount;
-  if(!pro&&brandingOn){
-    brandingOn=false;
-    const t=document.getElementById('brand-tg');if(t)t.classList.remove('on');
-    const bo=document.getElementById('brand-opts');if(bo)bo.style.display='none';
-  }
-  btn.innerHTML='<span class="sp"></span> Loading...';
+  const btn=document.getElementById('dlb');
+  btn.innerHTML='<span class="sp"></span> Loading...';btn.disabled=true;
   loadPdfLib().then(()=>{
   btn.innerHTML='<span class="sp"></span> Generating...';
   setTimeout(()=>{
@@ -1978,10 +1994,10 @@ async function genPDF(){
       }
       const safe=(document.getElementById('ct').value||'bingo').replace(/[^a-z0-9]/gi,'-').replace(/-+/g,'-').toLowerCase();
       doc.save(`${safe}-cards.pdf`);
-      gev('pdf_downloaded',{card_count:pCount,layout,theme,is_pro:pro});
+      gev('pdf_downloaded',{card_count:pCount,layout,theme,is_pro:true});
       toast(`Downloaded ${pCount} card${pCount>1?'s':''}!`,'ok');
     }catch(err){console.error(err);toast('PDF generation failed.','err');}
-    finally{btn.innerHTML='↓ Download PDF';btn.disabled=getW().length<25;}
+    finally{btn.innerHTML=pdfBtnLabel();btn.disabled=getW().length<25;}
   },60);
   }).catch(()=>toast('Failed to load PDF library — check your connection.','err'));
 }
@@ -1992,13 +2008,14 @@ async function genPDF(){
 let galCvs=[],galSeeds=[];
 
 async function openGal(){
+  sCount=Math.max(1,Math.min(999,parseInt(document.getElementById('cns').value)||1));
+  document.getElementById('cns').value=sCount;
   const words=getW();if(words.length<25){toast('Need at least 25 songs.','err');return;}
   const btn=document.getElementById('sgb');
   btn.innerHTML='<span class="sp"></span> Checking license...';btn.disabled=true;
-  // Fail closed: batch size beyond the free cap requires live server authorization.
+  // Generating the gallery is free (demo-quality previews). Full-resolution
+  // share images require live server authorization — FAIL CLOSED.
   const {pro}=await authorizeExport();
-  sCount=Math.max(1,Math.min(pro?999:10,parseInt(document.getElementById('cns').value)||1));
-  document.getElementById('cns').value=sCount;
   btn.innerHTML='<span class="sp"></span> Generating...';
   setTimeout(async ()=>{
     galCvs=[];galSeeds=[];
@@ -2013,7 +2030,7 @@ async function openGal(){
       const seed=8000+i;galSeeds.push(seed);
       const cv=renderHR(words,seed,i+1);galCvs.push(cv);
       const cell=document.createElement('div');cell.className='gcell';
-      const img=document.createElement('img');img.className='gci';img.src=cv.toDataURL('image/png');img.alt=`Card ${i+1}`;
+      const img=document.createElement('img');img.className='gci';img.src=pro?cv.toDataURL('image/png'):demoPreview(cv);img.alt=`Card ${i+1}`;
       const hdr=document.createElement('div');hdr.className='gch';
       hdr.innerHTML=`<div class="gcn">CARD #${i+1}</div><div class="gca"></div>`;
       const acts=hdr.querySelector('.gca');
@@ -2030,7 +2047,16 @@ async function openGal(){
 }
 function cGal(){document.getElementById('gov').classList.remove('open');}
 
-function dlCardPng(cv,n,title){
+// Screen-quality copy of a card canvas for demo-mode gallery previews
+function demoPreview(cv){
+  const s=document.createElement('canvas');
+  s.width=420;s.height=Math.round(cv.height*420/cv.width);
+  s.getContext('2d').drawImage(cv,0,0,s.width,s.height);
+  return s.toDataURL('image/png');
+}
+
+async function dlCardPng(cv,n,title){
+  if(!(await authorizeDownload('png')))return;
   const a=document.createElement('a');
   const safe=(title||'bingo').replace(/[^a-z0-9]/gi,'-').toLowerCase();
   a.download=`${safe}-card-${String(n).padStart(3,'0')}.png`;
@@ -2047,6 +2073,7 @@ function buildLink(words,seed,n,title){
 }
 
 async function cpLink(words,seed,n,title,btn){
+  if(!(await authorizeDownload('share_link')))return;
   const url=buildLink(words,seed,n,title);
   if(!url){toast('Word list too large for a share link — download PNG instead.','err');return;}
   try{await navigator.clipboard.writeText(url);btn.textContent='✓ Copied';btn.classList.add('cp');setTimeout(()=>{btn.textContent='🔗 Link';btn.classList.remove('cp');},2200);}
@@ -2054,8 +2081,7 @@ async function cpLink(words,seed,n,title,btn){
 }
 
 async function dlZip(){
-  // galCvs is produced by openGal(), which already caps the batch to the
-  // server-authorized size — so this zip can only contain authorized cards.
+  if(!(await authorizeDownload('zip')))return;
   if(!galCvs.length){toast('Generate cards first.','err');return;}
   const btn=document.querySelector('.bzip');btn.innerHTML='<span class="sp"></span> Loading...';btn.disabled=true;
   await loadZipLib();
