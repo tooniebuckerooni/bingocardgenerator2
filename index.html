@@ -188,7 +188,7 @@ function gev(name,params){try{gtag('event',name,params||{});}catch(e){}}
 <style>
 /* ================================================================
    CONFIGURE before deploy — search the JS for:
-   SPOTIFY_CLIENT_ID  |  LS_DAYPASS_URL / LS_ANNUAL_URL  |  WORKER_URL  |  BETA_CODES
+   SPOTIFY_CLIENT_ID | LS_DAYPASS_URL / LS_ANNUAL_URL | WORKER_URL | EXPORT_TOKEN_PUBKEY_SPKI_B64
    ================================================================ */
 :root {
   --bg:#0F1B2D;--sf:#152032;--sf2:#1C2E45;--sf3:#243852;
@@ -374,10 +374,10 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 /* BUTTONS */
 .bdl{width:100%;padding:16px;background:var(--gn);color:#000;border:none;border-radius:var(--r);font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1.5px;cursor:pointer;transition:all var(--t);display:flex;align-items:center;justify-content:center;gap:10px}
 .bdl:hover{background:#f7bb44;transform:translateY(-2px);box-shadow:0 6px 24px var(--gng)}
-.bdl:disabled{background:var(--sf3);color:var(--dm);cursor:default;transform:none;box-shadow:none}
+.bdl:disabled{background:var(--sf3);color:#c2d0dc;opacity:1;cursor:default;transform:none;box-shadow:none}
 .bsg{width:100%;padding:16px;background:var(--or);color:#fff;border:none;border-radius:var(--r);font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1.5px;cursor:pointer;transition:all var(--t);display:flex;align-items:center;justify-content:center;gap:10px}
 .bsg:hover{background:#ff8055;transform:translateY(-2px);box-shadow:0 6px 24px var(--ord)}
-.bsg:disabled{background:var(--sf3);color:var(--dm);cursor:default;transform:none;box-shadow:none}
+.bsg:disabled{background:var(--sf3);color:#c2d0dc;opacity:1;cursor:default;transform:none;box-shadow:none}
 
 /* SIDEBAR */
 .pvc{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:22px;margin-bottom:20px;position:sticky;top:74px}
@@ -705,7 +705,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
         </div>
       </div>
       <div class="fn2" id="fnp">Demo mode — every feature is free to try. PDF download unlocks with a pass · <a href="#" onclick="goCheckout();return false">See pricing →</a></div>
-      <button class="bdl" id="dlb" onclick="genPDF()" disabled>🔒 Download PDF</button>
+      <button class="bdl" id="dlb" onclick="genPDF()" disabled>Add 25+ songs to continue</button>
     </div>
     <div id="sp2" style="display:none">
       <div style="background:var(--sf2);border:1px solid var(--bd);border-radius:var(--rs);padding:14px 16px;margin-bottom:16px;font-size:13.5px;color:var(--mt);line-height:1.55">
@@ -917,9 +917,22 @@ async function loadZipLib(){await loadScript(JSZIP_SRC);}
 
 // ============================================================
 // CONFIGURE — edit before deploying
-// 1. Set the LemonSqueezy checkout URLs for each plan below
-// 2. Set WORKER_URL to your Cloudflare Worker URL after deploying worker.js
-// 3. BETA_CODES: promo/beta codes that bypass LS verification
+// 1. LS_DAYPASS_URL / LS_ANNUAL_URL — Lemon Squeezy checkout URLs per plan
+// 2. WORKER_URL — Cloudflare Worker URL (source: worker.js in this repo)
+// 3. EXPORT_TOKEN_PUBKEY_SPKI_B64 — base64 of the Worker's ECDSA P-256 PUBLIC
+//    key (SPKI DER). The matching PRIVATE key lives ONLY as a Worker secret and
+//    signs short-lived export tokens. See worker.js for keygen instructions.
+//
+// Licensing model: clean downloads are authorized server-side and FAIL CLOSED.
+// If the Worker cannot confirm a live, valid license at download time (offline,
+// lapsed, or tampered localStorage), no clean file is produced. Residual risk:
+// rendering is client-side and can be patched in devtools; full enforcement
+// (server-side rendering) is consciously deferred at current scale. Do NOT
+// reintroduce client-side bypass codes.
+//
+// NOTE: download authorization stays disabled (Pro users can't download) until
+// BOTH the Worker `export_token` endpoint is deployed AND the public key below
+// is filled in — ship them together.
 // ============================================================
 const SPOTIFY_CLIENT_ID = '95f347a2b34d43968084d2ec49900cc3'; // kept for future Spotify OAuth
 const REDIRECT_URI = location.origin + location.pathname;
@@ -927,7 +940,8 @@ const REDIRECT_URI = location.origin + location.pathname;
 const LS_DAYPASS_URL = 'https://bingocardgenerator.lemonsqueezy.com/checkout/buy/57e0d1f5-52cc-4ba7-820e-383b7393eacf';
 const LS_ANNUAL_URL  = 'https://bingocardgenerator.lemonsqueezy.com/checkout/buy/dc206378-e5ea-47eb-a33c-1a8ddfd340e5';
 const WORKER_URL = 'https://bcg-license-verify.dustinramsbottom.workers.dev';
-const BETA_CODES = ['FATCITY-PRO-2025', 'FCE-GEN2-PRO'];
+// base64-encoded SPKI DER of the Worker's ECDSA P-256 public key (see worker.js)
+const EXPORT_TOKEN_PUBKEY_SPKI_B64 = 'MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE74W23gyUW17VQkbRkQvd1AUttrE5qHsVeTNDgg4nFogvCiT4GB7AwUwfzo7pAYWUF9bM6X7BKmxmH2XmtEgj5g==';
 // ============================================================
 // STATE
 // ============================================================
@@ -991,12 +1005,6 @@ async function tryAct(){
   const btn=document.getElementById('activate-btn');
   if(!key){toast('Please enter your license key.','err');return;}
 
-  // Beta/promo codes bypass LS verification
-  if(BETA_CODES.map(c=>c.toUpperCase()).includes(key.toUpperCase())){
-    localStorage.setItem('fce_pro',JSON.stringify({ok:true,key,type:'beta',verified:Date.now()}));
-    cModal();actPro();gev('pro_activated',{method:'beta_code'});toast('Pro activated!','ok');return;
-  }
-
   btn.innerHTML='<span class="sp"></span> Verifying...';btn.disabled=true;
   status.textContent='Checking with Lemon Squeezy...';status.style.color='var(--mt)';
 
@@ -1021,13 +1029,16 @@ async function tryAct(){
 async function chkPro(){
   try{
     const d=JSON.parse(localStorage.getItem('fce_pro')||'null');
-    if(!d?.ok) return;
-    // Beta codes: no re-verification needed
-    if(d.type==='beta'){actPro();return;}
-    // LS license: re-verify hourly so short passes (e.g. the 24h Day Pass) expire on time
+    if(!d?.ok||!d.key) return;
+    // Fast path: recently verified → optimistic UI unlock ONLY. This reveals
+    // the Pro controls without a network round-trip on every load, but it is
+    // NOT the authority for downloads — every download re-authorizes
+    // server-side via authorizeExport(), so a tampered cache still can't
+    // produce a clean file. Re-verify hourly so short passes (24h Day Pass)
+    // expire on time.
     const hoursSince=(Date.now()-(d.verified||0))/3600000;
     if(hoursSince<1){actPro();return;}
-    // Re-verify with worker
+    // Stale cache — re-verify with the worker.
     try{
       const data=await callWorker({action:'validate',license_key:d.key,instance_id:d.instance_id||undefined});
       if(data.valid){
@@ -1041,10 +1052,72 @@ async function chkPro(){
         gev('pro_expired');
       }
     } catch(e){
-      // Worker unreachable — fail open, don't lock out valid users
-      actPro();
+      // FAIL CLOSED: worker unreachable and the cached check is stale → do not
+      // unlock the UI. Leave fce_pro in place so a later successful verify can
+      // restore Pro. Exports are gated independently regardless (see below).
     }
   }catch(e){}
+}
+
+// ---- Server-verified export authorization (fail closed) --------------------
+// Clean/unlimited exports must be authorized live by the Worker at export time,
+// not read from isPro/localStorage. The Worker returns a short-lived ECDSA
+// P-256 signed token that the client verifies with the embedded public key,
+// which defeats a local proxy spoofing {valid:true}.
+function b64ToBytes(b64){const bin=atob(b64);const out=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)out[i]=bin.charCodeAt(i);return out;}
+function b64urlToBytes(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return b64ToBytes(s);}
+
+let _exportPubKey=null;
+async function getExportPubKey(){
+  if(_exportPubKey) return _exportPubKey;
+  if(!EXPORT_TOKEN_PUBKEY_SPKI_B64||EXPORT_TOKEN_PUBKEY_SPKI_B64.startsWith('REPLACE_')) return null;
+  try{
+    _exportPubKey=await crypto.subtle.importKey('spki',b64ToBytes(EXPORT_TOKEN_PUBKEY_SPKI_B64),{name:'ECDSA',namedCurve:'P-256'},false,['verify']);
+    return _exportPubKey;
+  }catch(e){return null;}
+}
+
+// Token format: base64url(payloadJSON) + "." + base64url(signature).
+// payload = {device_id, exp(ms)}. Signature is ECDSA P-256 / SHA-256 (IEEE
+// P1363 r||s, as produced by WebCrypto) over the UTF-8 bytes of the payload
+// segment string. Returns true only if the signature is valid, the token is
+// unexpired, and device_id matches this browser.
+async function verifyExportToken(token){
+  try{
+    const key=await getExportPubKey();
+    if(!key||typeof token!=='string'||token.indexOf('.')<0) return false;
+    const [p,s]=token.split('.');
+    const sig=b64urlToBytes(s);
+    const signingInput=new TextEncoder().encode(p);
+    const ok=await crypto.subtle.verify({name:'ECDSA',hash:'SHA-256'},key,sig,signingInput);
+    if(!ok) return false;
+    const payload=JSON.parse(new TextDecoder().decode(b64urlToBytes(p)));
+    if(!payload||typeof payload.exp!=='number'||Date.now()>payload.exp) return false;
+    if(payload.device_id&&payload.device_id!==getDeviceId()) return false;
+    return true;
+  }catch(e){return false;}
+}
+
+// FAIL CLOSED: any failure (no license, network error, invalid license,
+// bad/expired/forged token, unconfigured public key) → {pro:false}.
+async function authorizeExport(){
+  try{
+    const d=JSON.parse(localStorage.getItem('fce_pro')||'null');
+    if(!d?.ok||!d.key) return {pro:false};
+    const data=await callWorker({action:'export_token',license_key:d.key,instance_id:d.instance_id||undefined,device_id:getDeviceId()});
+    if(!data||!data.valid||!data.token) return {pro:false};
+    return {pro:await verifyExportToken(data.token)};
+  }catch(e){return {pro:false};}
+}
+// UI upsell (fast, no network) for users who aren't claiming Pro, then a live
+// FAIL-CLOSED server check for anyone who is. Gate every download with this.
+async function authorizeDownload(feature){
+  if(!requirePro(feature)) return false;
+  const {pro}=await authorizeExport();
+  if(pro) return true;
+  toast('Couldn’t verify your Pro access — please re-activate or renew.','err');
+  gev('pro_verify_failed',{feature});
+  return false;
 }
 function goCheckout(plan){
   const url = plan==='annual' ? LS_ANNUAL_URL : (plan==='day' ? LS_DAYPASS_URL : null);
@@ -1054,7 +1127,12 @@ function goCheckout(plan){
   const p=document.getElementById('pros');
   if(p){p.scrollIntoView({behavior:'smooth',block:'center'});}
 }
-function pdfBtnLabel(){return (isPro?'↓':'🔒')+' Download PDF';}
+function pdfBtnLabel(){
+  // Distinguish the two "can't download yet" reasons so the button is self-explanatory:
+  // not enough songs (just needs input) vs. locked behind Pro.
+  if(getW().length<25) return 'Add 25+ songs to continue';
+  return isPro ? '↓ Download PDF' : '🔒 Unlock PDF Download';
+}
 function applyProLocks(){
   // Every design feature is free to demo — only finished-card downloads are gated
   const dlb=document.getElementById('dlb');
@@ -1362,7 +1440,9 @@ function updW(){
   const el=document.getElementById('wst');
   el.textContent=ok?`${n} squares ✓ ready`:`${n} square${n!==1?'s':''} — need ${25-n} more`;
   el.className='ws '+(ok?'ok':'warn');
-  document.getElementById('dlb').disabled=!ok;
+  const dlb=document.getElementById('dlb');
+  dlb.disabled=!ok;
+  if(!dlb.querySelector('.sp')) dlb.innerHTML=pdfBtnLabel(); // don't clobber the spinner mid-download
   document.getElementById('sgb').disabled=!ok;
 }
 document.getElementById('wl').addEventListener('input',()=>{updW();dPrev();});
@@ -1846,11 +1926,12 @@ function landscapeLayout(PW,PH,brandH){
   return{cutX,M,gap,brandH,cw,ch,stripY};
 }
 
-function genPDF(){
-  if(!requirePro('pdf'))return;
+async function genPDF(){
+  // FAIL CLOSED: downloads require a live-authorized license (not just isPro).
+  if(!(await authorizeDownload('pdf')))return;
+  const words=getW();if(words.length<25){toast('Need at least 25 songs.','err');return;}
   pCount=Math.max(1,Math.min(999,parseInt(document.getElementById('cnp').value)||1));
   document.getElementById('cnp').value=pCount;
-  const words=getW();if(words.length<25){toast('Need at least 25 songs.','err');return;}
   const btn=document.getElementById('dlb');
   btn.innerHTML='<span class="sp"></span> Loading...';btn.disabled=true;
   loadPdfLib().then(()=>{
@@ -1920,7 +2001,7 @@ function genPDF(){
       }
       const safe=(document.getElementById('ct').value||'bingo').replace(/[^a-z0-9]/gi,'-').replace(/-+/g,'-').toLowerCase();
       doc.save(`${safe}-cards.pdf`);
-      gev('pdf_downloaded',{card_count:pCount,layout,theme,is_pro:isPro});
+      gev('pdf_downloaded',{card_count:pCount,layout,theme,is_pro:true});
       toast(`Downloaded ${pCount} card${pCount>1?'s':''}!`,'ok');
     }catch(err){console.error(err);toast('PDF generation failed.','err');}
     finally{btn.innerHTML=pdfBtnLabel();btn.disabled=getW().length<25;}
@@ -1938,7 +2019,11 @@ async function openGal(){
   document.getElementById('cns').value=sCount;
   const words=getW();if(words.length<25){toast('Need at least 25 songs.','err');return;}
   const btn=document.getElementById('sgb');
-  btn.innerHTML='<span class="sp"></span> Generating...';btn.disabled=true;
+  btn.innerHTML='<span class="sp"></span> Checking license...';btn.disabled=true;
+  // Generating the gallery is free (demo-quality previews). Full-resolution
+  // share images require live server authorization — FAIL CLOSED.
+  const {pro}=await authorizeExport();
+  btn.innerHTML='<span class="sp"></span> Generating...';
   setTimeout(async ()=>{
     galCvs=[];galSeeds=[];
     const grid=document.getElementById('ggrid');grid.innerHTML='';
@@ -1952,7 +2037,7 @@ async function openGal(){
       const seed=8000+i;galSeeds.push(seed);
       const cv=renderHR(words,seed,i+1);galCvs.push(cv);
       const cell=document.createElement('div');cell.className='gcell';
-      const img=document.createElement('img');img.className='gci';img.src=isPro?cv.toDataURL('image/png'):demoPreview(cv);img.alt=`Card ${i+1}`;
+      const img=document.createElement('img');img.className='gci';img.src=pro?cv.toDataURL('image/png'):demoPreview(cv);img.alt=`Card ${i+1}`;
       const hdr=document.createElement('div');hdr.className='gch';
       hdr.innerHTML=`<div class="gcn">CARD #${i+1}</div><div class="gca"></div>`;
       const acts=hdr.querySelector('.gca');
@@ -1963,7 +2048,7 @@ async function openGal(){
       cell.appendChild(hdr);cell.appendChild(img);grid.appendChild(cell);
     }
     document.getElementById('gov').classList.add('open');
-    gev('share_cards_generated',{card_count:sCount,theme,is_pro:isPro});
+    gev('share_cards_generated',{card_count:sCount,theme,is_pro:pro});
     btn.innerHTML='📲 Generate Share Cards';btn.disabled=false;
   },50);
 }
@@ -1977,8 +2062,8 @@ function demoPreview(cv){
   return s.toDataURL('image/png');
 }
 
-function dlCardPng(cv,n,title){
-  if(!requirePro('png'))return;
+async function dlCardPng(cv,n,title){
+  if(!(await authorizeDownload('png')))return;
   const a=document.createElement('a');
   const safe=(title||'bingo').replace(/[^a-z0-9]/gi,'-').toLowerCase();
   a.download=`${safe}-card-${String(n).padStart(3,'0')}.png`;
@@ -1995,7 +2080,7 @@ function buildLink(words,seed,n,title){
 }
 
 async function cpLink(words,seed,n,title,btn){
-  if(!requirePro('share_link'))return;
+  if(!(await authorizeDownload('share_link')))return;
   const url=buildLink(words,seed,n,title);
   if(!url){toast('Word list too large for a share link — download PNG instead.','err');return;}
   try{await navigator.clipboard.writeText(url);btn.textContent='✓ Copied';btn.classList.add('cp');setTimeout(()=>{btn.textContent='🔗 Link';btn.classList.remove('cp');},2200);}
@@ -2003,7 +2088,7 @@ async function cpLink(words,seed,n,title,btn){
 }
 
 async function dlZip(){
-  if(!requirePro('zip'))return;
+  if(!(await authorizeDownload('zip')))return;
   if(!galCvs.length){toast('Generate cards first.','err');return;}
   const btn=document.querySelector('.bzip');btn.innerHTML='<span class="sp"></span> Loading...';btn.disabled=true;
   await loadZipLib();
