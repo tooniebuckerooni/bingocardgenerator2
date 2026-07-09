@@ -374,10 +374,10 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 /* BUTTONS */
 .bdl{width:100%;padding:16px;background:var(--gn);color:#000;border:none;border-radius:var(--r);font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1.5px;cursor:pointer;transition:all var(--t);display:flex;align-items:center;justify-content:center;gap:10px}
 .bdl:hover{background:#f7bb44;transform:translateY(-2px);box-shadow:0 6px 24px var(--gng)}
-.bdl:disabled{background:var(--sf3);color:var(--dm);cursor:default;transform:none;box-shadow:none}
+.bdl:disabled{background:var(--sf3);color:#c2d0dc;opacity:1;cursor:default;transform:none;box-shadow:none}
 .bsg{width:100%;padding:16px;background:var(--or);color:#fff;border:none;border-radius:var(--r);font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1.5px;cursor:pointer;transition:all var(--t);display:flex;align-items:center;justify-content:center;gap:10px}
 .bsg:hover{background:#ff8055;transform:translateY(-2px);box-shadow:0 6px 24px var(--ord)}
-.bsg:disabled{background:var(--sf3);color:var(--dm);cursor:default;transform:none;box-shadow:none}
+.bsg:disabled{background:var(--sf3);color:#c2d0dc;opacity:1;cursor:default;transform:none;box-shadow:none}
 
 /* SIDEBAR */
 .pvc{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:22px;margin-bottom:20px;position:sticky;top:74px}
@@ -705,7 +705,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
         </div>
       </div>
       <div class="fn2" id="fnp">Demo mode — every feature is free to try. PDF download unlocks with a pass · <a href="#" onclick="goCheckout();return false">See pricing →</a></div>
-      <button class="bdl" id="dlb" onclick="genPDF()" disabled>🔒 Download PDF</button>
+      <button class="bdl" id="dlb" onclick="genPDF()" disabled>Add 25+ songs to continue</button>
     </div>
     <div id="sp2" style="display:none">
       <div style="background:var(--sf2);border:1px solid var(--bd);border-radius:var(--rs);padding:14px 16px;margin-bottom:16px;font-size:13.5px;color:var(--mt);line-height:1.55">
@@ -1127,7 +1127,12 @@ function goCheckout(plan){
   const p=document.getElementById('pros');
   if(p){p.scrollIntoView({behavior:'smooth',block:'center'});}
 }
-function pdfBtnLabel(){return (isPro?'↓':'🔒')+' Download PDF';}
+function pdfBtnLabel(){
+  // Distinguish the two "can't download yet" reasons so the button is self-explanatory:
+  // not enough songs (just needs input) vs. locked behind Pro.
+  if(getW().length<25) return 'Add 25+ songs to continue';
+  return isPro ? '↓ Download PDF' : '🔒 Unlock PDF Download';
+}
 function applyProLocks(){
   // Every design feature is free to demo — only finished-card downloads are gated
   const dlb=document.getElementById('dlb');
@@ -1435,7 +1440,9 @@ function updW(){
   const el=document.getElementById('wst');
   el.textContent=ok?`${n} squares ✓ ready`:`${n} square${n!==1?'s':''} — need ${25-n} more`;
   el.className='ws '+(ok?'ok':'warn');
-  document.getElementById('dlb').disabled=!ok;
+  const dlb=document.getElementById('dlb');
+  dlb.disabled=!ok;
+  if(!dlb.querySelector('.sp')) dlb.innerHTML=pdfBtnLabel(); // don't clobber the spinner mid-download
   document.getElementById('sgb').disabled=!ok;
 }
 document.getElementById('wl').addEventListener('input',()=>{updW();dPrev();});
