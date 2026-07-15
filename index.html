@@ -59,7 +59,7 @@
       "name": "Free Demo",
       "price": "0",
       "priceCurrency": "USD",
-      "description": "Every design feature free to try — unlimited cards, branding, all themes, live preview. Downloads require a pass."
+      "description": "Every feature free — unlimited cards, branding, all themes, live preview, and watermarked demo downloads. Passes remove the watermark."
     },
     {
       "@type": "Offer",
@@ -113,12 +113,12 @@
     {
       "@type": "Question",
       "name": "Can I print the bingo cards?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Yes. You can create bingo cards that are ready to print at home, in the classroom, or at work. Choose portrait for one card per page or landscape for two cards with a cut line. Downloading the print-ready PDF requires a Day Pass or Annual pass."}
+      "acceptedAnswer": {"@type": "Answer", "text": "Yes. You can create bingo cards that are ready to print at home, in the classroom, or at work. Choose portrait for one card per page or landscape for two cards with a cut line. Free PDF downloads include a demo watermark; a Day Pass or Annual pass removes it."}
     },
     {
       "@type": "Question",
       "name": "Can I make digital bingo cards too?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Yes. You can also share bingo cards online for digital use. Each card gets a unique shareable link that players open on any device. Copying share links and downloading card images requires a Day Pass or Annual pass."}
+      "acceptedAnswer": {"@type": "Answer", "text": "Yes. You can also share bingo cards online for digital use. Each card gets a unique shareable link that players open on any device. Free share links and image downloads include a demo watermark; a Day Pass or Annual pass removes it."}
     },
     {
       "@type": "Question",
@@ -133,7 +133,7 @@
     {
       "@type": "Question",
       "name": "How much does Pro cost?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Every feature is free to demo — designing and previewing cards costs nothing. Downloading your finished cards requires a pass: a Day Pass at $6.99 for 24 hours of downloads, or an Annual plan at $79.99 for a full year. Both unlock PDF, PNG, and ZIP downloads plus shareable card links."}
+      "acceptedAnswer": {"@type": "Answer", "text": "Every feature is free — designing, previewing, and even downloading cards with a demo watermark costs nothing. To remove the watermark, get a Day Pass at $6.99 for 24 hours, or an Annual plan at $79.99 for a full year. Both unlock clean, watermark-free PDF, PNG, and ZIP downloads plus share links."}
     }
   ]
 }
@@ -458,6 +458,11 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 .tsw-eco:hover{border-color:var(--gn);background:var(--gnd)}
 .tsw-eco.sl{border-color:var(--gn);background:var(--gnd)}
 
+/* MY GAMES */
+.mgb{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;padding:10px 14px;cursor:pointer;transition:all var(--t);white-space:nowrap}
+.mgb:hover{border-color:var(--gn);color:var(--gn)}
+.mgs{background:var(--gnd);border-color:rgba(245,166,35,.3);color:var(--gn)}
+
 /* FONT SIZE CONTROL */
 .fsrow{display:flex;align-items:center;gap:10px;margin-top:12px}
 .fslider{flex:1;-webkit-appearance:none;height:4px;border-radius:2px;background:var(--sf3);outline:none;cursor:pointer;accent-color:var(--gn)}
@@ -529,6 +534,19 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
   <div class="sc" data-n="01">
     <div class="stag">Step 01</div>
     <h2>ADD YOUR SQUARES</h2>
+
+    <div style="margin-bottom:20px">
+      <div class="ot">My Games</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <select id="mgsel" style="flex:1;min-width:150px;background:var(--sf2);border:1px solid var(--bd);color:var(--tx);padding:10px 12px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:13.5px">
+          <option value="">— no saved games yet —</option>
+        </select>
+        <button type="button" class="mgb" onclick="mgLoad()">Load</button>
+        <button type="button" class="mgb" onclick="mgDel()" title="Delete selected game">✕</button>
+        <button type="button" class="mgb mgs" onclick="mgSave()">💾 Save current</button>
+      </div>
+      <div style="font-size:11.5px;color:var(--mt);margin-top:6px">Games save in this browser — and your work auto-saves as you edit, so it's here when you come back.</div>
+    </div>
 
     <label class="fl">Game Title</label>
     <input type="text" id="ct" placeholder="e.g. 80s Pop Night · Team Trivia · Office Bingo" maxlength="48" oninput="updTitle()">
@@ -704,7 +722,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
           <div class="ccb" onclick="adjC(1,'p')">+</div>
         </div>
       </div>
-      <div class="fn2" id="fnp">Demo mode — every feature is free to try. PDF download unlocks with a pass · <a href="#" onclick="goCheckout();return false">See pricing →</a></div>
+      <div class="fn2" id="fnp">Free downloads include a demo watermark · <a href="#" onclick="goCheckout();return false">Remove it with a pass →</a></div>
       <button class="bdl" id="dlb" onclick="genPDF()" disabled>Add 25+ songs to continue</button>
     </div>
     <div id="sp2" style="display:none">
@@ -719,7 +737,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
           <div class="ccb" onclick="adjC(1,'s')">+</div>
         </div>
       </div>
-      <div class="fn2" id="fns">Demo mode — generate and preview freely. PNG/ZIP downloads &amp; share links unlock with a pass · <a href="#" onclick="goCheckout();return false">See pricing →</a></div>
+      <div class="fn2" id="fns">Free PNGs, ZIPs &amp; share links include a demo watermark · <a href="#" onclick="goCheckout();return false">Remove it with a pass →</a></div>
       <button class="bsg" id="sgb" onclick="openGal()" disabled>📲 Generate Share Cards</button>
     </div>
   </div>
@@ -748,10 +766,9 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
       </div>
     </div>
     <ul class="prfl">
-      <li><span class="fd"></span><strong>Download print-ready PDFs</strong> — as many cards as you need</li>
-      <li><span class="fd"></span>Download share cards as PNG or bulk ZIP</li>
-      <li><span class="fd"></span>Copy shareable card links for online play</li>
-      <li><span class="fd"></span>Full print quality — branding, all fonts &amp; themes included</li>
+      <li><span class="fd"></span><strong>Watermark-free downloads</strong> — clean, print-ready PDFs, PNGs &amp; bulk ZIPs</li>
+      <li><span class="fd"></span>Clean shareable card links for online play</li>
+      <li><span class="fd"></span>Unlimited cards, branding, all fonts &amp; themes</li>
       <li><span class="fd"></span>Priority support</li>
     </ul>
     <button class="bult" onclick="oUnlock()">Already purchased? Unlock Pro here</button>
@@ -798,7 +815,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
   <div class="content-card-full" style="border-color:rgba(245,166,35,.3);background-image:radial-gradient(ellipse at top right,rgba(245,166,35,.06) 0%,transparent 60%)">
     <span style="display:inline-block;background:var(--gnd);color:var(--gn);border:1px solid rgba(245,166,35,.25);padding:3px 12px;border-radius:20px;font-size:11.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:14px">Pro · Simple Pricing</span>
     <h2>Try Everything Free, <span>Pay When You're Ready</span></h2>
-    <p>Every feature is free to demo — design unlimited cards with custom branding, any font and theme, and preview exactly what you'll get. When you're ready to download your finished cards, grab a <strong>Day Pass for $6.99</strong> (24 hours of downloads — perfect for a single event) or go <strong>Annual for $79.99</strong> and download all year. No accounts to manage, no surprises — just the cards you need, when you need them.</p>
+    <p>Every feature is free — design unlimited cards with custom branding, any font and theme, and even download them with a demo watermark to see exactly what you'll get. When you're ready for clean, watermark-free cards, grab a <strong>Day Pass for $6.99</strong> (24 hours — perfect for a single event) or go <strong>Annual for $79.99</strong> for a full year. No accounts to manage, no surprises — just the cards you need, when you need them.</p>
   </div>
 
   <!-- Sections 4 + 5 -->
@@ -826,11 +843,11 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
     </div>
     <div class="faq-item" onclick="togFaq(this)">
       <button class="faq-q">Can I print the bingo cards? <span class="faq-chev">▼</span></button>
-      <div class="faq-a">Yes. You can create bingo cards that are ready to print at home, in the classroom, or at work. Choose portrait for one card per page or landscape for two cards with a cut line. Downloading the print-ready PDF requires a Day Pass or Annual pass.</div>
+      <div class="faq-a">Yes. You can create bingo cards that are ready to print at home, in the classroom, or at work. Choose portrait for one card per page or landscape for two cards with a cut line. Free PDF downloads include a demo watermark; a Day Pass or Annual pass removes it.</div>
     </div>
     <div class="faq-item" onclick="togFaq(this)">
       <button class="faq-q">Can I make digital bingo cards too? <span class="faq-chev">▼</span></button>
-      <div class="faq-a">Yes. You can also share bingo cards online for digital use. Each card gets a unique shareable link that players open on any device. Copying share links and downloading card images requires a Day Pass or Annual pass.</div>
+      <div class="faq-a">Yes. You can also share bingo cards online for digital use. Each card gets a unique shareable link that players open on any device. Free share links and image downloads include a demo watermark; a Day Pass or Annual pass removes it.</div>
     </div>
     <div class="faq-item" onclick="togFaq(this)">
       <button class="faq-q">Do I need design experience? <span class="faq-chev">▼</span></button>
@@ -842,7 +859,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
     </div>
     <div class="faq-item" onclick="togFaq(this)">
       <button class="faq-q">How much does Pro cost? <span class="faq-chev">▼</span></button>
-      <div class="faq-a">Every feature is free to demo — designing and previewing cards costs nothing. Downloading your finished cards requires a pass: a Day Pass at $6.99 for 24 hours of downloads — perfect for a single event — or an Annual plan at $79.99 for a full year. Both unlock PDF, PNG, and ZIP downloads plus shareable card links.</div>
+      <div class="faq-a">Every feature is free — designing, previewing, and even downloading cards with a demo watermark costs nothing. To remove the watermark, get a Day Pass at $6.99 for 24 hours — perfect for a single event — or an Annual plan at $79.99 for a full year. Both unlock clean, watermark-free PDF, PNG, and ZIP downloads plus share links.</div>
     </div>
   </div>
 
@@ -1109,17 +1126,21 @@ async function authorizeExport(){
     return {pro:await verifyExportToken(data.token)};
   }catch(e){return {pro:false};}
 }
-// UI upsell (fast, no network) for users who aren't claiming Pro, then a live
-// FAIL-CLOSED server check for anyone who is. Gate every download with this.
-async function authorizeDownload(feature){
-  if(!requirePro(feature)) return false;
+// Decides whether an export is clean or watermarked. Users with no stored
+// license get a watermarked demo instantly (no network). Anyone claiming Pro
+// gets a live FAIL-CLOSED server check — if it can't be confirmed, the export
+// falls back to a watermarked demo instead of producing a clean file.
+async function exportAuth(feature){
+  let d=null;try{d=JSON.parse(localStorage.getItem('fce_pro')||'null');}catch(e){}
+  if(!d?.ok||!d.key){gev('watermark_download',{feature});return false;}
   const {pro}=await authorizeExport();
   if(pro) return true;
-  toast('Couldn’t verify your Pro access — please re-activate or renew.','err');
+  toast('Couldn’t verify your Pro access — downloading a watermarked demo. Re-activate or renew for clean cards.','err');
   gev('pro_verify_failed',{feature});
   return false;
 }
 function goCheckout(plan){
+  autosaveNow(); // work survives the trip to checkout and back
   const url = plan==='annual' ? LS_ANNUAL_URL : (plan==='day' ? LS_DAYPASS_URL : null);
   gev('upgrade_click',{method:'lemonsqueezy',plan:plan||'choose'});
   if(url){window.location.href=url;return;}
@@ -1128,25 +1149,46 @@ function goCheckout(plan){
   if(p){p.scrollIntoView({behavior:'smooth',block:'center'});}
 }
 function pdfBtnLabel(){
-  // Distinguish the two "can't download yet" reasons so the button is self-explanatory:
-  // not enough songs (just needs input) vs. locked behind Pro.
-  if(getW().length<25) return 'Add 25+ songs to continue';
-  return isPro ? '↓ Download PDF' : '🔒 Unlock PDF Download';
+  // Free users can download too (watermarked) — the only blocked state is
+  // not having enough songs yet.
+  return getW().length<25 ? 'Add 25+ songs to continue' : '↓ Download PDF';
 }
 function applyProLocks(){
-  // Every design feature is free to demo — only finished-card downloads are gated
-  const dlb=document.getElementById('dlb');
-  if(dlb&&!dlb.querySelector('.sp')) dlb.innerHTML=pdfBtnLabel();
+  // Every design feature is free — free downloads carry a demo watermark
   document.getElementById('fnp').style.display=isPro?'none':'';
   document.getElementById('fns').style.display=isPro?'none':'';
 }
-function requirePro(feature){
-  if(isPro) return true;
-  gev('paywall_hit',{feature});
-  cGal();
-  toast('Downloading finished cards requires a Day Pass or Annual — pick a plan to unlock.','err');
-  goCheckout();
-  return false;
+
+// ============================================================
+// DEMO WATERMARK — free downloads keep working, marked as demos;
+// a pass removes the watermark
+// ============================================================
+const WM_TEXT='FREE DEMO · BINGOCARDGENERATOR.ONLINE';
+function themeIsDark(){const b=THEMES[theme].bg;return(b[0]+b[1]+b[2])/3<128;}
+// Returns a watermarked copy of a card canvas (original untouched)
+function wmCanvas(cv){
+  const c=document.createElement('canvas');c.width=cv.width;c.height=cv.height;
+  const x=c.getContext('2d');x.drawImage(cv,0,0);
+  x.save();x.globalAlpha=.14;x.fillStyle=themeIsDark()?'#fff':'#000';
+  x.translate(c.width/2,c.height/2);x.rotate(-Math.PI/6);
+  const fs=Math.max(12,Math.round(c.width/16));
+  x.font=`bold ${fs}px sans-serif`;x.textAlign='center';x.textBaseline='middle';
+  for(let ry=-2;ry<=2;ry++)x.fillText(WM_TEXT,0,ry*fs*3.4);
+  x.restore();
+  return c;
+}
+// Stamps the demo watermark across the current PDF page
+function wmPdfPage(doc,PW,PH){
+  const dark=themeIsDark();
+  let hasOp=false;
+  if(doc.saveGraphicsState&&doc.GState){
+    try{doc.saveGraphicsState();doc.setGState(new doc.GState({opacity:.13}));hasOp=true;}catch(e){}
+  }
+  doc.setFont('helvetica','bold');doc.setFontSize(26);
+  // without opacity support fall back to a very light color
+  doc.setTextColor(...(hasOp?(dark?[255,255,255]:[60,60,60]):(dark?[85,85,85]:[214,214,214])));
+  for(let i=0;i<3;i++)doc.text(WM_TEXT,PW/2,PH*(.25+.25*i),{align:'center',angle:20});
+  if(hasOp)doc.restoreGraphicsState();
 }
 function actPro(){
   isPro=true;
@@ -1648,13 +1690,22 @@ function drawCardCanvas(ctx,W,H,words,seed,opts={}){
       }else{
         // run free label through fitTxt so long text scales and wraps inside the cell
         const lbl=freeLabel||'FREE';
-        const{sz,lines}=fitTxt(ctx,lbl,cW-10,cH-8,scaledFontSize);
+        // when the custom label doesn't already say "free", add a small fixed
+        // FREE SPACE caption at the bottom of the cell so it reads as one
+        const capSz=/free/i.test(lbl)?0:Math.max(5,Math.round(cH*.11));
+        const capZone=capSz?capSz*1.7:0;
+        const{sz,lines}=fitTxt(ctx,lbl,cW-10,cH-8-capZone,scaledFontSize);
         ctx.fillStyle=T.eco?'#000':'#fff';
         ctx.font=cvf(sz,true);
         ctx.textAlign='center';ctx.textBaseline='middle';
-        const lh=sz*1.35,sy=y+cH/2-(lines.length*lh)/2+lh/2;
+        const lh=sz*1.35,sy=y+(cH-capZone)/2-(lines.length*lh)/2+lh/2;
         ctx.save();ctx.beginPath();ctx.rect(x,y,cW,cH);ctx.clip();
         lines.forEach((ln,li)=>ctx.fillText(ln,x+cW/2,sy+li*lh));
+        if(capSz){
+          ctx.globalAlpha=.8;ctx.font=cvf(capSz,true);
+          ctx.fillText('FREE SPACE',x+cW/2,y+cH-capSz);
+          ctx.globalAlpha=1;
+        }
         ctx.restore();
       }
     }
@@ -1725,6 +1776,7 @@ function dPrev(){
     ctx.beginPath();ctx.moveTo(cutX*S,8*S);ctx.lineTo(cutX*S,PH*S-8*S);ctx.stroke();
     ctx.restore();
   }
+  scheduleAutosave();
 }
 
 // Hi-res render for share / zip
@@ -1855,16 +1907,23 @@ function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
       } else {
         // wrap the free label so long text never overflows the cell
         const lbl=fl||'FREE';
+        // small fixed FREE SPACE caption when the custom label doesn't say "free"
+        const capSz=/free/i.test(lbl)?0:Math.max(4,Math.round(rowH*.11));
+        const capZone=capSz?capSz*1.7:0;
         const freeSz=Math.min(fontSize,Math.round(rowH*.14));
         const fLines=pdfWrap(doc,lbl,colW-8,freeSz);
         const fLh=freeSz*1.35;
-        const maxFLines=Math.floor((rowH-6)/fLh);
+        const maxFLines=Math.max(1,Math.floor((rowH-6-capZone)/fLh));
         const visFLines=fLines.slice(0,maxFLines);
         const fTotalH=visFLines.length*fLh;
-        const fSy=y+rowH/2-fTotalH/2+freeSz*.75;
+        const fSy=y+(rowH-capZone)/2-fTotalH/2+freeSz*.75;
         doc.setFont(ff,'bold');doc.setFontSize(freeSz);
         doc.setTextColor(...(T.eco?[0,0,0]:[255,255,255]));
         visFLines.forEach((ln,li)=>doc.text(ln,x+colW/2,fSy+li*fLh,{align:'center'}));
+        if(capSz){
+          doc.setFontSize(capSz);
+          doc.text('FREE SPACE',x+colW/2,y+rowH-capSz*.7,{align:'center'});
+        }
       }
     }
   }
@@ -1927,13 +1986,15 @@ function landscapeLayout(PW,PH,brandH){
 }
 
 async function genPDF(){
-  // FAIL CLOSED: downloads require a live-authorized license (not just isPro).
-  if(!(await authorizeDownload('pdf')))return;
   const words=getW();if(words.length<25){toast('Need at least 25 songs.','err');return;}
   pCount=Math.max(1,Math.min(999,parseInt(document.getElementById('cnp').value)||1));
   document.getElementById('cnp').value=pCount;
   const btn=document.getElementById('dlb');
-  btn.innerHTML='<span class="sp"></span> Loading...';btn.disabled=true;
+  btn.innerHTML='<span class="sp"></span> Checking license...';btn.disabled=true;
+  // Clean export needs live server authorization (FAIL CLOSED). Without it
+  // the download still works — with a demo watermark.
+  const clean=await exportAuth('pdf');
+  btn.innerHTML='<span class="sp"></span> Loading...';
   loadPdfLib().then(()=>{
   btn.innerHTML='<span class="sp"></span> Generating...';
   setTimeout(()=>{
@@ -1999,10 +2060,14 @@ async function genPDF(){
 
         }
       }
+      if(!clean){
+        const np=doc.internal.getNumberOfPages();
+        for(let p=1;p<=np;p++){doc.setPage(p);wmPdfPage(doc,PW,PH);}
+      }
       const safe=(document.getElementById('ct').value||'bingo').replace(/[^a-z0-9]/gi,'-').replace(/-+/g,'-').toLowerCase();
       doc.save(`${safe}-cards.pdf`);
-      gev('pdf_downloaded',{card_count:pCount,layout,theme,is_pro:true});
-      toast(`Downloaded ${pCount} card${pCount>1?'s':''}!`,'ok');
+      gev('pdf_downloaded',{card_count:pCount,layout,theme,is_pro:clean});
+      toast(clean?`Downloaded ${pCount} card${pCount>1?'s':''}!`:`Downloaded ${pCount} demo card${pCount>1?'s':''} — a pass removes the watermark.`,'ok');
     }catch(err){console.error(err);toast('PDF generation failed.','err');}
     finally{btn.innerHTML=pdfBtnLabel();btn.disabled=getW().length<25;}
   },60);
@@ -2020,8 +2085,9 @@ async function openGal(){
   const words=getW();if(words.length<25){toast('Need at least 25 songs.','err');return;}
   const btn=document.getElementById('sgb');
   btn.innerHTML='<span class="sp"></span> Checking license...';btn.disabled=true;
-  // Generating the gallery is free (demo-quality previews). Full-resolution
-  // share images require live server authorization — FAIL CLOSED.
+  // Generating the gallery is free — unauthorized users see watermarked
+  // previews. Clean full-resolution images require live server
+  // authorization — FAIL CLOSED.
   const {pro}=await authorizeExport();
   btn.innerHTML='<span class="sp"></span> Generating...';
   setTimeout(async ()=>{
@@ -2037,7 +2103,7 @@ async function openGal(){
       const seed=8000+i;galSeeds.push(seed);
       const cv=renderHR(words,seed,i+1);galCvs.push(cv);
       const cell=document.createElement('div');cell.className='gcell';
-      const img=document.createElement('img');img.className='gci';img.src=pro?cv.toDataURL('image/png'):demoPreview(cv);img.alt=`Card ${i+1}`;
+      const img=document.createElement('img');img.className='gci';img.src=(pro?cv:wmCanvas(cv)).toDataURL('image/png');img.alt=`Card ${i+1}`;
       const hdr=document.createElement('div');hdr.className='gch';
       hdr.innerHTML=`<div class="gcn">CARD #${i+1}</div><div class="gca"></div>`;
       const acts=hdr.querySelector('.gca');
@@ -2054,53 +2120,45 @@ async function openGal(){
 }
 function cGal(){document.getElementById('gov').classList.remove('open');}
 
-// Screen-quality copy of a card canvas for demo-mode gallery previews
-function demoPreview(cv){
-  const s=document.createElement('canvas');
-  s.width=420;s.height=Math.round(cv.height*420/cv.width);
-  s.getContext('2d').drawImage(cv,0,0,s.width,s.height);
-  return s.toDataURL('image/png');
-}
-
 async function dlCardPng(cv,n,title){
-  if(!(await authorizeDownload('png')))return;
+  const clean=await exportAuth('png');
   const a=document.createElement('a');
   const safe=(title||'bingo').replace(/[^a-z0-9]/gi,'-').toLowerCase();
   a.download=`${safe}-card-${String(n).padStart(3,'0')}.png`;
-  a.href=cv.toDataURL('image/png');a.click();
+  a.href=(clean?cv:wmCanvas(cv)).toDataURL('image/png');a.click();
 }
 
-function buildLink(words,seed,n,title){
+function buildLink(words,seed,n,title,clean){
   try{
     const w=words.length>300?words.slice(0,300):words; // cap for URL safety
-    const st={t:title,w,fn:font,th:theme,fo:freeOn,fp:freePos,ft:document.getElementById("fst").value||"FREE",s:seed,n};
+    const st={t:title,w,fn:font,th:theme,fo:freeOn,fp:freePos,ft:document.getElementById("fst").value||"FREE",s:seed,n,wm:clean?0:1};
     const url=location.origin+location.pathname+"?card="+btoa(encodeURIComponent(JSON.stringify(st)));
     return url.length>6000?null:url;
   }catch(e){return null;}
 }
 
 async function cpLink(words,seed,n,title,btn){
-  if(!(await authorizeDownload('share_link')))return;
-  const url=buildLink(words,seed,n,title);
+  const clean=await exportAuth('share_link');
+  const url=buildLink(words,seed,n,title,clean);
   if(!url){toast('Word list too large for a share link — download PNG instead.','err');return;}
   try{await navigator.clipboard.writeText(url);btn.textContent='✓ Copied';btn.classList.add('cp');setTimeout(()=>{btn.textContent='🔗 Link';btn.classList.remove('cp');},2200);}
   catch(e){toast('Clipboard failed — try right-clicking.','err');}
 }
 
 async function dlZip(){
-  if(!(await authorizeDownload('zip')))return;
   if(!galCvs.length){toast('Generate cards first.','err');return;}
   const btn=document.querySelector('.bzip');btn.innerHTML='<span class="sp"></span> Loading...';btn.disabled=true;
+  const clean=await exportAuth('zip');
   await loadZipLib();
   const title=document.getElementById('ct').value||'bingo';
   const safe=title.replace(/[^a-z0-9]/gi,'-').toLowerCase();
   try{
     const zip=new JSZip(),folder=zip.folder(safe+'-cards');
-    galCvs.forEach((c,i)=>folder.file(`card-${String(i+1).padStart(3,'0')}.png`,c.toDataURL('image/png').split(',')[1],{base64:true}));
+    galCvs.forEach((c,i)=>folder.file(`card-${String(i+1).padStart(3,'0')}.png`,(clean?c:wmCanvas(c)).toDataURL('image/png').split(',')[1],{base64:true}));
     const blob=await zip.generateAsync({type:'blob'});
     const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`${safe}-cards.zip`;a.click();
-    gev('zip_downloaded',{card_count:galCvs.length});
-    toast('ZIP downloaded!','ok');
+    gev('zip_downloaded',{card_count:galCvs.length,is_pro:clean});
+    toast(clean?'ZIP downloaded!':'Demo ZIP downloaded — a pass removes the watermark.','ok');
   }catch(e){toast('ZIP failed.','err');}
   finally{btn.innerHTML='↓ Download All (ZIP)';btn.disabled=false;}
 }
@@ -2124,6 +2182,7 @@ function showCard(enc){
     document.getElementById('cvcn').textContent=`Card #${st.n}`;
     const cv=document.getElementById('cvc'),ctx=cv.getContext('2d');
     drawCardCanvas(ctx,cv.width,cv.height,st.w||[],st.s||42,{title:st.t,freeLabel:st.ft||'FREE'});
+    if(st.wm)ctx.drawImage(wmCanvas(cv),0,0);
   }catch(e){toast('Invalid card link.','err');}
 }
 function dlShared(){
@@ -2143,6 +2202,90 @@ function toast(msg,type){
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 // ============================================================
+// SAVE / RESTORE — autosave + named "My Games" (localStorage)
+// ============================================================
+const AUTOSAVE_KEY='bcg_autosave',GAMES_KEY='bcg_games';
+function collectState(){
+  return{
+    v:1,t:document.getElementById('ct').value,w:document.getElementById('wl').value,
+    fn:font,fz:fontSize,th:theme,fo:freeOn,fp:freePos,
+    ft:document.getElementById('fst').value,br:bingoRow,
+    md:mode,ly:layout,pc:pCount,sc:sCount,
+    bo:brandingOn,bt:document.getElementById('brand-text').value,
+    lu:(logoUrl&&logoUrl.length<400000)?logoUrl:null,ls:logoScale
+  };
+}
+function selPill(sel,attr,val){document.querySelectorAll(sel).forEach(e=>e.classList.toggle('sl',e.dataset[attr]===val));}
+function applyState(st){
+  if(!st)return;
+  document.getElementById('ct').value=st.t||'';
+  document.getElementById('wl').value=st.w||'';
+  font=st.fn||'oswald';selPill('.fo','f',font);
+  theme=st.th||'eco';document.querySelectorAll('.tsw,.tsw-eco').forEach(e=>e.classList.toggle('sl',e.dataset.t===theme));
+  fontSize=st.fz||11;document.getElementById('fsz').value=fontSize;
+  freeOn=st.fo!==false;document.getElementById('fstg').classList.toggle('on',freeOn);document.getElementById('fso').style.display=freeOn?'':'none';
+  freePos=st.fp||'center';selPill('.pp','p',freePos);
+  document.getElementById('fst').value=st.ft||'FREE';
+  bingoRow=st.br!==false;document.getElementById('brtg').classList.toggle('on',bingoRow);
+  layout=st.ly||'portrait';selPill('.lcrd','layout',layout);
+  pCount=st.pc||5;document.getElementById('cnp').value=pCount;
+  sCount=st.sc||10;document.getElementById('cns').value=sCount;
+  brandingOn=st.bo!==false;document.getElementById('brand-tg').classList.toggle('on',brandingOn);document.getElementById('brand-opts').style.display=brandingOn?'':'none';
+  document.getElementById('brand-text').value=st.bt||'';
+  logoScale=st.ls||100;document.getElementById('lsz').value=logoScale;document.getElementById('lszv').textContent=logoScale+'%';
+  if(st.lu){
+    logoUrl=st.lu;const img=new Image();
+    img.onload=()=>{logoImg=img;document.getElementById('lth').src=logoUrl;document.getElementById('lfn').textContent='Saved logo';document.getElementById('lpr').classList.add('show');document.getElementById('lpls').classList.add('show');document.getElementById('ldt').textContent='Click to replace logo';dPrev();};
+    img.src=st.lu;
+  }else{
+    logoUrl=null;logoImg=null;
+    document.getElementById('lpr').classList.remove('show');document.getElementById('lpls').classList.remove('show');
+    document.getElementById('ldt').textContent='Click to upload your logo';
+  }
+  mode=st.md||'print';
+  const tab=document.querySelector(`.mtab[data-m="${mode}"]`);if(tab)sMode(tab);
+  updTitle();updW();pFSize(fontSize);dPrev();
+}
+let _asT=null;
+function scheduleAutosave(){clearTimeout(_asT);_asT=setTimeout(autosaveNow,800);}
+function autosaveNow(){try{localStorage.setItem(AUTOSAVE_KEY,JSON.stringify(collectState()));}catch(e){}}
+window.addEventListener('beforeunload',autosaveNow);
+
+function mgAll(){try{return JSON.parse(localStorage.getItem(GAMES_KEY)||'[]');}catch(e){return[];}}
+function mgRefresh(){
+  const games=mgAll(),sel=document.getElementById('mgsel');
+  sel.innerHTML=games.length
+    ?games.map((g,i)=>`<option value="${i}">${esc(g.name)} · ${new Date(g.ts).toLocaleDateString()}</option>`).join('')
+    :'<option value="">— no saved games yet —</option>';
+}
+function mgSave(){
+  const games=mgAll();
+  const name=(document.getElementById('ct').value||'Untitled game').trim();
+  const entry={name,ts:Date.now(),st:collectState()};
+  const i=games.findIndex(g=>g.name===name);
+  if(i>=0)games[i]=entry;else games.unshift(entry);
+  while(games.length>20)games.pop();
+  try{
+    localStorage.setItem(GAMES_KEY,JSON.stringify(games));
+    mgRefresh();gev('game_saved');
+    toast(`Saved "${name}" — it'll be here when you come back.`,'ok');
+  }catch(e){toast('Could not save — browser storage is full. Try removing the logo or deleting old games.','err');}
+}
+function mgLoad(){
+  const games=mgAll(),i=parseInt(document.getElementById('mgsel').value);
+  if(isNaN(i)||!games[i]){toast('No saved game selected.','err');return;}
+  applyState(games[i].st);gev('game_loaded');
+  toast(`Loaded "${games[i].name}".`,'ok');
+}
+function mgDel(){
+  const games=mgAll(),i=parseInt(document.getElementById('mgsel').value);
+  if(isNaN(i)||!games[i])return;
+  const name=games[i].name;games.splice(i,1);
+  try{localStorage.setItem(GAMES_KEY,JSON.stringify(games));}catch(e){}
+  mgRefresh();toast(`Deleted "${name}".`,'ok');
+}
+
+// ============================================================
 // INIT
 // ============================================================
 // Init title counter in case browser autofills the field
@@ -2154,6 +2297,14 @@ document.fonts.ready.then(()=>{applyProLocks();pFSize(fontSize);dPrev();});
 const qp=new URLSearchParams(location.search);
 if(qp.has('code'))hCb(qp.get('code'));
 if(qp.has('card'))showCard(qp.get('card'));
+// Saved games + autosave restore (skip when viewing a shared card)
+mgRefresh();
+if(!qp.has('card')){
+  try{
+    const as=JSON.parse(localStorage.getItem(AUTOSAVE_KEY)||'null');
+    if(as&&(as.w||as.t)){applyState(as);toast('Welcome back — your work was restored.','ok');}
+  }catch(e){}
+}
 if(qp.has("activated")){window.history.replaceState({},document.title,location.pathname);setTimeout(()=>{oUnlock();const s=document.getElementById("unlock-status");if(s){s.textContent="✓ Payment confirmed! Check your email for your license key, then paste it below.";s.style.color="var(--gn)";}},400);}
 // Clear any cached token that was issued with old scopes
 if(!localStorage.getItem(SP_SCOPE_KEY)){
