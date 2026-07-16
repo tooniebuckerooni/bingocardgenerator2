@@ -66,17 +66,30 @@
       "name": "Pro Day Pass",
       "price": "6.99",
       "priceCurrency": "USD",
-      "description": "24 hours of full Pro access — unlimited cards, custom branding, all themes"
+      "description": "24 hours of watermark-free Pro downloads — one-time payment"
+    },
+    {
+      "@type": "Offer",
+      "name": "Pro Monthly",
+      "price": "24.00",
+      "priceCurrency": "USD",
+      "description": "Watermark-free Pro downloads, billed monthly — cancel anytime",
+      "priceSpecification": {
+        "@type": "RecurringChargeSpecification",
+        "price": "24.00",
+        "priceCurrency": "USD",
+        "billingDuration": "P1M"
+      }
     },
     {
       "@type": "Offer",
       "name": "Pro Annual",
-      "price": "79.99",
+      "price": "116.00",
       "priceCurrency": "USD",
-      "description": "One year of full Pro access — unlimited cards, custom branding, all themes",
+      "description": "A full year of watermark-free Pro downloads — save 60% vs monthly",
       "priceSpecification": {
         "@type": "RecurringChargeSpecification",
-        "price": "79.99",
+        "price": "116.00",
         "priceCurrency": "USD",
         "billingDuration": "P1Y"
       }
@@ -133,7 +146,7 @@
     {
       "@type": "Question",
       "name": "How much does Pro cost?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Every feature is free — designing, previewing, and even downloading cards with a demo watermark costs nothing. To remove the watermark, get a Day Pass at $6.99 for 24 hours, or an Annual plan at $79.99 for a full year. Both unlock clean, watermark-free PDF, PNG, and ZIP downloads plus share links."}
+      "acceptedAnswer": {"@type": "Answer", "text": "Every feature is free — designing, previewing, and even downloading cards with a demo watermark costs nothing. To remove the watermark, choose a pass: a one-time Day Pass at $6.99 for 24 hours, Monthly at $24/month, or Annual at $116/year (about $10/month). Every pass unlocks clean, watermark-free PDF, PNG, and ZIP downloads plus share links."}
     }
   ]
 }
@@ -212,6 +225,8 @@ nav{max-width:1140px;margin:0 auto;padding:0 24px;height:58px;display:flex;align
 #pb{display:none;background:var(--gnd);color:var(--gn);border:1px solid rgba(245,166,35,.28);padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.5px}
 #pb.show{display:block}
 .bun{background:var(--or);color:#fff;border:none;padding:7px 16px;border-radius:20px;font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:600;cursor:pointer;text-decoration:none;transition:background var(--t);white-space:nowrap}
+.bun2{background:none;color:var(--mt);border:1px solid var(--bd);padding:6px 14px;border-radius:20px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all var(--t);white-space:nowrap}
+.bun2:hover{border-color:var(--gn);color:var(--gn)}
 .bun:hover{background:#ff8055}
 
 /* HERO */
@@ -219,6 +234,9 @@ nav{max-width:1140px;margin:0 auto;padding:0 24px;height:58px;display:flex;align
 .ey{font-size:11.5px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--gn);margin-bottom:14px}
 .hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,9vw,88px);letter-spacing:2px;line-height:.92;margin-bottom:18px}
 .hero h1 .g{color:var(--gn)}
+.hero-avatars{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 6px}
+.hav{background:var(--sf2);border:1px solid var(--bd);border-radius:20px;padding:8px 16px;font-size:13.5px;color:var(--mt)}
+.hav strong{color:var(--tx)}
 .hero-cta{display:inline-flex;align-items:center;background:var(--gn);color:#0F1B2D;font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;padding:13px 28px;border-radius:30px;text-decoration:none;margin-top:10px;transition:all var(--t)}
 .hero-cta:hover{background:#f7bb44;transform:translateY(-2px);box-shadow:0 6px 20px var(--gng)}
 
@@ -392,6 +410,22 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 .prp{font-size:34px;font-weight:700;color:var(--or)}
 .prpe{font-size:14px;color:var(--mt)}
 .pric{font-size:12.5px;color:var(--mt);margin-bottom:18px}
+/* Sidebar Pro teaser (sits above the sticky preview so it never gets covered) */
+.protsr{background:var(--sf);border:1px solid rgba(245,166,35,.3);border-radius:var(--r);padding:14px 16px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.protsr-t{font-size:14px;color:var(--tx)}
+.protsr-t strong{color:var(--gn)}
+.protsr-s{font-size:12px;color:var(--mt);margin-top:2px}
+.protsr-s a{color:var(--gn);text-decoration:none;font-weight:600}
+.protsr-key{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;padding:9px 13px;cursor:pointer;transition:all var(--t);white-space:nowrap}
+.protsr-key:hover{border-color:var(--gn);color:var(--gn)}
+
+/* Full-width pricing section */
+.pricing-wrap{max-width:1140px;margin:0 auto;padding:0 24px 56px}
+.procard-wide{background:var(--sf);border:1px solid rgba(245,166,35,.25);border-radius:var(--r);padding:34px 32px;background-image:radial-gradient(ellipse at top right,rgba(245,166,35,.07) 0%,transparent 60%)}
+.pw-h3{font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:1.5px;line-height:1.05;margin-bottom:10px}
+.pw-sub{font-size:14.5px;color:var(--mt);line-height:1.6;max-width:640px;margin-bottom:22px}
+.pw-sub strong{color:var(--tx)}
+.prpick3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:20px}
 .prpick{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
 .prplan{background:var(--sf2);border:1px solid var(--bd);border-radius:var(--rs);padding:13px 14px}
 .prplan.best{border-color:rgba(224,92,42,.55)}
@@ -515,6 +549,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
       <a href="/refund.html" class="na">Refunds</a>
       <a href="/blog/" class="na">Blog</a>
       <span id="pb">⚡ PRO</span>
+      <button class="bun2" id="nkey" onclick="oUnlock()">🔑 Activate</button>
       <button class="bun" id="nub" onclick="goCheckout()">Upgrade to Pro</button>
     </div>
   </nav>
@@ -522,9 +557,13 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 
 <div class="hero">
   <div class="ey">BingoCardGenerator.Online</div>
-  <h1>Create Custom Bingo<br>Cards in Minutes</h1>
-  <p class="hs">Build bingo cards for any use case with fast, flexible customization — no account needed. Make printable or digital bingo cards for classrooms, parties, events, training sessions, and more.</p>
-  <a href="#tool" class="hero-cta">Start Creating ↓</a>
+  <h1>Bingo Night Shouldn't<br>Take All Day to Prep</h1>
+  <p class="hs">Wrestling spreadsheets, clip-art templates, and cards that repeat the same squares? Paste your song list or vocab words, pick a theme, and walk out with professional, print-ready bingo cards in minutes — no design skills, no account.</p>
+  <div class="hero-avatars">
+    <span class="hav">🎤 <strong>Event hosts</strong> — music bingo &amp; trivia nights that fill the bar</span>
+    <span class="hav">🍎 <strong>Teachers</strong> — review games your class actually asks to play</span>
+  </div>
+  <a href="#tool" class="hero-cta">Start Creating Free ↓</a>
 </div>
 
 <div class="pb" id="tool">
@@ -746,35 +785,46 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 
 <!-- SIDEBAR -->
 <div class="sb">
+  <div class="protsr" id="pro-teaser">
+    <div>
+      <div class="protsr-t">⚡ Go Pro — from <strong>$6.99</strong></div>
+      <div class="protsr-s">Watermark-free downloads · <a href="#pros" onclick="goCheckout();return false">See plans ↓</a></div>
+    </div>
+    <button class="protsr-key" onclick="oUnlock()">🔑 Enter license key</button>
+  </div>
   <div class="pvc">
     <div class="pvh">LIVE PREVIEW</div>
     <canvas id="cp" width="316" height="360"></canvas>
   </div>
-  <div class="procard" id="pros">
+</div>
+</div>
+</div>
+
+<!-- ============ PRICING ============ -->
+<div class="pricing-wrap" id="pricing">
+  <div class="procard-wide" id="pros">
     <div class="proe">⚡ Go Pro</div>
-    <h3>BINGO CARD<br>GENERATOR PRO</h3>
-    <div class="prpick">
+    <h3 class="pw-h3">CHOOSE YOUR PASS</h3>
+    <p class="pw-sub">Every plan unlocks the same thing: <strong>watermark-free, print-ready downloads</strong> — PDFs, PNGs, bulk ZIPs, and clean share links. Unlimited cards, branding, all fonts &amp; themes, priority support.</p>
+    <div class="prpick3">
       <div class="prplan">
         <div class="prplan-h"><span class="prplan-n">Day Pass</span><span class="prplan-p">$6.99</span></div>
-        <div class="prplan-s">24 hours of full Pro access — perfect for a single event</div>
+        <div class="prplan-s">24 hours of full Pro access. One-time payment — perfect for a single event or class.</div>
         <a href="javascript:void(0)" onclick="goCheckout('day')" class="bsub">Get Day Pass</a>
       </div>
+      <div class="prplan">
+        <div class="prplan-h"><span class="prplan-n">Monthly</span><span class="prplan-p">$24<small>/mo</small></span></div>
+        <div class="prplan-s">Full Pro access, billed monthly. Cancel anytime — great for seasonal hosting.</div>
+        <a href="javascript:void(0)" onclick="goCheckout('monthly')" class="bsub">Get Monthly</a>
+      </div>
       <div class="prplan best">
-        <div class="prplan-h"><span class="prplan-n">Annual <span class="prplan-tag">Best value</span></span><span class="prplan-p">$79.99<small>/yr</small></span></div>
-        <div class="prplan-s">A full year of unlimited Pro access — for year-round hosts</div>
+        <div class="prplan-h"><span class="prplan-n">Annual <span class="prplan-tag">Best value</span></span><span class="prplan-p">$116<small>/yr</small></span></div>
+        <div class="prplan-s">A full year for less than $10/month — save 60% vs monthly. For year-round hosts.</div>
         <a href="javascript:void(0)" onclick="goCheckout('annual')" class="bsub">Get Annual</a>
       </div>
     </div>
-    <ul class="prfl">
-      <li><span class="fd"></span><strong>Watermark-free downloads</strong> — clean, print-ready PDFs, PNGs &amp; bulk ZIPs</li>
-      <li><span class="fd"></span>Clean shareable card links for online play</li>
-      <li><span class="fd"></span>Unlimited cards, branding, all fonts &amp; themes</li>
-      <li><span class="fd"></span>Priority support</li>
-    </ul>
-    <button class="bult" onclick="oUnlock()">Already purchased? Unlock Pro here</button>
+    <button class="bult" onclick="oUnlock()">🔑 Already purchased? Enter your license key here</button>
   </div>
-</div>
-</div>
 </div>
 
 <!-- ============ SEO CONTENT ============ -->
@@ -815,7 +865,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
   <div class="content-card-full" style="border-color:rgba(245,166,35,.3);background-image:radial-gradient(ellipse at top right,rgba(245,166,35,.06) 0%,transparent 60%)">
     <span style="display:inline-block;background:var(--gnd);color:var(--gn);border:1px solid rgba(245,166,35,.25);padding:3px 12px;border-radius:20px;font-size:11.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:14px">Pro · Simple Pricing</span>
     <h2>Try Everything Free, <span>Pay When You're Ready</span></h2>
-    <p>Every feature is free — design unlimited cards with custom branding, any font and theme, and even download them with a demo watermark to see exactly what you'll get. When you're ready for clean, watermark-free cards, grab a <strong>Day Pass for $6.99</strong> (24 hours — perfect for a single event) or go <strong>Annual for $79.99</strong> for a full year. No accounts to manage, no surprises — just the cards you need, when you need them.</p>
+    <p>Every feature is free — design unlimited cards with custom branding, any font and theme, and even download them with a demo watermark to see exactly what you'll get. When you're ready for clean, watermark-free cards, grab a one-time <strong>Day Pass for $6.99</strong> (24 hours — perfect for a single event), go <strong>Monthly for $24</strong>, or save 60% with <strong>Annual at $116</strong> — under $10 a month for year-round hosts. No accounts to manage, no surprises — just the cards you need, when you need them.</p>
   </div>
 
   <!-- Sections 4 + 5 -->
@@ -859,7 +909,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
     </div>
     <div class="faq-item" onclick="togFaq(this)">
       <button class="faq-q">How much does Pro cost? <span class="faq-chev">▼</span></button>
-      <div class="faq-a">Every feature is free — designing, previewing, and even downloading cards with a demo watermark costs nothing. To remove the watermark, get a Day Pass at $6.99 for 24 hours — perfect for a single event — or an Annual plan at $79.99 for a full year. Both unlock clean, watermark-free PDF, PNG, and ZIP downloads plus share links.</div>
+      <div class="faq-a">Every feature is free — designing, previewing, and even downloading cards with a demo watermark costs nothing. To remove the watermark, choose a pass: a one-time Day Pass at $6.99 for 24 hours — perfect for a single event — Monthly at $24/month, or Annual at $116/year (about $10/month). Every pass unlocks clean, watermark-free PDF, PNG, and ZIP downloads plus share links.</div>
     </div>
   </div>
 
@@ -953,9 +1003,10 @@ async function loadZipLib(){await loadScript(JSZIP_SRC);}
 // ============================================================
 const SPOTIFY_CLIENT_ID = '95f347a2b34d43968084d2ec49900cc3'; // kept for future Spotify OAuth
 const REDIRECT_URI = location.origin + location.pathname;
-// Day Pass — $6.99, 24h access · Annual — $79.99 / year
+// Day Pass — $6.99 one-time, 24h · Monthly — $24/mo · Annual — $116/yr
 const LS_DAYPASS_URL = 'https://bingocardgenerator.lemonsqueezy.com/checkout/buy/57e0d1f5-52cc-4ba7-820e-383b7393eacf';
-const LS_ANNUAL_URL  = 'https://bingocardgenerator.lemonsqueezy.com/checkout/buy/dc206378-e5ea-47eb-a33c-1a8ddfd340e5';
+const LS_MONTHLY_URL = 'https://bingocardgenerator.lemonsqueezy.com/checkout/buy/dc206378-e5ea-47eb-a33c-1a8ddfd340e5';
+const LS_ANNUAL_URL  = 'https://bingocardgenerator.lemonsqueezy.com/checkout/buy/c28a8f6f-d7e3-448c-b010-0b5eaf6999ab';
 const WORKER_URL = 'https://bcg-license-verify.dustinramsbottom.workers.dev';
 // base64-encoded SPKI DER of the Worker's ECDSA P-256 public key (see worker.js)
 const EXPORT_TOKEN_PUBKEY_SPKI_B64 = 'MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE74W23gyUW17VQkbRkQvd1AUttrE5qHsVeTNDgg4nFogvCiT4GB7AwUwfzo7pAYWUF9bM6X7BKmxmH2XmtEgj5g==';
@@ -1141,7 +1192,7 @@ async function exportAuth(feature){
 }
 function goCheckout(plan){
   autosaveNow(); // work survives the trip to checkout and back
-  const url = plan==='annual' ? LS_ANNUAL_URL : (plan==='day' ? LS_DAYPASS_URL : null);
+  const url = plan==='annual' ? LS_ANNUAL_URL : plan==='monthly' ? LS_MONTHLY_URL : plan==='day' ? LS_DAYPASS_URL : null;
   gev('upgrade_click',{method:'lemonsqueezy',plan:plan||'choose'});
   if(url){window.location.href=url;return;}
   // No plan specified — send the user to the pricing card to choose.
@@ -1194,10 +1245,13 @@ function actPro(){
   isPro=true;
   document.getElementById('pb').classList.add('show');
   document.getElementById('nub').style.display='none';
+  const nk=document.getElementById('nkey');if(nk)nk.style.display='none';
   document.getElementById('fnp').style.display='none';
   document.getElementById('fns').style.display='none';
   applyProLocks();
-  document.getElementById('pros').innerHTML=`<div class="proe">⚡ Pro Active</div><h3>YOU'RE PRO!</h3><p style="color:var(--mt);font-size:13.5px;margin-top:8px;line-height:1.55">Unlimited cards, custom branding, all fonts and themes, and every export option are unlocked.</p><button class="bult" style="margin-top:18px" onclick="dePro()">Remove Pro from this device</button>`;
+  const ts=document.getElementById('pro-teaser');
+  if(ts)ts.innerHTML=`<div><div class="protsr-t">⚡ <strong>Pro Active</strong></div><div class="protsr-s">Watermark-free downloads unlocked</div></div>`;
+  document.getElementById('pros').innerHTML=`<div class="proe">⚡ Pro Active</div><h3 class="pw-h3">YOU'RE PRO!</h3><p style="color:var(--mt);font-size:14px;line-height:1.6;max-width:560px">Watermark-free downloads, unlimited cards, custom branding, all fonts and themes are unlocked on this device.</p><button class="bult" style="margin-top:18px;max-width:340px" onclick="dePro()">Remove Pro from this device</button>`;
   dPrev();
 }
 function dePro(){localStorage.removeItem('fce_pro');location.reload();}
