@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('bcg_theme')||'light';}catch(e){}</script>
 <title>Bingo Card Generator | Create Custom Printable &amp; Digital Bingo Cards</title>
 <meta name="description" content="Create custom bingo cards in minutes — no login required. Make printable and digital bingo cards for classrooms, parties, events, and training. Easy to customize, share, and print.">
 <meta name="robots" content="index, follow">
@@ -203,20 +204,31 @@ function gev(name,params){try{gtag('event',name,params||{});}catch(e){}}
    CONFIGURE before deploy — search the JS for:
    SPOTIFY_CLIENT_ID | LS_DAYPASS_URL / LS_ANNUAL_URL | WORKER_URL | EXPORT_TOKEN_PUBKEY_SPKI_B64
    ================================================================ */
+/* Light theme (default) — friendly daytime look for teachers & planners */
 :root {
-  --bg:#0F1B2D;--sf:#152032;--sf2:#1C2E45;--sf3:#243852;
-  --bd:rgba(255,255,255,.08);--bhi:rgba(255,255,255,.22);
+  --bg:#F2F5F9;--sf:#FFFFFF;--sf2:#EDF1F7;--sf3:#E1E8F1;
+  --bd:rgba(18,42,66,.14);--bhi:rgba(18,42,66,.30);
+  --gn:#E8940F;--gnd:rgba(232,148,15,.13);--gng:rgba(232,148,15,.30);
+  --or:#E05C2A;--ord:rgba(224,92,42,.10);
+  --tx:#1D2C3C;--mt:#5B7186;--dm:#C7D3E0;
+  --tx2:#33475C;--hdr:rgba(255,255,255,.94);
+  --r:12px;--rs:8px;--t:.18s ease;
+}
+/* Dark theme (toggle) — softened slate for evening hosts */
+:root[data-theme="dark"] {
+  --bg:#1E3048;--sf:#263A57;--sf2:#2F4568;--sf3:#395278;
+  --bd:rgba(255,255,255,.12);--bhi:rgba(255,255,255,.28);
   --gn:#F5A623;--gnd:rgba(245,166,35,.12);--gng:rgba(245,166,35,.30);
   --or:#E05C2A;--ord:rgba(224,92,42,.12);
-  --tx:#E8EDF5;--mt:#6B8599;--dm:#2A3F52;
-  --r:12px;--rs:8px;--t:.18s ease;
+  --tx:#EEF3FA;--mt:#93A9BF;--dm:#42597A;
+  --tx2:var(--tx2);--hdr:rgba(24,39,60,.92);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
 
 /* NAV */
-header{position:sticky;top:0;z-index:100;background:rgba(15,27,45,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--bd)}
+header{position:sticky;top:0;z-index:100;background:var(--hdr);backdrop-filter:blur(16px);border-bottom:1px solid var(--bd)}
 nav{max-width:1140px;margin:0 auto;padding:0 24px;height:58px;display:flex;align-items:center;justify-content:space-between}
 .nl{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--tx);text-decoration:none}
 .nl span{color:var(--gn)}
@@ -243,20 +255,20 @@ nav{max-width:1140px;margin:0 auto;padding:0 24px;height:58px;display:flex;align
 /* CONTENT SECTIONS */
 .content-sections{max-width:1140px;margin:0 auto;padding:64px 24px 0}
 .intro-strip{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:36px 40px;margin-bottom:56px}
-.intro-strip p{font-size:17px;color:#C8D8E8;margin-bottom:24px;line-height:1.7;max-width:700px}
+.intro-strip p{font-size:17px;color:var(--tx2);margin-bottom:24px;line-height:1.7;max-width:700px}
 .benefit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
 .benefit-item{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:var(--sf2);border-radius:var(--rs);border:1px solid var(--bd)}
 .benefit-dot{width:7px;height:7px;background:var(--gn);border-radius:50%;flex-shrink:0;margin-top:7px}
-.benefit-item p{font-size:14px;color:#C8D8E8;margin:0;line-height:1.5}
+.benefit-item p{font-size:14px;color:var(--tx2);margin:0;line-height:1.5}
 .section-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-bottom:28px}
 @media(max-width:700px){.section-grid{grid-template-columns:1fr}}
 .content-card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:28px 32px}
 .content-card h2{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1.5px;margin-bottom:12px;color:var(--tx)}
 .content-card h2 span{color:var(--gn)}
-.content-card p{font-size:15px;color:#C8D8E8;line-height:1.7;margin:0}
+.content-card p{font-size:15px;color:var(--tx2);line-height:1.7;margin:0}
 .content-card-full{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:28px 32px;margin-bottom:28px}
 .content-card-full h2{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1.5px;margin-bottom:12px;color:var(--tx)}
-.content-card-full p{font-size:15px;color:#C8D8E8;line-height:1.7;margin:0}
+.content-card-full p{font-size:15px;color:var(--tx2);line-height:1.7;margin:0}
 
 /* FAQ */
 .faq-section{margin-top:56px;margin-bottom:56px}
@@ -265,13 +277,13 @@ nav{max-width:1140px;margin:0 auto;padding:0 24px;height:58px;display:flex;align
 .faq-q{width:100%;background:var(--sf);border:none;padding:16px 20px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background var(--t)}
 .faq-q:hover{background:var(--sf2)}
 .faq-q .faq-chev{font-size:12px;color:var(--mt);transition:transform .2s;flex-shrink:0}
-.faq-a{display:none;padding:0 20px 16px;background:var(--sf);font-size:14.5px;color:#C8D8E8;line-height:1.65}
+.faq-a{display:none;padding:0 20px 16px;background:var(--sf);font-size:14.5px;color:var(--tx2);line-height:1.65}
 .faq-item.open .faq-a{display:block}
 .faq-item.open .faq-chev{transform:rotate(180deg)}
 
 /* CLOSING CTA */
 .closing-cta{text-align:center;padding:64px 24px 80px;max-width:680px;margin:0 auto}
-.closing-cta p{font-size:18px;color:#C8D8E8;margin-bottom:28px;line-height:1.6}
+.closing-cta p{font-size:18px;color:var(--tx2);margin-bottom:28px;line-height:1.6}
 .closing-cta a{display:inline-flex;align-items:center;background:var(--gn);color:#0F1B2D;font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;padding:14px 32px;border-radius:30px;text-decoration:none;transition:all var(--t)}
 .closing-cta a:hover{background:#f7bb44;transform:translateY(-2px);box-shadow:0 6px 20px var(--gng)}
 
@@ -392,10 +404,10 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 /* BUTTONS */
 .bdl{width:100%;padding:16px;background:var(--gn);color:#000;border:none;border-radius:var(--r);font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1.5px;cursor:pointer;transition:all var(--t);display:flex;align-items:center;justify-content:center;gap:10px}
 .bdl:hover{background:#f7bb44;transform:translateY(-2px);box-shadow:0 6px 24px var(--gng)}
-.bdl:disabled{background:var(--sf3);color:#c2d0dc;opacity:1;cursor:default;transform:none;box-shadow:none}
+.bdl:disabled{background:var(--sf3);color:var(--mt);opacity:1;cursor:default;transform:none;box-shadow:none}
 .bsg{width:100%;padding:16px;background:var(--or);color:#fff;border:none;border-radius:var(--r);font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1.5px;cursor:pointer;transition:all var(--t);display:flex;align-items:center;justify-content:center;gap:10px}
 .bsg:hover{background:#ff8055;transform:translateY(-2px);box-shadow:0 6px 24px var(--ord)}
-.bsg:disabled{background:var(--sf3);color:#c2d0dc;opacity:1;cursor:default;transform:none;box-shadow:none}
+.bsg:disabled{background:var(--sf3);color:var(--mt);opacity:1;cursor:default;transform:none;box-shadow:none}
 
 /* SIDEBAR */
 .pvc{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:22px;margin-bottom:20px;position:sticky;top:74px}
@@ -549,6 +561,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
       <a href="/refund.html" class="na">Refunds</a>
       <a href="/blog/" class="na">Blog</a>
       <span id="pb">⚡ PRO</span>
+      <button class="bun2" id="ntheme" onclick="togTheme()" title="Switch light/dark theme">🌙</button>
       <button class="bun2" id="nkey" onclick="oUnlock()">🔑 Activate</button>
       <button class="bun" id="nub" onclick="goCheckout()">Upgrade to Pro</button>
     </div>
@@ -1259,6 +1272,17 @@ function oUnlock(){document.getElementById('um').classList.add('open');setTimeou
 function cModal(){document.getElementById('um').classList.remove('open');}
 function mMaybeClose(e){if(e.target===document.getElementById('um'))cModal();}
 
+function togTheme(){
+  const next=document.documentElement.dataset.theme==='dark'?'light':'dark';
+  document.documentElement.dataset.theme=next;
+  try{localStorage.setItem('bcg_theme',next);}catch(e){}
+  updThemeBtn();
+  gev('theme_toggle',{theme:next});
+}
+function updThemeBtn(){
+  const b=document.getElementById('ntheme');
+  if(b)b.textContent=document.documentElement.dataset.theme==='dark'?'☀️':'🌙';
+}
 function togFaq(el){el.classList.toggle('open');}
 function togImport(){
   const panel=document.getElementById('import-panel');
@@ -2345,6 +2369,7 @@ function mgDel(){
 // Init title counter in case browser autofills the field
 updTitle();
 updW();
+updThemeBtn();
 // chkPro: run immediately for cached state, defer network re-verification to after paint
 chkPro();
 document.fonts.ready.then(()=>{applyProLocks();pFSize(fontSize);dPrev();});
