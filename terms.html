@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('bcg_theme')||'light';}catch(e){}</script>
 <title>Terms & Conditions — BingoCardGenerator.Online</title>
 <meta name="description" content="Terms and Conditions for BingoCardGenerator.Online — custom bingo card generator service.">
 <link rel="canonical" href="https://bingocardgenerator.online/terms.html">
@@ -14,16 +15,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#0F1B2D;
-  --surface:#152032;
-  --border: rgba(255,255,255,0.07);
-  --green:#F5A623;
-  --orange:#E05C2A;
-  --text:#E8EDF5;
-  --muted:#6B8599;
-  --r: 10px;
-}
+:root{--bg:#F2F5F9;--surface:#FFFFFF;--border:rgba(18,42,66,.14);--green:#E8940F;--orange:#E05C2A;--text:#1D2C3C;--muted:#5B7186;--tx2:#33475C;--hdr:rgba(255,255,255,.94);--r:10px}
+:root[data-theme="dark"]{--bg:#1E3048;--surface:#263A57;--border:rgba(255,255,255,.12);--green:#F5A623;--text:#EEF3FA;--muted:#93A9BF;--tx2:#C8D8E8;--hdr:rgba(24,39,60,.95)}
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
@@ -37,7 +30,7 @@ body {
 
 /* NAV */
 header {
-  background: rgba(15,27,45,0.95);
+  background:var(--hdr);
   border-bottom: 1px solid var(--border);
   padding: 0 24px;
   height: 56px;
@@ -147,7 +140,7 @@ header {
   border-bottom: 1px solid var(--border);
 }
 .section p {
-  color: #C8C8DC;
+  color: var(--tx2);
   margin-bottom: 14px;
   font-size: 15.5px;
 }
@@ -157,7 +150,7 @@ header {
   margin-bottom: 14px;
 }
 .section li {
-  color: #C8C8DC;
+  color: var(--tx2);
   font-size: 15.5px;
   margin-bottom: 6px;
   line-height: 1.6;
@@ -172,7 +165,7 @@ header {
   padding: 16px 20px;
   margin: 18px 0;
 }
-.highlight p { color: #C8C8DC; margin: 0; font-size: 15px; }
+.highlight p { color: var(--tx2); margin: 0; font-size: 15px; }
 
 .warn {
   background: rgba(224,92,42,0.07);
@@ -181,7 +174,7 @@ header {
   padding: 16px 20px;
   margin: 18px 0;
 }
-.warn p { color: #C8C8DC; margin: 0; font-size: 15px; }
+.warn p { color: var(--tx2); margin: 0; font-size: 15px; }
 
 /* CONTACT */
 .contact-card {
