@@ -96,15 +96,28 @@
       }
     }
   ],
+  "brand": {
+    "@type": "Brand",
+    "name": "BingoCardGenerator.Online"
+  },
   "creator": {
     "@type": "Organization",
-    "name": "BingoCardGenerator.Online",
-    "url": "https://bingocardgenerator.online",
+    "@id": "https://www.fatcityentertainment.com/#organization",
+    "name": "Fat City Entertainment",
+    "url": "https://www.fatcityentertainment.com/",
+    "logo": "https://bingocardgenerator.online/fce-logo.png",
+    "sameAs": [
+      "https://bingocardgenerator.online",
+      "https://www.fatcityentertainment.com/bingocardgenerator.html"
+    ],
     "contactPoint": {
       "@type": "ContactPoint",
       "email": "info@fatcityentertainment.com",
       "contactType": "customer support"
     }
+  },
+  "publisher": {
+    "@id": "https://www.fatcityentertainment.com/#organization"
   }
 }
 </script>
@@ -148,6 +161,16 @@
       "@type": "Question",
       "name": "How much does Pro cost?",
       "acceptedAnswer": {"@type": "Answer", "text": "Every feature is free — designing, previewing, and even downloading cards with a demo watermark costs nothing. To remove the watermark, choose a pass: a one-time Day Pass at $6.99 for 24 hours, Monthly at $24/month, or Annual at $116/year (about $10/month). Every pass unlocks clean, watermark-free PDF, PNG, and ZIP downloads plus share links."}
+    },
+    {
+      "@type": "Question",
+      "name": "Do you sell ready-made bingo games?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Yes. Our parent company, Fat City Entertainment, sells complete ready-to-run game packs — professionally matched bingo cards plus playlists, tested on live audiences — at fatcityentertainment.com."}
+    },
+    {
+      "@type": "Question",
+      "name": "Who makes BingoCardGenerator.Online?",
+      "acceptedAnswer": {"@type": "Answer", "text": "BingoCardGenerator.Online is built by Fat City Entertainment, hosts who run music bingo and trivia nights in front of live audiences every week."}
     }
   ]
 }
@@ -289,6 +312,9 @@ nav{max-width:1140px;margin:0 auto;padding:0 24px;height:58px;display:flex;align
 
 /* SITE FOOTER */
 .site-footer{background:var(--sf);border-top:1px solid var(--bd);padding:24px;text-align:center;font-size:12.5px;color:var(--mt)}
+.fce-chip{display:inline-block;background:#101A28;border:1px solid rgba(245,166,35,.25);border-radius:12px;padding:8px 18px;line-height:0;transition:border-color var(--t)}
+.fce-chip:hover{border-color:rgba(245,166,35,.6)}
+.fce-chip img{width:240px;height:auto;max-width:80vw}
 .site-footer a{color:var(--mt);text-decoration:none;margin:0 8px}
 .site-footer a:hover{color:var(--tx)}
 .hs{font-size:18px;color:var(--mt);font-weight:300;max-width:480px;line-height:1.55}
@@ -640,6 +666,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
         </div>
       </div>
     </div>
+    <div style="font-size:11.5px;color:var(--mt);margin-top:10px">Short on time? Grab a <a href="https://www.fatcityentertainment.com/trivia-store.html" style="color:var(--gn);text-decoration:none" onclick="gev('fce_store_click',{placement:'step1'})">ready-to-run game pack</a> from Fat City Entertainment instead — cards and playlist included.</div>
   </div>
 
   <!-- STEP 2 -->
@@ -924,6 +951,14 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
       <button class="faq-q">How much does Pro cost? <span class="faq-chev">▼</span></button>
       <div class="faq-a">Every feature is free — designing, previewing, and even downloading cards with a demo watermark costs nothing. To remove the watermark, choose a pass: a one-time Day Pass at $6.99 for 24 hours — perfect for a single event — Monthly at $24/month, or Annual at $116/year (about $10/month). Every pass unlocks clean, watermark-free PDF, PNG, and ZIP downloads plus share links.</div>
     </div>
+    <div class="faq-item" onclick="togFaq(this)">
+      <button class="faq-q">Do you sell ready-made bingo games? <span class="faq-chev">▼</span></button>
+      <div class="faq-a">Yes. Our parent company, Fat City Entertainment, sells complete ready-to-run game packs — professionally matched bingo cards plus playlists, tested on live audiences. If you'd rather skip the build entirely, browse the <a href="https://www.fatcityentertainment.com/trivia-store.html" style="color:var(--gn)" onclick="gev('fce_store_click',{placement:'faq'})">pre-made game packs at Fat City Entertainment</a>.</div>
+    </div>
+    <div class="faq-item" onclick="togFaq(this)">
+      <button class="faq-q">Who makes BingoCardGenerator.Online? <span class="faq-chev">▼</span></button>
+      <div class="faq-a">This generator is built by <a href="https://www.fatcityentertainment.com/" style="color:var(--gn)" onclick="gev('fce_link_click',{placement:'faq'})">Fat City Entertainment</a> — hosts who run music bingo and trivia nights in front of live audiences every week. The features here exist because we needed them at real events.</div>
+    </div>
   </div>
 
 </div>
@@ -936,7 +971,11 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 
 <!-- Site footer -->
 <footer class="site-footer">
-  <p>© 2026 BingoCardGenerator.Online · New Brunswick, Canada</p>
+  <a href="https://www.fatcityentertainment.com/" class="fce-chip" onclick="gev('fce_link_click',{placement:'footer'})">
+    <img src="/fce-logo.png" alt="BingoCardGenerator.Online by Fat City Entertainment" width="240" height="56" loading="lazy">
+  </a>
+  <p style="margin-top:10px">Made by <a href="https://www.fatcityentertainment.com/" style="color:var(--gn)" onclick="gev('fce_link_click',{placement:'footer_text'})">Fat City Entertainment</a> — music bingo &amp; trivia games tested on live audiences.</p>
+  <p style="margin-top:8px">© 2026 BingoCardGenerator.Online · New Brunswick, Canada</p>
   <p style="margin-top:8px">
     <a href="/terms.html">Terms &amp; Conditions</a>
     <a href="/privacy.html">Privacy Policy</a>
