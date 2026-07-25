@@ -26,6 +26,16 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--tx);font-s
 a{color:var(--gn);text-decoration:none}
 header{background:var(--hdr);backdrop-filter:blur(16px);border-bottom:1px solid var(--bd);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between}
 .logo{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--tx)}
+/* Narrow phones: shrink the logo so the header stops forcing horizontal scroll. */
+@media(max-width:560px){
+  header{padding:0 16px}
+  .logo{font-size:13.5px;letter-spacing:1px}
+}
+@media(max-width:440px){
+  header{padding:0 12px}
+  .logo{font-size:12px;letter-spacing:.5px}
+  header>span{display:none}
+}
 .logo span{color:var(--gn)}
 .wrap{max-width:680px;margin:0 auto;padding:48px 24px 80px}
 
