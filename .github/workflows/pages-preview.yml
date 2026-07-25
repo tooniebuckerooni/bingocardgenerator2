@@ -4,7 +4,12 @@ on:
   pull_request:
     types: [opened, reopened, synchronize, closed]
 
-concurrency: preview-${{ github.ref }}
+# Shared with pages-deploy.yml — see the comment there. This group is
+# deliberately not per-ref: the contention is over the single gh-pages ref,
+# so every writer to it has to queue behind the same lock.
+concurrency:
+  group: gh-pages-write
+  cancel-in-progress: false
 
 jobs:
   deploy-preview:

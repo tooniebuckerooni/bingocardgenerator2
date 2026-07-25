@@ -4,6 +4,15 @@ on:
   push:
     branches: [main]
 
+# Both this workflow and pages-preview.yml force-push to gh-pages, and on a
+# merge they fire at the same time — the loser dies with
+# "cannot lock ref 'refs/heads/gh-pages'". A group shared with the preview
+# workflow serialises the two writers instead. Don't cancel in progress: a
+# half-finished deploy would leave gh-pages mid-push.
+concurrency:
+  group: gh-pages-write
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
