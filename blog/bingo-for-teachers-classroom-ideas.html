@@ -62,22 +62,33 @@ header{background:var(--hdr);backdrop-filter:blur(16px);border-bottom:1px solid 
 .nav-links{display:flex;gap:20px;align-items:center}
 .nav-links a{font-size:13.5px;color:var(--mt);transition:color .15s}
 .nav-links a:hover{color:var(--tx);text-decoration:none}
-.nav-cta{background:var(--gn);color:#0F1B2D!important;padding:7px 16px;border-radius:20px;font-weight:700;font-size:13.5px}
+.nav-cta{background:var(--gn);color:#0F1B2D!important;padding:7px 16px;border-radius:20px;font-weight:700;font-size:13.5px;white-space:nowrap;flex-shrink:0}
 .nav-cta:hover{background:#f7bb44;text-decoration:none!important}
+/* Mobile menu — the ☰ toggle reveals the links hidden from the bar, so
+   narrowing the nav never removes navigation. */
+.mtog{display:none;background:none;border:1px solid var(--bd);color:var(--tx);border-radius:8px;width:34px;height:32px;padding:0;font-size:15px;line-height:1;cursor:pointer;align-items:center;justify-content:center;flex-shrink:0}
+.mtog:hover{border-color:var(--gn);color:var(--gn)}
+.mnav{display:none;position:fixed;top:56px;left:0;right:0;z-index:99;flex-direction:column;border-bottom:1px solid var(--bd);background:var(--sf);box-shadow:0 8px 20px rgba(0,0,0,.10);padding:6px 0}
+.mnav a{display:block;padding:12px 20px;font-size:14.5px;font-weight:500;color:var(--tx2);text-decoration:none}
+.mnav a:hover{background:var(--sf2);color:var(--tx);text-decoration:none}
 /* Mobile nav — the header flex row overflows a phone viewport and puts the whole
    page into horizontal scroll. Shrink the logo and keep only the CTA; the
    secondary links are all repeated in the footer. */
 @media(max-width:700px){
   header{padding:0 16px}
-  .logo{font-size:14px;letter-spacing:1px}
+  .mtog{display:inline-flex}
+  .mnav.open{display:flex}
+  .logo{font-size:12px;letter-spacing:.5px;min-width:0}
   .nav-links{gap:12px}
   .nav-links a:not(.nav-cta){display:none}
   .nav-cta{padding:7px 14px;font-size:13px}
 }
 @media(max-width:440px){
   header{padding:0 12px}
-  .logo{font-size:12px;letter-spacing:.5px}
-  .nav-cta{padding:6px 12px;font-size:12px}
+  .logo{font-size:10.5px;letter-spacing:0}
+  .nav-cta{padding:6px 11px;font-size:11.5px}
+  .nav-links{gap:8px}
+  .mtog{width:30px;height:30px;font-size:14px}
 }
 
 /* ARTICLE LAYOUT */
@@ -154,8 +165,17 @@ footer a:hover{color:var(--tx)}
     <a href="/">Generator</a>
     <a href="/blog/">Blog</a>
     <a href="/" class="nav-cta">Start Creating</a>
+    <button class="mtog" onclick="togNav()" aria-label="Menu" aria-expanded="false" aria-controls="mnav">☰</button>
   </div>
 </header>
+<div class="mnav" id="mnav">
+  <a href="/">Generator</a>
+  <a href="/music-bingo-generator.html">Music Bingo</a>
+  <a href="/blog/">Blog</a>
+  <a href="/terms.html">Terms &amp; Conditions</a>
+  <a href="/privacy.html">Privacy Policy</a>
+  <a href="/refund.html">Refund Policy</a>
+</div>
 
 <div class="article-wrap">
   <div class="article-header">
@@ -273,5 +293,13 @@ footer a:hover{color:var(--tx)}
     <a href="/refund.html">Refund Policy</a>
   </p>
 </footer>
+<script>
+function togNav(){
+  const n=document.getElementById('mnav'),b=document.querySelector('.mtog');
+  const open=n.classList.toggle('open');
+  b.setAttribute('aria-expanded',open?'true':'false');
+  b.textContent=open?'✕':'☰';
+}
+</script>
 </body>
 </html>

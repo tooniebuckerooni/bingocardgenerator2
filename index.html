@@ -257,10 +257,16 @@ nav{max-width:1140px;margin:0 auto;padding:0 24px;height:58px;display:flex;align
 .bun2{background:none;color:var(--mt);border:1px solid var(--bd);padding:6px 14px;border-radius:20px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all var(--t);white-space:nowrap}
 .bun2:hover{border-color:var(--gn);color:var(--gn)}
 .bun:hover{background:#ff8055}
+/* Mobile menu — links hidden from the bar move in here behind the ☰ toggle,
+   so narrowing the nav never costs navigation. */
+.mtog{display:none;background:none;border:1px solid var(--bd);color:var(--tx);border-radius:8px;width:34px;height:32px;padding:0;font-size:15px;line-height:1;cursor:pointer;align-items:center;justify-content:center;flex-shrink:0}
+.mtog:hover{border-color:var(--gn);color:var(--gn)}
+.mnav{display:none;flex-direction:column;border-top:1px solid var(--bd);background:var(--sf);padding:6px 0}
+.mnav a,.mnav button{display:block;width:100%;padding:12px 20px;font-family:'Outfit',sans-serif;font-size:14.5px;font-weight:500;color:var(--tx2);text-decoration:none;background:none;border:none;text-align:left;cursor:pointer}
+.mnav a:active,.mnav button:active,.mnav a:hover,.mnav button:hover{background:var(--sf2);color:var(--tx)}
 /* Mobile nav — .nr is a no-wrap flex row, so without these it sets a min-content
    width wider than a phone viewport and drags the whole document into
-   horizontal scroll. Shed non-essentials progressively: the hidden links are all
-   in the footer, and license entry is also reachable from the Go Pro box. */
+   horizontal scroll. Links shed here are reachable from the ☰ menu above. */
 /* Thresholds are deliberately generous: the full nav needs ~1000px of content
    width, and media queries measure the viewport including the scrollbar while
    the content box excludes it — tight breakpoints leave a broken sliver. */
@@ -273,10 +279,14 @@ nav{max-width:1140px;margin:0 auto;padding:0 24px;height:58px;display:flex;align
 @media(max-width:760px){
   .nl{font-size:13.5px;letter-spacing:.5px}
   .nr .na{display:none}
-  #nkey{display:none}
+  #nkey,#ntheme{display:none}
   .nr{gap:8px}
   .bun{padding:7px 13px;font-size:12.5px}
   .bun2{padding:6px 10px}
+  /* Only mount the menu where links are actually hidden, so it can't be left
+     open when the viewport widens back to the full nav. */
+  .mtog{display:inline-flex}
+  .mnav.open{display:flex}
 }
 /* Narrow phones: the 25-character logo is ~300px on its own at the base size,
    so it has to come down further to share the bar with the Upgrade CTA. */
@@ -287,12 +297,17 @@ nav{max-width:1140px;margin:0 auto;padding:0 24px;height:58px;display:flex;align
   .bun{padding:6px 11px;font-size:12px}
   .bun2{padding:5px 8px}
 }
-/* Smallest phones (~320px): drop the theme toggle too, so the Upgrade CTA
-   always stays on screen. Theme still persists from localStorage. */
+/* Smallest phones (~320px): tighten further so logo + Upgrade + menu all fit. */
 @media(max-width:360px){
   .nl{font-size:10.5px}
-  #ntheme{display:none}
   .bun{padding:6px 9px;font-size:11.5px}
+  .mtog{width:30px;height:30px;font-size:14px}
+}
+@media(max-width:340px){
+  .nl{font-size:9.5px}
+  .nr{gap:5px}
+  .bun{padding:6px 7px;font-size:11px}
+  .mtog{width:28px;height:28px}
 }
 
 /* HERO */
@@ -611,8 +626,19 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
       <button class="bun2" id="ntheme" onclick="togTheme()" title="Switch light/dark theme">🌙</button>
       <button class="bun2" id="nkey" onclick="oUnlock()">🔑 Activate</button>
       <button class="bun" id="nub" onclick="goCheckout()">Upgrade to Pro</button>
+      <button class="mtog" id="mtog" onclick="togNav()" aria-label="Menu" aria-expanded="false" aria-controls="mnav">☰</button>
     </div>
   </nav>
+  <!-- Mobile menu — holds the links hidden from the bar at narrow widths -->
+  <div class="mnav" id="mnav">
+    <a href="/music-bingo-generator.html">Music Bingo</a>
+    <a href="/blog/">Blog</a>
+    <button type="button" onclick="togNav();oUnlock()">🔑&nbsp; Activate license</button>
+    <button type="button" id="mtheme" onclick="togTheme()">🌙&nbsp; Switch to dark theme</button>
+    <a href="/terms.html">Terms &amp; Conditions</a>
+    <a href="/privacy.html">Privacy Policy</a>
+    <a href="/refund.html">Refund Policy</a>
+  </div>
 </header>
 
 <div class="hero">
@@ -1332,6 +1358,12 @@ function oUnlock(){document.getElementById('um').classList.add('open');setTimeou
 function cModal(){document.getElementById('um').classList.remove('open');}
 function mMaybeClose(e){if(e.target===document.getElementById('um'))cModal();}
 
+function togNav(){
+  const n=document.getElementById('mnav'),b=document.getElementById('mtog');
+  const open=n.classList.toggle('open');
+  b.setAttribute('aria-expanded',open?'true':'false');
+  b.textContent=open?'✕':'☰';
+}
 function togTheme(){
   const next=document.documentElement.dataset.theme==='dark'?'light':'dark';
   document.documentElement.dataset.theme=next;
@@ -1340,8 +1372,12 @@ function togTheme(){
   gev('theme_toggle',{theme:next});
 }
 function updThemeBtn(){
+  const dark=document.documentElement.dataset.theme==='dark';
   const b=document.getElementById('ntheme');
-  if(b)b.textContent=document.documentElement.dataset.theme==='dark'?'☀️':'🌙';
+  if(b)b.textContent=dark?'☀️':'🌙';
+  // the bar toggle is hidden on mobile, so keep the menu's copy in sync too
+  const m=document.getElementById('mtheme');
+  if(m)m.textContent=dark?'☀️  Switch to light theme':'🌙  Switch to dark theme';
 }
 function togFaq(el){el.classList.toggle('open');}
 function togImport(){
