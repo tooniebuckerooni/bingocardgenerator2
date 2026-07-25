@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>try{document.documentElement.dataset.theme=localStorage.getItem('bcg_theme')||'light';}catch(e){}</script>
 <title>Bingo Card Generator | Create Custom Printable &amp; Digital Bingo Cards</title>
-<meta name="description" content="Create custom bingo cards in minutes — no login required. Make printable and digital bingo cards for classrooms, parties, events, and training. Easy to customize, share, and print.">
+<meta name="description" content="Create custom bingo cards in minutes — no login required. Make printable and digital bingo cards for classrooms, parties, and events, or music bingo cards from any Spotify or Apple Music playlist.">
 <meta name="robots" content="index, follow">
 <meta name="keywords" content="bingo card generator, music bingo, custom bingo cards, printable bingo cards, free bingo generator, trivia bingo, bingo card maker">
 <link rel="canonical" href="https://bingocardgenerator.online/">
@@ -36,13 +36,6 @@
   "inLanguage": "en",
   "isAccessibleForFree": true,
   "screenshot": "https://bingocardgenerator.online/og-image.png",
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "5",
-    "ratingCount": "1",
-    "bestRating": "5",
-    "worstRating": "1"
-  },
   "featureList": [
     "Custom bingo card generation",
     "PDF download for printing",
@@ -226,7 +219,7 @@ function gev(name,params){try{gtag('event',name,params||{});}catch(e){}}
 <style>
 /* ================================================================
    CONFIGURE before deploy — search the JS for:
-   SPOTIFY_CLIENT_ID | LS_DAYPASS_URL / LS_ANNUAL_URL | WORKER_URL | EXPORT_TOKEN_PUBKEY_SPKI_B64
+   LS_DAYPASS_URL / LS_MONTHLY_URL / LS_ANNUAL_URL | WORKER_URL | EXPORT_TOKEN_PUBKEY_SPKI_B64
    ================================================================ */
 /* Light theme (default) — friendly daytime look for teachers & planners */
 :root {
@@ -329,23 +322,6 @@ nav{max-width:1140px;margin:0 auto;padding:0 24px;height:58px;display:flex;align
 .sc::before{content:attr(data-n);position:absolute;top:-4px;right:18px;font-family:'Bebas Neue',sans-serif;font-size:100px;color:rgba(255,255,255,.025);line-height:1;pointer-events:none;user-select:none}
 .stag{font-size:10.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gn);margin-bottom:5px}
 .sc h2{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1.5px;margin-bottom:26px}
-
-/* SPOTIFY */
-.spb{display:inline-flex;align-items:center;gap:10px;background:var(--gn);color:#000;border:none;padding:11px 22px;border-radius:30px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:background var(--t),transform var(--t);margin-bottom:22px}
-.spb:hover{background:#f7bb44;transform:scale(1.02)}
-.spb.con{background:var(--sf2);color:var(--gn);border:1px solid rgba(245,166,35,.35)}
-.spb svg{width:20px;height:20px;flex-shrink:0}
-.plp{background:var(--sf2);border:1px solid var(--bd);border-radius:var(--rs);padding:16px;margin-bottom:22px;display:none}
-.plh{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mt);margin-bottom:10px}
-.pll{max-height:220px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;scrollbar-width:thin}
-.pli{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--rs);cursor:pointer;border:1px solid transparent;transition:background var(--t)}
-.pli:hover{background:var(--sf3)}
-.pli.sl{background:var(--gnd);border-color:rgba(245,166,35,.25)}
-.pim{width:34px;height:34px;border-radius:4px;background:var(--sf3);object-fit:cover;flex-shrink:0}
-.pnm{font-size:13.5px;font-weight:500}.pct{font-size:11.5px;color:var(--mt)}
-.blp{width:100%;margin-top:12px;padding:9px;background:var(--gn);color:#000;border:none;border-radius:var(--rs);font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background var(--t)}
-.blp:hover{background:#f7bb44}
-.blp:disabled{background:var(--sf3);color:var(--mt);cursor:default}
 
 /* DIVIDER */
 .ord{display:flex;align-items:center;gap:14px;color:var(--dm);font-size:12.5px;margin:18px 0}
@@ -583,6 +559,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
   <nav>
     <a href="/" class="nl">BINGO<span>CARD</span>GENERATOR.ONLINE</a>
     <div class="nr">
+      <a href="/music-bingo-generator.html" class="na">Music Bingo</a>
       <a href="/terms.html" class="na">Terms</a>
       <a href="/privacy.html" class="na">Privacy</a>
       <a href="/refund.html" class="na">Refunds</a>
@@ -651,6 +628,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
           2 · Choose your playlist and click <strong style="color:var(--tx)">Let's Go</strong><br>
           3 · Export as <strong style="color:var(--tx)">TXT</strong> or <strong style="color:var(--tx)">CSV</strong><br>
           4 · Upload that file here ↓
+          <div style="margin-top:8px"><a href="/music-bingo-generator.html" style="color:var(--gn);text-decoration:none" onclick="gev('pillar_link_click',{placement:'import_panel'})">Full music bingo walkthrough →</a></div>
         </div>
         <div style="margin-bottom:12px">
           <div class="ot" style="margin-bottom:8px">Import format</div>
@@ -1054,8 +1032,6 @@ async function loadZipLib(){await loadScript(JSZIP_SRC);}
 // BOTH the Worker `export_token` endpoint is deployed AND the public key below
 // is filled in — ship them together.
 // ============================================================
-const SPOTIFY_CLIENT_ID = '95f347a2b34d43968084d2ec49900cc3'; // kept for future Spotify OAuth
-const REDIRECT_URI = location.origin + location.pathname;
 // Day Pass — $6.99 one-time, 24h · Monthly — $24/mo · Annual — $116/yr
 const LS_DAYPASS_URL = 'https://bingocardgenerator.lemonsqueezy.com/checkout/buy/57e0d1f5-52cc-4ba7-820e-383b7393eacf';
 const LS_MONTHLY_URL = 'https://bingocardgenerator.lemonsqueezy.com/checkout/buy/dc206378-e5ea-47eb-a33c-1a8ddfd340e5';
@@ -1068,7 +1044,7 @@ const EXPORT_TOKEN_PUBKEY_SPKI_B64 = 'MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE74W23g
 // ============================================================
 let isPro=false, font='oswald', theme='eco', freeOn=true, freePos='center';
 let pCount=5, sCount=10, mode='print', fontSize=11, layout='portrait', bingoRow=true;
-let spTok=null, spReady=false, selPl=null, spFmt='title';
+let spFmt='title'; // playlist import format: title | artist | both
 let logoUrl=null, logoImg=null, brandingOn=true, logoScale=100;
 
 // ============================================================
@@ -1333,6 +1309,8 @@ function togImport(){
 }
 
 // ============================================================
+// PLAYLIST IMPORT — TuneMyMusic TXT/CSV export from any music service
+// ============================================================
 function importPlaylistFile(input){
   const file=input.files[0];if(!file)return;
   const reader=new FileReader();
@@ -1408,144 +1386,6 @@ function parseCsvRow(line){
   }
   cols.push(cur);
   return cols.map(c=>c.replace(/^"|"$/g,'').trim());
-}
-
-// ============================================================
-// TUNEMYMUSIC FILE IMPORT
-// ============================================================
-// ============================================================
-async function pkV(){const a=new Uint8Array(56);crypto.getRandomValues(a);return btoa(String.fromCharCode(...a)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');}
-async function pkC(v){const d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(v));return btoa(String.fromCharCode(...new Uint8Array(d))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');}
-function setSp(){
-  spReady=true;
-  const b=document.getElementById('spb');
-  b.innerHTML=SPIC+' Spotify Connected ✓';
-  b.classList.add('con');
-  b.title='Click to disconnect / switch account';
-}
-function disconnectSp(){
-  spTok=null;spReady=false;selPl=null;
-  localStorage.removeItem('sp_tok');localStorage.removeItem('sp_cv');
-  sessionStorage.removeItem('sp_tok');sessionStorage.removeItem('sp_cv');
-  const b=document.getElementById('spb');
-  b.innerHTML=SPIC+' Connect Spotify';
-  b.classList.remove('con');
-  b.title='';
-  document.getElementById('plp').style.display='none';
-  document.getElementById('pll').innerHTML='';
-  document.getElementById('blp').disabled=true;
-  toast('Disconnected — connect a different account.','ok');
-}
-const SP_SCOPE='playlist-read-private playlist-read-collaborative user-read-private';
-const SP_SCOPE_KEY='sp_scope_v2'; // bump this string whenever scopes change
-
-async function connSp(){
-  if(spReady){disconnectSp();return;}
-  if(SPOTIFY_CLIENT_ID==='YOUR_SPOTIFY_CLIENT_ID'){toast('Spotify not configured — add Client ID to code.','err');return;}
-  const v=await pkV(),c=await pkC(v);
-  localStorage.setItem('sp_cv',v);
-  toast('Redirecting to Spotify...','ok');
-  setTimeout(()=>{
-    location.href='https://accounts.spotify.com/authorize?'+new URLSearchParams({
-      client_id:SPOTIFY_CLIENT_ID,response_type:'code',redirect_uri:REDIRECT_URI,
-      scope:SP_SCOPE,
-      code_challenge_method:'S256',code_challenge:c,
-      show_dialog:'true'
-    });
-  },800);
-}
-async function hCb(code){
-  window.history.replaceState({},document.title,location.pathname);
-  const btn=document.getElementById('spb');
-  btn.innerHTML='<span class="sp"></span> Connecting...';
-  const verifier=localStorage.getItem('sp_cv')||sessionStorage.getItem('sp_cv');
-  try{
-    const r=await fetch('https://accounts.spotify.com/api/token',{
-      method:'POST',
-      headers:{'Content-Type':'application/x-www-form-urlencoded'},
-      body:new URLSearchParams({
-        client_id:SPOTIFY_CLIENT_ID,grant_type:'authorization_code',
-        code,redirect_uri:REDIRECT_URI,code_verifier:verifier
-      })
-    });
-    const j=await r.json();
-    if(j.access_token){
-      spTok=j.access_token;
-      localStorage.setItem('sp_tok',j.access_token);
-      localStorage.setItem(SP_SCOPE_KEY,'1'); // mark token as having current scopes
-      localStorage.removeItem('sp_cv');
-      setSp();await loadPls();
-    } else {
-      throw new Error(j.error_description||j.error||'No token returned');
-    }
-  }catch(e){
-    btn.innerHTML=SPIC+' Connect Spotify';
-    toast('Spotify error: '+e.message,'err');
-  }
-}
-const SPIC=`<svg viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.371-.721.49-1.101.241-3.021-1.858-6.832-2.278-11.322-1.237-.422.101-.851-.16-.951-.584-.101-.422.16-.851.584-.951 4.91-1.121 9.13-.631 12.541 1.431.39.241.5.721.249 1.1zm1.47-3.27c-.301.451-.841.601-1.291.301-3.451-2.121-8.702-2.741-12.782-1.501-.512.151-1.051-.141-1.201-.651-.15-.512.141-1.051.651-1.201 4.662-1.411 10.462-.721 14.432 1.701.441.271.601.841.301 1.291l-.11.061zm.13-3.402c-4.14-2.461-10.981-2.691-14.932-1.49-.602.181-1.241-.16-1.421-.762-.181-.602.16-1.241.762-1.421 4.541-1.381 12.091-1.111 16.862 1.721.512.301.682 1.001.381 1.511-.301.511-1.001.681-1.511.381l-.141-.06z"/></svg>`;
-async function loadPls(){
-  const list=document.getElementById('pll');
-  list.innerHTML='<div style="padding:12px;font-size:13px;color:var(--mt)">Loading playlists...</div>';
-  document.getElementById('plp').style.display='block';
-  try{
-    const r=await fetch('https://api.spotify.com/v1/me/playlists?limit=50',{headers:{Authorization:`Bearer ${spTok}`}});
-    const j=await r.json();
-    if(j.error)throw new Error(j.error.message||'API error');
-    list.innerHTML='';
-    const items=(j.items||[]).filter(pl=>pl&&pl.id);
-    if(!items.length){
-      list.innerHTML='<div style="padding:12px;font-size:13px;color:var(--mt)">No playlists found in this account.</div>';
-      return;
-    }
-    items.forEach(pl=>{
-      const img=pl.images?.[0]?.url||'',el=document.createElement('div');
-      el.className='pli';el.dataset.id=pl.id;
-      const count=pl.tracks?.total??pl.total_tracks??'—';
-      el.innerHTML=`${img?`<img class="pim" src="${img}" alt="" loading="lazy">`:'<div class="pim"></div>'}<div><div class="pnm">${esc(pl.name)}</div><div class="pct">${count} tracks</div></div>`;
-      el.onclick=()=>{document.querySelectorAll('.pli').forEach(e=>e.classList.remove('sl'));el.classList.add('sl');selPl=pl.id;document.getElementById('blp').disabled=false;};
-      list.appendChild(el);
-    });
-  }catch(e){
-    list.innerHTML=`<div style="padding:12px;font-size:13px;color:var(--or)">Error: ${e.message}</div>`;
-  }
-}
-async function loadPl(){
-  if(!selPl)return;
-  const btn=document.getElementById('blp');btn.innerHTML='<span class="sp"></span> Loading...';btn.disabled=true;
-  try{
-    let entries=[],url=`https://api.spotify.com/v1/playlists/${selPl}/tracks?limit=50`;
-    while(url&&entries.length<500){
-      const r=await fetch(url,{headers:{Authorization:`Bearer ${spTok}`,Accept:'application/json'}});
-      if(!r.ok){
-        const body=await r.json().catch(()=>({}));
-        if(r.status===401){disconnectSp();throw new Error('Session expired — please reconnect Spotify.');}
-        throw new Error(`Spotify error ${r.status}: ${body?.error?.message||r.statusText}`);
-      }
-      const j=await r.json();
-      console.log('Spotify page response:',j); // debug — check browser console
-      (j.items||[]).forEach(i=>{
-        const track=i?.track;
-        if(!track||!track.name)return;
-        const title=track.name;
-        const artist=track.artists?.[0]?.name||'';
-        if(spFmt==='title') entries.push(title);
-        else if(spFmt==='artist') entries.push(artist||title);
-        else entries.push(artist?`${title} – ${artist}`:title);
-      });
-      url=j.next||null;
-    }
-    const s=document.querySelector('.pli.sl');
-    if(s)document.getElementById('ct').value=s.querySelector('.pnm').textContent+' Bingo';
-    document.getElementById('wl').value=entries.join('\n');
-    updW();dPrev();
-    toast(`Loaded ${entries.length} tracks!`,'ok');
-    document.getElementById('plp').style.display='none';
-  }catch(e){
-    toast(e.message,'err');
-    console.error('Spotify loadPl error:',e);
-  }
-  finally{btn.innerHTML='Load Selected Playlist';btn.disabled=false;}
 }
 
 // ============================================================
@@ -2425,12 +2265,11 @@ if(!qp.has('card')){
   }catch(e){}
 }
 if(qp.has("activated")){window.history.replaceState({},document.title,location.pathname);setTimeout(()=>{oUnlock();const s=document.getElementById("unlock-status");if(s){s.textContent="✓ Payment confirmed! Check your email for your license key, then paste it below.";s.style.color="var(--gn)";}},400);}
-// Clear any cached token that was issued with old scopes
-if(!localStorage.getItem(SP_SCOPE_KEY)){
-  localStorage.removeItem('sp_tok');sessionStorage.removeItem('sp_tok');
-}
-const tok=localStorage.getItem('sp_tok')||sessionStorage.getItem('sp_tok');
-if(tok){spTok=tok;setSp();}
+// One-time cleanup: purge leftover keys from the removed Spotify OAuth flow.
+// Playlist import now goes through the TuneMyMusic file upload in Step 01.
+try{
+  ['sp_tok','sp_cv','sp_scope_v2'].forEach(k=>{localStorage.removeItem(k);sessionStorage.removeItem(k);});
+}catch(e){}
 </script>
 </body>
 </html>
