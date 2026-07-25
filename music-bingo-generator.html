@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('bcg_theme')||'light';}catch(e){}</script>
+<title>Music Bingo Generator | Make Song Bingo Cards From Any Playlist</title>
+<meta name="description" content="Turn any playlist into music bingo cards in minutes. Export your Spotify, Apple Music, or YouTube Music playlist, upload it, and print or share song bingo cards. No account needed.">
+<link rel="canonical" href="https://bingocardgenerator.online/music-bingo-generator.html">
+<meta property="og:title" content="Music Bingo Generator | Make Song Bingo Cards From Any Playlist">
+<meta property="og:description" content="Turn any playlist into music bingo cards in minutes. Works with Spotify, Apple Music, YouTube Music, Tidal, and Amazon Music.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bingocardgenerator.online/music-bingo-generator.html">
+<meta property="og:image" content="https://bingocardgenerator.online/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://bingocardgenerator.online/og-image.png">
+<!-- GA4 + Google Ads -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-97J4XBSHBW"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-97J4XBSHBW',{page_title:'Music Bingo Generator'});gtag('config', 'AW-18347447832');</script>
+
+<!-- HowTo structured data — playlist to cards -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to make music bingo cards from a playlist",
+  "description": "Export your playlist as a text file, upload it to the bingo card generator, and print or share randomized song bingo cards.",
+  "totalTime": "PT10M",
+  "supply": [{"@type": "HowToSupply", "name": "A playlist of at least 25 songs"}],
+  "tool": [{"@type": "HowToTool", "name": "BingoCardGenerator.Online"}],
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Export your playlist as a text file",
+      "text": "Open tunemymusic.com, pick your music service, choose your playlist, and export it as a TXT or CSV file. It is free and needs no account."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Upload the file to the generator",
+      "text": "In Step 01 of the generator, open the playlist import panel and upload your TXT or CSV file. Choose whether squares show song titles, artist names, or both."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Customize the cards",
+      "text": "Pick a font, color theme, and card title. Toggle the free space and the B-I-N-G-O letter row, and adjust font size so long song titles stay readable in print."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Print or share the cards",
+      "text": "Download a print-ready PDF in portrait or landscape, or generate individual shareable card links players open on their own phones."
+    }
+  ]
+}
+</script>
+<!-- FAQ structured data — tool questions (night-hosting questions live on the blog guide) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Can I make bingo cards from a Spotify playlist?","acceptedAnswer":{"@type":"Answer","text":"Yes. Export your Spotify playlist as a TXT or CSV file using the free tool at tunemymusic.com, then upload that file to the generator. Every song becomes a bingo square and the cards are randomized automatically."}},
+    {"@type":"Question","name":"Does it work with Apple Music and YouTube Music?","acceptedAnswer":{"@type":"Answer","text":"Yes. The import accepts a playlist exported from any service TuneMyMusic supports, including Spotify, Apple Music, YouTube Music, Tidal, and Amazon Music. The generator reads the exported file, so the service you started from does not matter."}},
+    {"@type":"Question","name":"How many songs do I need to make music bingo cards?","acceptedAnswer":{"@type":"Answer","text":"At least 25 songs, which fills one 5x5 card. More songs mean less repetition across cards, so most hosts import 50 to 75 for a full night."}},
+    {"@type":"Question","name":"How many bingo cards can I generate at once?","acceptedAnswer":{"@type":"Answer","text":"Up to 999 cards per batch, each with a different randomized arrangement of your songs. Print them as a single PDF or download them as a ZIP of images."}},
+    {"@type":"Question","name":"Should the squares show song titles or artist names?","acceptedAnswer":{"@type":"Answer","text":"Song titles are the standard and easiest for players to match. Artist names make a harder game, and the Title - Artist format suits themed nights where several songs share a title. You can switch between all three at import."}},
+    {"@type":"Question","name":"Is the music bingo generator free?","acceptedAnswer":{"@type":"Answer","text":"Designing, previewing, and downloading cards is free, with a demo watermark on the output. A Day Pass at $6.99 for 24 hours, Monthly at $24, or Annual at $116 removes the watermark from PDFs, images, and share links. No account is needed to start."}},
+    {"@type":"Question","name":"Can players use the cards on their phones?","acceptedAnswer":{"@type":"Answer","text":"Yes. Switch to Share Online and each card gets its own link that players open on any device, which works well for remote teams and hybrid events. You can also print PDFs for in-person nights."}}
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F2F5F9;--sf:#FFFFFF;--sf2:#EDF1F7;--sf3:#E1E8F1;--bd:rgba(18,42,66,.14);--gn:#E8940F;--gnd:rgba(232,148,15,.13);--or:#E05C2A;--tx:#1D2C3C;--mt:#5B7186;--tx2:#33475C;--hdr:rgba(255,255,255,.94);--r:12px;--rs:8px}
+:root[data-theme="dark"]{--bg:#1E3048;--sf:#263A57;--sf2:#2F4568;--sf3:#395278;--bd:rgba(255,255,255,.12);--gn:#F5A623;--gnd:rgba(245,166,35,.12);--tx:#EEF3FA;--mt:#93A9BF;--tx2:#C8D8E8;--hdr:rgba(24,39,60,.92)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--tx);font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:var(--gn);text-decoration:none}
+a:hover{text-decoration:underline}
+header{background:var(--hdr);backdrop-filter:blur(16px);border-bottom:1px solid var(--bd);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--tx);text-decoration:none}
+.logo span{color:var(--gn)}
+.logo:hover{text-decoration:none}
+.nav-links{display:flex;gap:20px;align-items:center}
+.nav-links a{font-size:13.5px;color:var(--mt);transition:color .15s}
+.nav-links a:hover{color:var(--tx);text-decoration:none}
+.nav-cta{background:var(--gn);color:#0F1B2D!important;padding:7px 16px;border-radius:20px;font-weight:700;font-size:13.5px}
+.nav-cta:hover{background:#f7bb44;text-decoration:none!important}
+
+.wrap{max-width:760px;margin:0 auto;padding:0 24px 80px}
+
+/* HERO */
+.hero{padding:56px 0 40px;border-bottom:1px solid var(--bd);margin-bottom:40px}
+.breadcrumb{font-size:13px;color:var(--mt);margin-bottom:16px}
+.breadcrumb a{color:var(--mt)}
+.breadcrumb a:hover{color:var(--gn);text-decoration:none}
+.eyebrow{display:inline-block;background:var(--gnd);color:var(--gn);border:1px solid rgba(245,166,35,.25);padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:16px}
+.hero h1{font-size:clamp(30px,5.5vw,46px);font-weight:700;line-height:1.15;margin-bottom:18px;color:var(--tx)}
+.answer{font-size:18px;color:var(--tx2);line-height:1.6;margin-bottom:24px}
+.answer strong{color:var(--tx);font-weight:600}
+.hero-cta{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn-primary{display:inline-block;background:var(--gn);color:#0F1B2D;padding:14px 32px;border-radius:30px;font-weight:700;font-size:16px;transition:all .15s;text-decoration:none}
+.btn-primary:hover{background:#f7bb44;transform:translateY(-2px);text-decoration:none}
+.cta-sub{font-size:13.5px;color:var(--mt)}
+
+/* SERVICE ROW */
+.services{display:flex;flex-wrap:wrap;gap:8px;margin:28px 0 0}
+.svc{background:var(--sf2);border:1px solid var(--bd);border-radius:20px;padding:5px 14px;font-size:13px;color:var(--tx2);font-weight:500}
+
+/* BODY */
+.body h2{font-size:25px;font-weight:700;margin:44px 0 14px;color:var(--tx);padding-top:8px;border-top:1px solid var(--bd)}
+.body h3{font-size:18px;font-weight:600;margin:28px 0 10px;color:var(--tx)}
+.body p{font-size:15.5px;color:var(--tx2);margin-bottom:16px;line-height:1.75}
+.body ul{padding-left:22px;margin-bottom:16px}
+.body li{font-size:15.5px;color:var(--tx2);margin-bottom:8px;line-height:1.65}
+.body strong{color:var(--tx);font-weight:600}
+
+.steps{margin:20px 0 28px}
+.step{display:flex;gap:16px;margin-bottom:14px;padding:18px 20px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs)}
+.step-num{font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--gn);line-height:1;flex-shrink:0;width:28px}
+.step-body{font-size:15px;color:var(--tx2);line-height:1.65}
+.step-body strong{color:var(--tx)}
+/* only the leading label breaks to its own line — inline strongs stay inline */
+.step-body>strong:first-child{display:block;margin-bottom:3px}
+
+.tip{background:var(--gnd);border:1px solid rgba(245,166,35,.25);border-radius:var(--rs);padding:16px 20px;margin:24px 0}
+.tip p{color:var(--tx2);margin:0;font-size:15px}
+.tip strong{color:var(--gn)}
+.note{background:var(--sf2);border:1px solid var(--bd);border-radius:var(--rs);padding:16px 20px;margin:24px 0}
+.note p{color:var(--mt);margin:0;font-size:14.5px;line-height:1.6}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px;margin:24px 0}
+.gcard{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);padding:20px}
+.gcard h4{font-size:15.5px;font-weight:700;margin-bottom:6px;color:var(--tx)}
+.gcard p{font-size:14px;color:var(--mt);margin:0;line-height:1.6}
+
+.inline-cta{background:var(--sf);border:1px solid rgba(245,166,35,.25);border-radius:var(--r);padding:24px 28px;margin:36px 0;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.inline-cta p{font-size:15px;color:var(--tx2);margin:0;flex:1}
+.inline-cta a{background:var(--gn);color:#0F1B2D;padding:11px 24px;border-radius:24px;font-weight:700;font-size:14.5px;white-space:nowrap;flex-shrink:0;transition:background .15s;text-decoration:none}
+.inline-cta a:hover{background:#f7bb44;text-decoration:none}
+
+/* FAQ */
+.faq-section{margin-top:48px}
+.faq-section h2{font-size:25px;font-weight:700;margin-bottom:20px;color:var(--tx);border-top:1px solid var(--bd);padding-top:44px}
+.faq-item{border:1px solid var(--bd);border-radius:var(--rs);margin-bottom:8px;overflow:hidden;cursor:pointer}
+.faq-q{width:100%;background:var(--sf);border:none;padding:15px 18px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.faq-q:hover{background:var(--sf2)}
+.chev{font-size:11px;color:var(--mt);transition:transform .2s;flex-shrink:0;margin-left:12px}
+.faq-a{display:none;padding:0 18px 14px;background:var(--sf);font-size:14.5px;color:var(--tx2);line-height:1.65}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .chev{transform:rotate(180deg)}
+
+.closing-cta{text-align:center;padding:48px 20px;margin-top:48px;border-top:1px solid var(--bd)}
+.closing-cta h3{font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:1.5px;margin-bottom:10px}
+.closing-cta p{font-size:15px;color:var(--mt);margin-bottom:24px}
+.closing-cta a{display:inline-block;background:var(--gn);color:#0F1B2D;padding:14px 34px;border-radius:30px;font-weight:700;font-size:16px;transition:background .15s;text-decoration:none}
+.closing-cta a:hover{background:#f7bb44;text-decoration:none}
+
+footer{text-align:center;padding:24px;font-size:12.5px;color:var(--mt);border-top:1px solid var(--bd)}
+footer a{color:var(--mt);margin:0 8px;transition:color .15s;text-decoration:none}
+footer a:hover{color:var(--tx)}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">BINGO<span>CARD</span>GENERATOR.ONLINE</a>
+  <div class="nav-links">
+    <a href="/">Generator</a>
+    <a href="/blog/">Blog</a>
+    <a href="/" class="nav-cta">Start Creating</a>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="breadcrumb"><a href="/">Home</a> › Music Bingo Generator</div>
+    <div class="eyebrow">Music Bingo</div>
+    <h1>Music Bingo Generator — Song Bingo Cards From Any Playlist</h1>
+    <p class="answer">To turn a playlist into music bingo cards: <strong>export the playlist as a TXT or CSV file, upload it here, and the generator fills each bingo square with a song</strong> and randomizes a unique card for every player. It works with Spotify, Apple Music, YouTube Music, Tidal, and Amazon Music, takes about ten minutes, and needs no account.</p>
+    <div class="hero-cta">
+      <a href="/" class="btn-primary" onclick="gtag('event','pillar_cta_click',{placement:'hero',page:'music_bingo'})">Make Music Bingo Cards →</a>
+      <span class="cta-sub">Free to start · no login · print or play online</span>
+    </div>
+    <div class="services">
+      <span class="svc">Spotify</span>
+      <span class="svc">Apple Music</span>
+      <span class="svc">YouTube Music</span>
+      <span class="svc">Tidal</span>
+      <span class="svc">Amazon Music</span>
+      <span class="svc">…or type songs by hand</span>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <h2>How to make music bingo cards from a playlist</h2>
+    <p>The whole point of music bingo is that the squares are songs instead of numbers. You play a clip, players find the track on their card and mark it, and the first complete line wins. The slow part has always been building the cards — writing out 50 song titles by hand, then shuffling them into different arrangements so no two players have the same card. That is the part this does for you.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body"><strong>Export your playlist as a text file</strong>Go to <a href="https://www.tunemymusic.com" target="_blank" rel="noopener">tunemymusic.com</a>, choose your music service, pick the playlist, and export it as <strong>TXT</strong> or <strong>CSV</strong>. It is free and does not need an account. This is also the step that makes the service you use irrelevant — anything TuneMyMusic can read, the generator can use.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body"><strong>Upload the file in Step 01</strong>Open the playlist import panel in the generator and drop in your file. Then choose what the squares say: <strong>song title</strong> (the standard), <strong>artist name</strong> (harder), or <strong>Title – Artist</strong> (useful for themed nights where two songs share a name).</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body"><strong>Customize for legibility</strong>Pick a font, a color theme, and a card title. Song titles run long, so the font-size slider matters more here than in word bingo — the character-per-line hint tells you when titles will start wrapping awkwardly. Long words are auto-hyphenated.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body"><strong>Print or share</strong>Download a print-ready PDF — portrait for one card per page, landscape for two with a cut line — or switch to Share Online and send each player a link to their own card.</div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <p><strong>Minimum 25 songs.</strong> A 5×5 card needs 25 squares, so the download unlocks at 25 tracks. Import 50–75 if you want to run multiple rounds without the same songs carrying every card.</p>
+    </div>
+
+    <div class="inline-cta">
+      <p>Got a playlist ready? Import it and see the cards before you decide anything.</p>
+      <a href="/" onclick="gtag('event','pillar_cta_click',{placement:'mid',page:'music_bingo'})">Open the Generator →</a>
+    </div>
+
+    <h2>Why song bingo needs a different generator</h2>
+    <p>Most bingo card makers assume short squares — numbers, vocabulary words, office phrases. Song titles break that assumption, and it shows up in four specific ways:</p>
+    <div class="grid">
+      <div class="gcard">
+        <h4>Long text has to stay readable</h4>
+        <p>"Everybody Wants to Rule the World" is 33 characters. Fixed-size cells either clip it or shrink it to nothing. Adjustable cell font size plus auto-hyphenation keeps it legible at print size.</p>
+      </div>
+      <div class="gcard">
+        <h4>Bulk import, not retyping</h4>
+        <p>Fifty songs typed by hand is a half-hour of work and a guaranteed typo. A playlist export turns that into one upload.</p>
+      </div>
+      <div class="gcard">
+        <h4>Title, artist, or both</h4>
+        <p>Different games need different squares. Switching format at import means you can run an easy round and a hard round from the same playlist.</p>
+      </div>
+      <div class="gcard">
+        <h4>Enough unique cards for a full room</h4>
+        <p>Up to 999 randomized cards per batch, so a pub night or a school assembly does not end up with duplicate winners.</p>
+      </div>
+    </div>
+
+    <h2>Print night or online night</h2>
+    <p>Both work from the same set of songs. For an in-person night, download the PDF and print — landscape gives you two cards per sheet with a cut line, and the eco black-and-white theme keeps toner costs sane when you are printing sixty cards. For a remote or hybrid night, switch to Share Online: every card becomes its own link that players open on a phone or laptop, and you play the music over the video call. Free downloads and share links carry a demo watermark; a pass removes it.</p>
+
+    <div class="note">
+      <p>We host music bingo and trivia nights every week through our parent company, <a href="https://www.fatcityentertainment.com/" target="_blank" rel="noopener">Fat City Entertainment</a> — the defaults here (25-song minimum, clip-length advice, the two-cards-per-page layout) come from running these games in front of real rooms, not from guessing.</p>
+    </div>
+
+    <h2>Playlist ideas that reliably work</h2>
+    <p>Theme beats variety. A specific theme is easier to promote and easier for players to feel confident about, which keeps the energy up:</p>
+    <ul>
+      <li><strong>Decade nights</strong> — 80s, 90s, 2000s. The most dependable draw, and the easiest playlists to source.</li>
+      <li><strong>One-hit wonders</strong> — great for a crowd that thinks it knows music.</li>
+      <li><strong>Songs from movies</strong> — wide appeal across age ranges.</li>
+      <li><strong>Genre nights</strong> — 90s R&amp;B, country classics, pop punk, yacht rock.</li>
+      <li><strong>Holiday music</strong> — a December staple that fills rooms.</li>
+      <li><strong>Local or staff picks</strong> — a playlist built from the room itself always outperforms its song quality.</li>
+    </ul>
+    <p>For the rest of the night — clip length, round structure, verifying a winning card, prizes — see the full walkthrough: <a href="/blog/how-to-run-a-music-bingo-night.html">How to Run a Music Bingo Night</a>.</p>
+
+    <!-- FAQ -->
+    <div class="faq-section">
+      <h2>Music bingo generator FAQ</h2>
+
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <button class="faq-q">Can I make bingo cards from a Spotify playlist? <span class="chev">▼</span></button>
+        <div class="faq-a">Yes. Export your Spotify playlist as a TXT or CSV file using the free tool at tunemymusic.com, then upload that file to the generator. Every song becomes a bingo square and the cards are randomized automatically. There is no Spotify login step — the export file is all the generator needs.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <button class="faq-q">Does it work with Apple Music and YouTube Music? <span class="chev">▼</span></button>
+        <div class="faq-a">Yes. The import accepts a playlist exported from any service TuneMyMusic supports, including Spotify, Apple Music, YouTube Music, Tidal, and Amazon Music. Because the generator reads the exported file rather than connecting to an account, the service you started from does not matter.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <button class="faq-q">How many songs do I need? <span class="chev">▼</span></button>
+        <div class="faq-a">At least 25, which fills one 5×5 card — the download button unlocks at that point. More songs mean less repetition across cards, so most hosts import 50 to 75 for a full night with multiple rounds.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <button class="faq-q">How many bingo cards can I generate at once? <span class="chev">▼</span></button>
+        <div class="faq-a">Up to 999 per batch, each with a different randomized arrangement of your songs. Print them as one PDF or download them as a ZIP of images.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <button class="faq-q">Should the squares show song titles or artist names? <span class="chev">▼</span></button>
+        <div class="faq-a">Song titles are the standard and the easiest for players to match. Artist names make a noticeably harder game. The Title – Artist format suits themed nights where several songs share a title. You can switch between all three at import, so you can run an easy round and a hard round from one playlist.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <button class="faq-q">Is it free? <span class="chev">▼</span></button>
+        <div class="faq-a">Designing, previewing, and downloading cards is free, with a demo watermark on the output. A Day Pass at $6.99 for 24 hours, Monthly at $24, or Annual at $116 removes the watermark from PDFs, images, and share links. No account is needed to start.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <button class="faq-q">Can players use the cards on their phones? <span class="chev">▼</span></button>
+        <div class="faq-a">Yes. Switch to Share Online and each card gets its own link players open on any device — this is what remote teams and hybrid events use. You can also print PDFs for in-person nights, from the same set of songs.</div>
+      </div>
+    </div>
+
+    <div class="closing-cta">
+      <h3>Turn Your Playlist Into Bingo Cards</h3>
+      <p>Import a playlist, pick a theme, print or share. Free to start, no account.</p>
+      <a href="/" onclick="gtag('event','pillar_cta_click',{placement:'footer',page:'music_bingo'})">Make Music Bingo Cards →</a>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 BingoCardGenerator.Online · New Brunswick, Canada</p>
+  <p style="margin-top:8px">Made by <a href="https://www.fatcityentertainment.com/">Fat City Entertainment</a> — music bingo &amp; trivia games tested on live audiences.</p>
+  <p style="margin-top:8px">
+    <a href="/">Generator</a>
+    <a href="/blog/">Blog</a>
+    <a href="/terms.html">Terms</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/refund.html">Refund Policy</a>
+  </p>
+</footer>
+</body>
+</html>
