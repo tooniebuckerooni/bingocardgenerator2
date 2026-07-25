@@ -4,13 +4,14 @@ on:
   push:
     branches: [main]
 
-# Both this workflow and pages-preview.yml force-push to gh-pages, and on a
-# merge they fire at the same time — the loser dies with
-# "cannot lock ref 'refs/heads/gh-pages'". A group shared with the preview
-# workflow serialises the two writers instead. Don't cancel in progress: a
-# half-finished deploy would leave gh-pages mid-push.
+# Only serialise this workflow against itself. A group shared with
+# pages-preview.yml looked like the fix for the gh-pages ref-lock race but is
+# worse: on a merge both workflows enter the group at once, and GitHub cancels
+# a *pending* run when a newer one joins — regardless of cancel-in-progress —
+# so the production deploy was silently cancelled instead of loudly failing.
+# The race itself is handled by force: false on the deploy step below.
 concurrency:
-  group: gh-pages-write
+  group: pages-deploy
   cancel-in-progress: false
 
 jobs:
@@ -29,6 +30,12 @@ jobs:
           folder: .
           target-folder: .
           clean: true
+          # gh-pages carries two independent deployments: this one at the root
+          # and pr-preview/* from pages-preview.yml. force-push therefore loses
+          # the ref-lock race whenever both run together. force: false makes the
+          # action rebase onto whatever landed first and retry (attempt-limit,
+          # default 3) instead of being rejected.
+          force: false
           # Don't let the production deploy wipe out active PR preview
           # subdirectories deployed by pages-preview.yml.
           clean-exclude: |
