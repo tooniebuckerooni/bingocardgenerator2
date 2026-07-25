@@ -257,6 +257,43 @@ nav{max-width:1140px;margin:0 auto;padding:0 24px;height:58px;display:flex;align
 .bun2{background:none;color:var(--mt);border:1px solid var(--bd);padding:6px 14px;border-radius:20px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all var(--t);white-space:nowrap}
 .bun2:hover{border-color:var(--gn);color:var(--gn)}
 .bun:hover{background:#ff8055}
+/* Mobile nav — .nr is a no-wrap flex row, so without these it sets a min-content
+   width wider than a phone viewport and drags the whole document into
+   horizontal scroll. Shed non-essentials progressively: the hidden links are all
+   in the footer, and license entry is also reachable from the Go Pro box. */
+/* Thresholds are deliberately generous: the full nav needs ~1000px of content
+   width, and media queries measure the viewport including the scrollbar while
+   the content box excludes it — tight breakpoints leave a broken sliver. */
+@media(max-width:1040px){
+  nav{padding:0 16px}
+  .nl{font-size:17px;letter-spacing:1px}
+  .nr{gap:10px}
+  .nr .na[href="/terms.html"],.nr .na[href="/privacy.html"],.nr .na[href="/refund.html"]{display:none}
+}
+@media(max-width:760px){
+  .nl{font-size:13.5px;letter-spacing:.5px}
+  .nr .na{display:none}
+  #nkey{display:none}
+  .nr{gap:8px}
+  .bun{padding:7px 13px;font-size:12.5px}
+  .bun2{padding:6px 10px}
+}
+/* Narrow phones: the 25-character logo is ~300px on its own at the base size,
+   so it has to come down further to share the bar with the Upgrade CTA. */
+@media(max-width:440px){
+  nav{padding:0 12px}
+  .nl{font-size:11.5px;letter-spacing:0}
+  .nr{gap:6px}
+  .bun{padding:6px 11px;font-size:12px}
+  .bun2{padding:5px 8px}
+}
+/* Smallest phones (~320px): drop the theme toggle too, so the Upgrade CTA
+   always stays on screen. Theme still persists from localStorage. */
+@media(max-width:360px){
+  .nl{font-size:10.5px}
+  #ntheme{display:none}
+  .bun{padding:6px 9px;font-size:11.5px}
+}
 
 /* HERO */
 .hero{max-width:1140px;margin:0 auto;padding:56px 24px 36px}
@@ -306,16 +343,22 @@ nav{max-width:1140px;margin:0 auto;padding:0 24px;height:58px;display:flex;align
 
 /* SITE FOOTER */
 .site-footer{background:var(--sf);border-top:1px solid var(--bd);padding:24px;text-align:center;font-size:12.5px;color:var(--mt)}
-.fce-chip{display:inline-block;background:#101A28;border:1px solid rgba(245,166,35,.25);border-radius:12px;padding:8px 18px;line-height:0;transition:border-color var(--t)}
+.fce-chip{display:inline-block;background:#101A28;border:1px solid rgba(245,166,35,.25);border-radius:12px;padding:8px 18px;line-height:0;transition:border-color var(--t);max-width:100%}
 .fce-chip:hover{border-color:rgba(245,166,35,.6)}
-.fce-chip img{width:240px;height:auto;max-width:80vw}
+/* max-width in % not vw: vw ignores the parent's padding (and counts the
+   scrollbar), so the chip could still overflow its container on small phones. */
+.fce-chip img{width:240px;height:auto;max-width:100%}
 .site-footer a{color:var(--mt);text-decoration:none;margin:0 8px}
 .site-footer a:hover{color:var(--tx)}
 .hs{font-size:18px;color:var(--mt);font-weight:300;max-width:480px;line-height:1.55}
 
 /* LAYOUT */
-.pb{max-width:1140px;margin:0 auto;padding:0 24px 80px;display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start}
-@media(max-width:860px){.pb{grid-template-columns:1fr}.sb{order:-1}}
+.pb{max-width:1140px;margin:0 auto;padding:0 24px 80px;display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:28px;align-items:start}
+/* minmax(0,…) not 1fr: a bare 1fr resolves to minmax(auto,1fr), so a child's
+   min-content width can push the column past the padded container and put the
+   page into horizontal scroll on narrow phones. */
+@media(max-width:860px){.pb{grid-template-columns:minmax(0,1fr)}.sb{order:-1}}
+@media(max-width:400px){.pb{padding:0 14px 80px}.sc{padding-left:18px;padding-right:18px}}
 
 /* STEP CARD */
 .sc{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:32px;margin-bottom:22px;position:relative;overflow:hidden}
@@ -956,6 +999,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
   <p style="margin-top:10px">Made by <a href="https://www.fatcityentertainment.com/" style="color:var(--gn)" onclick="gev('fce_link_click',{placement:'footer_text'})">Fat City Entertainment</a> — music bingo &amp; trivia games tested on live audiences.</p>
   <p style="margin-top:8px">© 2026 BingoCardGenerator.Online · New Brunswick, Canada</p>
   <p style="margin-top:8px">
+    <a href="/music-bingo-generator.html">Music Bingo</a>
     <a href="/terms.html">Terms &amp; Conditions</a>
     <a href="/privacy.html">Privacy Policy</a>
     <a href="/refund.html">Refund Policy</a>

@@ -33,6 +33,21 @@ header{background:var(--hdr);backdrop-filter:blur(16px);border-bottom:1px solid 
 .nav-links a:hover{color:var(--tx)}
 .nav-cta{background:var(--gn);color:#0F1B2D;padding:7px 16px;border-radius:20px;font-weight:700;font-size:13.5px;transition:background .15s}
 .nav-cta:hover{background:#f7bb44;color:#0F1B2D}
+/* Mobile nav — the header flex row overflows a phone viewport and puts the whole
+   page into horizontal scroll. Shrink the logo and keep only the CTA; the
+   secondary links are all repeated in the footer. */
+@media(max-width:700px){
+  header{padding:0 16px}
+  .logo{font-size:14px;letter-spacing:1px}
+  .nav-links{gap:12px}
+  .nav-links a:not(.nav-cta){display:none}
+  .nav-cta{padding:7px 14px;font-size:13px}
+}
+@media(max-width:440px){
+  header{padding:0 12px}
+  .logo{font-size:12px;letter-spacing:.5px}
+  .nav-cta{padding:6px 12px;font-size:12px}
+}
 
 .hero{max-width:900px;margin:0 auto;padding:56px 24px 40px}
 .ey{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gn);margin-bottom:12px}
