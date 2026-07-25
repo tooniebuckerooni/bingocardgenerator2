@@ -46,6 +46,15 @@ header {
   text-decoration: none;
 }
 .logo span { color: var(--green); }
+/* Narrow phones: shrink the logo so the header stops forcing horizontal scroll. */
+@media (max-width: 560px) {
+  header { padding: 0 16px; }
+  .logo { font-size: 13.5px; letter-spacing: 1px; }
+}
+@media (max-width: 440px) {
+  header { padding: 0 12px; }
+  .logo { font-size: 12px; letter-spacing: .5px; }
+}
 .nav-back {
   font-size: 13.5px;
   color: var(--muted);
