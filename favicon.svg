@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect x="24" y="24" width="464" height="464" rx="56" fill="#fffbf0" stroke="#1e2952" stroke-width="14"/>
+  <path d="M24 80 a56 56 0 0 1 56 -56 h304 a56 56 0 0 1 56 56 v62 h-416 z" fill="#c41e3a"/>
+  <text x="256" y="118" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="96" fill="#fffbf0">B</text>
+  <g stroke="#d2c8b4" stroke-width="8">
+    <line x1="197.3" y1="158" x2="197.3" y2="438"/>
+    <line x1="314.7" y1="158" x2="314.7" y2="438"/>
+    <line x1="80" y1="251.3" x2="432" y2="251.3"/>
+    <line x1="80" y1="344.7" x2="432" y2="344.7"/>
+  </g>
+  <circle cx="138.7" cy="204.7" r="31" fill="none" stroke="#96142c" stroke-width="10"/>
+  <circle cx="373.3" cy="204.7" r="31" fill="none" stroke="#96142c" stroke-width="10"/>
+  <circle cx="256" cy="298" r="35" fill="#c41e3a"/>
+  <circle cx="138.7" cy="391.3" r="31" fill="none" stroke="#96142c" stroke-width="10"/>
+  <circle cx="373.3" cy="391.3" r="31" fill="none" stroke="#96142c" stroke-width="10"/>
+</svg>
