@@ -10,7 +10,7 @@
 <link rel="shortcut icon" href="/favicon.ico">
 <script>try{document.documentElement.dataset.theme=localStorage.getItem('bcg_theme')||'light';}catch(e){}</script>
 <title>Bingo Card Generator | Create Custom Printable &amp; Digital Bingo Cards</title>
-<meta name="description" content="Create custom bingo cards in minutes — no login required. Make printable and digital bingo cards for classrooms, parties, and events, or music bingo cards from any Spotify or Apple Music playlist.">
+<meta name="description" content="Create custom bingo cards in minutes — no login required. Printable and digital cards for classrooms, parties, events, and music bingo nights.">
 <meta name="robots" content="index, follow">
 <meta name="keywords" content="bingo card generator, music bingo, custom bingo cards, printable bingo cards, free bingo generator, trivia bingo, bingo card maker">
 <link rel="canonical" href="https://bingocardgenerator.online/">
@@ -623,6 +623,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
     <a href="/" class="nl">BINGO<span>CARD</span>GENERATOR.ONLINE</a>
     <div class="nr">
       <a href="/music-bingo-generator.html" class="na">Music Bingo</a>
+      <a href="/custom-bingo-cards.html" class="na">Custom Cards</a>
       <a href="/terms.html" class="na">Terms</a>
       <a href="/privacy.html" class="na">Privacy</a>
       <a href="/refund.html" class="na">Refunds</a>
@@ -637,6 +638,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
   <!-- Mobile menu — holds the links hidden from the bar at narrow widths -->
   <div class="mnav" id="mnav">
     <a href="/music-bingo-generator.html">Music Bingo</a>
+    <a href="/custom-bingo-cards.html">Custom Bingo Cards</a>
     <a href="/blog/">Blog</a>
     <button type="button" onclick="togNav();oUnlock()">🔑&nbsp; Activate license</button>
     <button type="button" id="mtheme" onclick="togTheme()">🌙&nbsp; Switch to dark theme</button>
@@ -940,7 +942,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
   <div class="section-grid">
     <div class="content-card">
       <h2>Custom Bingo Cards for <span>Any Occasion</span></h2>
-      <p>Make bingo cards that fit your exact needs. Whether you are planning a classroom activity, a team-building exercise, a party game, or a special event, you can create bingo cards that match your audience and purpose.</p>
+      <p>Make bingo cards that fit your exact needs. Whether you are planning a classroom activity, a team-building exercise, a party game, or a special event, you can create bingo cards that match your audience and purpose. See our <a href="/custom-bingo-cards.html" style="color:var(--gn)">full guide to custom bingo cards</a> for ideas and templates.</p>
     </div>
     <div class="content-card">
       <h2>Printable and <span>Digital Bingo Cards</span></h2>
@@ -965,7 +967,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
   <div class="section-grid">
     <div class="content-card">
       <h2>Great for Teachers, <span>Hosts, and Teams</span></h2>
-      <p>Teachers can use bingo cards for lessons and review games. Event hosts can use them for parties and celebrations. Teams and trainers can use them for icebreakers, workshops, and group activities.</p>
+      <p>Teachers can use bingo cards for lessons and review games — see our <a href="/blog/bingo-for-teachers-classroom-ideas.html" style="color:var(--gn)">classroom bingo ideas</a>. Event hosts can use them for parties and celebrations, from <a href="/blog/bingo-night-ideas-parties-weddings-corporate-events.html" style="color:var(--gn)">weddings to corporate events</a>. Teams and trainers can use them for icebreakers, workshops, and group activities.</p>
     </div>
     <div class="content-card">
       <h2>Fast, Simple, <span>and Flexible</span></h2>
@@ -1031,6 +1033,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
   <p style="margin-top:8px">© 2026 BingoCardGenerator.Online · New Brunswick, Canada</p>
   <p style="margin-top:8px">
     <a href="/music-bingo-generator.html">Music Bingo</a>
+    <a href="/custom-bingo-cards.html">Custom Bingo Cards</a>
     <a href="/terms.html">Terms &amp; Conditions</a>
     <a href="/privacy.html">Privacy Policy</a>
     <a href="/refund.html">Refund Policy</a>
@@ -1344,6 +1347,8 @@ function wmPdfPage(doc,PW,PH){
   doc.setTextColor(...(hasOp?(dark?[255,255,255]:[60,60,60]):(dark?[85,85,85]:[214,214,214])));
   for(let i=0;i<3;i++)doc.text(WM_TEXT,PW/2,PH*(.25+.25*i),{align:'center',angle:20});
   if(hasOp)doc.restoreGraphicsState();
+  // Free exports double as a backlink — clicking the watermark band opens the site.
+  try{doc.link(0,PH*.15,PW,PH*.7,{url:'https://bingocardgenerator.online/'});}catch(e){}
 }
 function actPro(){
   isPro=true;

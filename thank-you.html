@@ -74,30 +74,40 @@ footer a:hover{color:var(--text)}
 
 <!-- Event snippet for Purchase conversion page -->
 <script>
+  const qp = new URLSearchParams(window.location.search);
+  const num = (...keys) => { for (const k of keys) { const v = parseFloat(qp.get(k)); if (!isNaN(v)) return v; } return null; };
+  const str = (...keys) => { for (const k of keys) { const v = qp.get(k); if (v) return v; } return ''; };
+
+  // Real order data, if Lemon Squeezy appended it to this redirect — falls back to a
+  // placeholder if it didn't. The diagnostic event below reports which params actually
+  // show up on a real order so the key names here can be corrected once known.
+  const orderValue = num('total', 'amount', 'price');
+  const orderId = str('order_id', 'checkout_id', 'id');
+  const orderCurrency = str('currency') || 'CAD';
+
   gtag('event', 'conversion', {
       'send_to': 'AW-18347447832/5IdRCL3WidYcEJis36xE',
-      'value': 1.0,
-      'currency': 'CAD',
-      'transaction_id': ''
+      'value': orderValue ?? 1.0,
+      'currency': orderCurrency,
+      'transaction_id': orderId
   });
-</script>
 
-<!--
-Optional upgrade: report the real purchase value instead of the CA$1 fallback above.
-Only enable this once you've confirmed the actual query-string parameter names Lemon
-Squeezy appends to this redirect URL (check one real order first) — then replace the
-block above with this one:
-
-<script>
-  const params = new URLSearchParams(window.location.search);
-  gtag('event', 'conversion', {
-      'send_to': 'AW-18347447832/5IdRCL3WidYcEJis36xE',
-      'value': parseFloat(params.get('total') || 1.0),
-      'currency': 'CAD',
-      'transaction_id': params.get('order_id') || ''
+  // GA4 ecommerce purchase event — this is what the Ecommerce report reads,
+  // and was missing entirely before (the block above only fired a Google Ads
+  // conversion, which is a separate system from GA4's Ecommerce report).
+  gtag('event', 'purchase', {
+      transaction_id: orderId || ('bcg_' + Date.now()),
+      value: orderValue ?? 1.0,
+      currency: orderCurrency,
+      items: [{ item_id: 'bcg_pro', item_name: 'BingoCardGenerator.Online Pro' }]
   });
+
+  // Diagnostic only: reports which query-param KEYS (never values, so nothing
+  // sensitive is logged) actually arrive on this redirect, so the real Lemon
+  // Squeezy param names can be confirmed from the next live sale instead of a
+  // manual test purchase. Safe to remove once orderValue/orderId are confirmed.
+  gtag('event', 'thankyou_redirect_params', { keys: [...qp.keys()].join('|') || '(none)' });
 </script>
--->
 
 <footer>
   <p>© 2026 BingoCardGenerator.Online · New Brunswick, Canada &nbsp;·&nbsp;
