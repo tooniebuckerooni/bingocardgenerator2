@@ -2159,6 +2159,8 @@ async function openGal(){
       dlb.onclick=()=>dlCardPng(cv,i+1,title);acts.appendChild(dlb);
       const lb=document.createElement('button');lb.className='gcb';lb.textContent='🔗 Link';
       lb.onclick=()=>cpLink(words,seed,i+1,title,lb);acts.appendChild(lb);
+      const eb=document.createElement('button');eb.className='gcb';eb.textContent='</> Embed';
+      eb.onclick=()=>cpEmbed(words,seed,i+1,title,eb);acts.appendChild(eb);
       cell.appendChild(hdr);cell.appendChild(img);grid.appendChild(cell);
     }
     document.getElementById('gov').classList.add('open');
@@ -2191,6 +2193,21 @@ async function cpLink(words,seed,n,title,btn){
   if(!url){toast('Word list too large for a share link — download PNG instead.','err');return;}
   try{await navigator.clipboard.writeText(url);btn.textContent='✓ Copied';btn.classList.add('cp');setTimeout(()=>{btn.textContent='🔗 Link';btn.classList.remove('cp');},2200);}
   catch(e){toast('Clipboard failed — try right-clicking.','err');}
+}
+
+// Same encoded card URL as cpLink(), wrapped as an <iframe> a teacher can
+// paste onto their own site — free exports stay watermarked either way.
+async function cpEmbed(words,seed,n,title,btn){
+  const clean=await exportAuth('embed');
+  const url=buildLink(words,seed,n,title,clean);
+  if(!url){toast('Word list too large to embed — download PNG instead.','err');return;}
+  const code=`<iframe src="${url}" width="480" height="860" frameborder="0" style="border:1px solid #ccc;border-radius:8px;max-width:100%"></iframe>`;
+  try{
+    await navigator.clipboard.writeText(code);
+    btn.textContent='✓ Copied';btn.classList.add('cp');
+    gev('embed_code_copied',{is_pro:clean});
+    setTimeout(()=>{btn.textContent='</> Embed';btn.classList.remove('cp');},2200);
+  }catch(e){toast('Clipboard failed — try right-clicking.','err');}
 }
 
 async function dlZip(){
