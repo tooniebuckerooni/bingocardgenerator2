@@ -1,10 +1,12 @@
 # Brand & Entity Plan — Gen 2 × Fat City Entertainment
 
-> Status: planned, NOT yet implemented. Approved direction from Dustin (July 2026):
-> keep the bingocardgenerator.online domain, adopt "by Fat City Entertainment"
-> attribution, add a subtle pre-made-games pathway to the FCE store, and build
-> reciprocal links with fatcityentertainment.com (FCE side handled in a separate
-> chat — see WS-C for the hand-off prompt).
+> Status: WS-A and WS-B are DONE. Shipped 2026-07-19 (footer attribution, FAQ,
+> index.html schema), with the remaining gap — Organization/publisher schema
+> was missing from music-bingo-generator.html and all 3 blog posts — closed
+> 2026-08-06. WS-C (FCE side) is NOT started: confirmed 2026-08-06 that
+> fatcityentertainment.com's legacy generator is still live and no reciprocal
+> links to Gen 2 exist yet. The hand-off prompt below is unchanged and ready
+> to use whenever that side gets picked up.
 
 ## Positioning guardrail (applies to every workstream)
 
@@ -26,6 +28,8 @@ the harder head term over time.
 ---
 
 ## WS-A — Entity attribution on Gen 2 (this repo)
+
+**Status: DONE** (2026-07-19 + completed 2026-08-06).
 
 **Goal:** make "Bingo Card Generator (Pro) by Fat City Entertainment" a clear,
 machine-readable entity so search engines and AI assistants associate the tool
@@ -64,6 +68,9 @@ carry publisher.
 ---
 
 ## WS-B — "Pre-made games" pathway to the FCE store (this repo)
+
+**Status: DONE** (2026-07-19). FAQ entry, schema, and the inline Step-01
+pathway are all live on index.html, instrumented with `fce_store_click`.
 
 **Goal:** catch visitors who don't want to build a game ("pre-made bingo
 game", "ready-made music bingo") and route them to the FCE store — added ease
@@ -104,6 +111,9 @@ instrumented.
 ---
 
 ## WS-C — FCE.com side (delegated to the other chat)
+
+**Status: NOT STARTED.** Confirmed 2026-08-06 — fatcityentertainment.com's
+legacy generator is still live, so this side hasn't been touched yet.
 
 **Goal:** editorial, natural backlinks from fatcityentertainment.com (which
 already ranks top-10 for "music bingo card generator") to Gen 2, coordinated
