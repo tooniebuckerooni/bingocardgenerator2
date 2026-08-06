@@ -187,8 +187,6 @@ async function checkGate(){
   const status = document.getElementById('gate-status');
   if(!key){status.textContent='Please enter your license key.';return;}
   status.textContent='Verifying...';
-  // Beta codes bypass
-  if(['FATCITY-PRO-2025','FCE-GEN2-PRO'].includes(key.toUpperCase())){revealContent();return;}
   try{
     const r = await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'validate',license_key:key})});
     const data = await r.json();
