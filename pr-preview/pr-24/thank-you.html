@@ -75,7 +75,9 @@ footer a:hover{color:var(--text)}
 <!-- Event snippet for Purchase conversion page -->
 <script>
   const qp = new URLSearchParams(window.location.search);
-  const num = (...keys) => { for (const k of keys) { const v = parseFloat(qp.get(k)); if (!isNaN(v)) return v; } return null; };
+  // Lemon Squeezy's [total] placeholder includes a currency symbol (e.g. "$24.00"),
+  // which parseFloat can't read directly — strip everything but digits/./- first.
+  const num = (...keys) => { for (const k of keys) { const raw = qp.get(k); if (raw == null) continue; const v = parseFloat(raw.replace(/[^0-9.-]/g, '')); if (!isNaN(v)) return v; } return null; };
   const str = (...keys) => { for (const k of keys) { const v = qp.get(k); if (v) return v; } return ''; };
 
   // Real order data, if Lemon Squeezy appended it to this redirect — falls back to a
