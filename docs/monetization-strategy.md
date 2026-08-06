@@ -1,6 +1,9 @@
 # Bingo Card Generator — Monetization Strategy
 
-> Status: proposal for review. No code has been changed by this document.
+> Status: partially implemented (confirmed 2026-08-06). WS-C (licensing
+> hardening) and the watermark-gating half of WS-B are DONE. The pricing
+> restructure in §3, WS-A's named funnel events, WS-D (legacy transition),
+> and WS-E (comms) are still open — see the status note in each section.
 > Primary goal: **get real users into Gen 2** (bingocardgenerator.online).
 > Secondary goal: keep the legacy generator on fatcityentertainment.com running smoothly.
 
@@ -44,8 +47,9 @@ Every choice below is scored against one question: **does it put more real users
 ## 3. Pricing rethink
 
 ### Current state
-- Gen 2: **$24/mo** subscription (LemonSqueezy), justified by a monthly music-bingo game pack. Free tier capped at 10 cards.
-- Legacy: one-time **"lifetime access"** purchase in the Fat City store.
+- Gen 2 pricing (LemonSqueezy): **Day Pass $6.99**, **Monthly $24**, **Annual $116** — still three time-based passes, not the one-time/subscription split proposed below.
+- Gen 2 free tier: **already changed from a 10-card cap to unlimited design + a watermarked demo export** (confirmed 2026-08-06) — the model recommended in §1 is live, just not under a new pricing/product split.
+- Legacy: one-time **"lifetime access"** purchase in the Fat City store — unchanged.
 
 ### Market context
 - **Bingo Baker** — ~$25 **one-time** for unlimited cards/printing. This is the anchor most of your buyers will compare against.
@@ -94,6 +98,14 @@ Each workstream below is self-contained: it states its own goal, context, exact 
 
 ### WS-A — Gen 2 acquisition & funnel  **(Priority 1)**
 
+**Status: partially done** (confirmed 2026-08-06). A `gev()` GA event wrapper
+already fires 15+ named events (`upgrade_click`, `watermark_download`,
+`pdf_downloaded`, `zip_downloaded`, `fce_store_click`, etc.), covering most
+of this list under different names — no event literally named
+`card_designed` or `checkout_started` exists yet. In-app upgrade CTAs and
+blog CTAs are live. The `.pro-cover` overlays referenced below no longer
+exist in the code — branding and free-space are fully open to everyone now.
+
 **Goal:** maximize the number of cold visitors who reach a designed card and hit a natural upgrade moment.
 
 **Context:** Gen 2 is a single static `index.html` (~2,060 lines) served via GitHub Pages at bingocardgenerator.online. Blog under `blog/` targets three audiences (music-bingo hosts, teachers, party/event planners). Google Analytics is wired (`G-97J4XBSHBW`, index.html:164-165). SEO/schema block at index.html:60-73 currently advertises a $0 free tier.
@@ -112,6 +124,12 @@ Each workstream below is self-contained: it states its own goal, context, exact 
 
 ### WS-B — Gen 2 paywall & pricing implementation  **(Priority 1)**
 
+**Status: partially done** (confirmed 2026-08-06). The watermark-vs-cap
+gating change (task 1) has shipped — free tier is unlimited design plus a
+watermarked export, gated fail-closed. The two-LemonSqueezy-product
+restructure (task 2) and pricing/schema updates (task 3) have NOT happened —
+live pricing is still the three Day/Monthly/Annual passes.
+
 **Goal:** implement the "free to design + watermarked free export, pay for clean/bulk output" model and the new two-product pricing.
 
 **Context:** Pro gating lives in `applyProLocks` (index.html:1037-1069); entitlement stored in localStorage key `fce_pro`; checkout via `goCheckout()` → LemonSqueezy URL (index.html:915, 1036). Export handlers at index.html:1943-2025 (PNG/PDF/ZIP via jsPDF + JSZip loaded from CDN).
@@ -129,6 +147,14 @@ Each workstream below is self-contained: it states its own goal, context, exact 
 ---
 
 ### WS-C — Licensing hardening  **(Priority 1, blocks secure launch)**
+
+**Status: DONE** (confirmed 2026-08-06). Bypass codes were removed from
+index.html (commit `302a5d1`); the one remaining leftover copy in
+`games/g01-cf8po.html` was removed 2026-08-06. Export gating is fail-closed
+(`exportAuth()`/`authorizeExport()` in index.html). The Worker also already
+issues short-lived signed export tokens (`action: 'export_token'` in
+worker.js, verified client-side via `verifyExportToken()`) — the strongest
+option below is implemented, exceeding this section's original ask.
 
 **Goal:** make the paywall actually hold, since a tighter model is only worth building if it can't be trivially bypassed.
 
@@ -150,6 +176,10 @@ Each workstream below is self-contained: it states its own goal, context, exact 
 
 ### WS-D — Legacy site transition  **(Priority 2)**
 
+**Status: NOT STARTED.** Confirmed 2026-08-06 — the legacy generator on
+fatcityentertainment.com is still live, not yet converted to an email-gated
+free lead magnet.
+
 **Goal:** convert fatcityentertainment.com's generator into a free, email-gated lead magnet that funnels to Gen 2, without harming existing buyers.
 
 **Context:** Lives entirely outside this repo (Fat City site + store). Currently sold as "Bingo Card Generator Pro" with lifetime access (`/store/p65/bingocardgeneratorpro.html`). Store/product pages and the generator page (`/bingocardgenerator.html`) are the touchpoints.
@@ -166,6 +196,9 @@ Each workstream below is self-contained: it states its own goal, context, exact 
 ---
 
 ### WS-E — Comms & buyer migration  **(Priority 2)**
+
+**Status: NOT STARTED** — blocked on WS-D and the §3 pricing decision, per
+its own dependency note below.
 
 **Goal:** protect goodwill with people who already paid, and convert them into Gen 2 users/subscribers.
 
