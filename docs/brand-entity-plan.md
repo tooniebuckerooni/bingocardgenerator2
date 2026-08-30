@@ -11,7 +11,10 @@
 > the 914 read the same exact-match commercial anchor, "Bingo Card Generator" —
 > precisely the over-optimisation this workstream exists to avoid.
 >
-> Fixed 2026-08-30: the nav label is now "Free Bingo Card Maker"
+> Fixed 2026-08-30: the nav label is now the branded "BingoCardGenerator.Online"
+> — a brand name rather than another keyword, because 914 identical *keyword*
+> anchors is the signal, and swapping one commercial phrase for another only
+> changes which phrase is over-used
 > (`_tools/vary-bcg-nav-anchor.js` in the FCE repo — idempotent, href unchanged),
 > and features.html's block was rewritten with four varied natural anchors, three
 > of them deep links into the new guide pages. Anchor profile now: 914 nav links
