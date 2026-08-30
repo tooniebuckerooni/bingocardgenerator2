@@ -58,7 +58,7 @@
       "name": "Free Demo",
       "price": "0",
       "priceCurrency": "USD",
-      "description": "Every feature free — unlimited cards, branding, all themes, live preview, and watermarked demo downloads. Passes remove the watermark."
+      "description": "Free — unlimited cards, every font and theme, live preview, and watermarked demo downloads. Passes remove the watermark and unlock custom branding."
     },
     {
       "@type": "Offer",
@@ -128,47 +128,74 @@
     {
       "@type": "Question",
       "name": "What is a bingo card generator?",
-      "acceptedAnswer": {"@type": "Answer", "text": "A bingo card generator is an online tool that creates custom bingo cards with your own words, phrases, or themes. Instead of designing cards manually in Word or Excel, you type your content, choose a layout, and the generator produces unique, randomized cards ready to print or share digitally."}
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A bingo card generator is an online tool that creates custom bingo cards with your own words, phrases, or themes. Instead of designing cards manually in Word or Excel, you type your content, choose a layout, and the generator produces unique, randomized cards ready to print or share digitally."
+      }
     },
     {
       "@type": "Question",
       "name": "What can I use bingo cards for?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Use them for classrooms, parties, events, team building, training sessions, icebreakers, and more."}
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use them for classrooms, parties, events, team building, training sessions, icebreakers, and more."
+      }
     },
     {
       "@type": "Question",
       "name": "Can I print the bingo cards?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Yes. You can create bingo cards that are ready to print at home, in the classroom, or at work. Choose portrait for one card per page or landscape for two cards with a cut line. Free PDF downloads include a demo watermark; a Day Pass or Annual pass removes it."}
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. You can create bingo cards that are ready to print at home, in the classroom, or at work. Choose portrait for one card per page or landscape for two cards with a cut line. Free PDF downloads include a demo watermark; a Day Pass or Annual pass removes it."
+      }
     },
     {
       "@type": "Question",
       "name": "Can I make digital bingo cards too?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Yes. You can also share bingo cards online for digital use. Each card gets a unique shareable link that players open on any device. Free share links and image downloads include a demo watermark; a Day Pass or Annual pass removes it."}
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. You can also share bingo cards online for digital use. Each card gets a unique shareable link that players open on any device. Free share links and image downloads include a demo watermark; a Day Pass or Annual pass removes it."
+      }
     },
     {
       "@type": "Question",
       "name": "Do I need design experience?",
-      "acceptedAnswer": {"@type": "Answer", "text": "No. The generator is built to be easy to use. Just type your squares, pick a theme, and download or share your cards."}
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The generator is built to be easy to use. Just type your squares, pick a theme, and download or share your cards."
+      }
     },
     {
       "@type": "Question",
       "name": "Can I customize the content on the cards?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Yes. You can add your own words, titles, and themes. The content is entirely up to you — songs, trivia questions, vocabulary words, office terms, or anything else."}
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. You can add your own words, titles, and themes. The content is entirely up to you — songs, trivia questions, vocabulary words, office terms, or anything else."
+      }
     },
     {
       "@type": "Question",
       "name": "How much does Pro cost?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Every feature is free — designing, previewing, and even downloading cards with a demo watermark costs nothing. To remove the watermark, choose a pass: a one-time Day Pass at $6.99 for 24 hours, Monthly at $24/month, or Annual at $116/year (about $10/month). Every pass unlocks clean, watermark-free PDF, PNG, and ZIP downloads plus share links."}
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Designing and previewing is free — unlimited cards, every font and theme, and downloads carrying a demo watermark all cost nothing. A pass removes the watermark and unlocks custom branding, so your logo or your night's details print on every card: a one-time Day Pass at $6.99 for 24 hours, Monthly at $24/month, or Annual at $116/year (about $10/month). Every pass unlocks clean, watermark-free PDF, PNG, and ZIP downloads plus share links."
+      }
     },
     {
       "@type": "Question",
       "name": "Do you sell ready-made bingo games?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Yes. Our parent company, Fat City Entertainment, sells complete ready-to-run game packs — professionally matched bingo cards plus playlists, tested on live audiences — at fatcityentertainment.com."}
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Our parent company, Fat City Entertainment, sells complete ready-to-run game packs — professionally matched bingo cards plus playlists, tested on live audiences. If you'd rather skip the build entirely, browse the pre-made game packs at Fat City Entertainment."
+      }
     },
     {
       "@type": "Question",
       "name": "Who makes BingoCardGenerator.Online?",
-      "acceptedAnswer": {"@type": "Answer", "text": "BingoCardGenerator.Online is built by Fat City Entertainment, hosts who run music bingo and trivia nights in front of live audiences every week."}
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This generator is built by Fat City Entertainment — hosts who run music bingo and trivia nights in front of live audiences every week. The features here exist because we needed them at real events."
+      }
     }
   ]
 }
@@ -444,6 +471,13 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 .tg::after{content:'';position:absolute;top:2px;left:2px;width:17px;height:17px;background:#fff;border-radius:50%;transition:transform var(--t);box-shadow:0 1px 3px rgba(0,0,0,.3)}
 .tg.on::after{transform:translateX(19px)}
 .ttx{font-size:14.5px;font-weight:500;user-select:none}
+/* PRO-GATED PANEL — branding is a paid feature; the controls are locked rather
+   than left usable, so the live preview can never promise a strip the PDF won't
+   draw (both share portraitLayout()/landscapeLayout()). */
+.pbdg{display:inline-block;margin-left:7px;padding:2px 7px;border-radius:20px;background:var(--ord);color:var(--or);font-size:9.5px;font-weight:700;letter-spacing:1.5px;vertical-align:2px}
+.plck{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding:11px 13px;background:var(--ord);border:1px solid rgba(224,92,42,.28);border-radius:var(--rs);color:var(--tx2);font-size:13px;line-height:1.45;cursor:pointer}
+.plck b{color:var(--or);font-weight:700}
+.plocked>.tgr,.plocked>#brand-opts{opacity:.42;pointer-events:none;filter:grayscale(.5)}
 .ppills{display:flex;gap:8px;margin-top:14px}
 .pp{flex:1;padding:8px;background:var(--sf2);border:1px solid var(--bd);border-radius:30px;color:var(--mt);font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer;transition:all var(--t)}
 .pp.sl{border-color:var(--gn);color:var(--gn);background:var(--gnd)}
@@ -779,8 +813,9 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
     </div>
 
     <div class="og">
-      <div class="ot">Branding</div>
+      <div class="ot">Branding <span class="pbdg">Pro</span></div>
       <div id="branding-section">
+        <div class="plck" id="brand-lock" onclick="goCheckout()">🔒 <span>Putting your logo or your night's details on every card is a <b>Pro</b> feature — unlock it with a pass →</span></div>
         <div class="tgr" onclick="togBranding()">
           <div class="tg on" id="brand-tg"></div>
           <span class="ttx">Show branding on printed cards</span>
@@ -799,8 +834,9 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
             <div class="lszr">Logo size<b id="lszv">100%</b></div>
             <input type="range" id="lsz" min="50" max="200" step="5" value="100" oninput="setLogoScale(this.value)">
           </div>
-          <div class="ord" style="margin:12px 0 10px">or type your brand name</div>
-          <input type="text" id="brand-text" placeholder="e.g. Game Night with Sarah" oninput="dPrev()" style="margin-bottom:0">
+          <div class="ord" style="margin:12px 0 10px">and / or type your own lines</div>
+          <input type="text" id="brand-text" placeholder="Line 1 — e.g. Game Night with Sarah" oninput="dPrev()" style="margin-bottom:10px">
+          <input type="text" id="brand-text2" placeholder="Line 2 — e.g. Every Thursday · 8pm · $5 a card" oninput="dPrev()" style="margin-bottom:0">
         </div>
       </div>
     </div>
@@ -902,7 +938,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
   <div class="procard-wide" id="pros">
     <div class="proe">⚡ Go Pro</div>
     <h3 class="pw-h3">CHOOSE YOUR PASS</h3>
-    <p class="pw-sub">Every plan unlocks the same thing: <strong>watermark-free, print-ready downloads</strong> — PDFs, PNGs, bulk ZIPs, and clean share links. Unlimited cards, branding, all fonts &amp; themes, priority support.</p>
+    <p class="pw-sub">Every plan unlocks the same thing: <strong>watermark-free, print-ready downloads</strong> — PDFs, PNGs, bulk ZIPs, and clean share links — plus <strong>custom branding</strong> on every card. Unlimited cards, all fonts &amp; themes, priority support.</p>
     <div class="prpick3">
       <div class="prplan">
         <div class="prplan-h"><span class="prplan-n">Day Pass</span><span class="prplan-p">$6.99</span></div>
@@ -943,8 +979,8 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
   <!-- Sections 1 + 2 -->
   <div class="section-grid">
     <div class="content-card">
-      <h2>Custom Bingo Cards for <span>Any Occasion</span></h2>
-      <p>Make bingo cards that fit your exact needs. Whether you are planning a classroom activity, a team-building exercise, a party game, or a special event, you can create bingo cards that match your audience and purpose. See our <a href="/custom-bingo-cards.html" style="color:var(--gn)">full guide to custom bingo cards</a> for ideas and templates.</p>
+      <h2>Your Words, <span>Not a Template</span></h2>
+      <p>Every card starts from an empty list — you type the squares, so the game fits the room instead of the other way round. Building for a specific classroom, wedding, or company event? Our <a href="/custom-bingo-cards.html" style="color:var(--gn)">guide to custom bingo cards</a> has example square lists for each one.</p>
     </div>
     <div class="content-card">
       <h2>Printable and <span>Digital Bingo Cards</span></h2>
@@ -962,7 +998,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
   <div class="content-card-full" style="border-color:rgba(245,166,35,.3);background-image:radial-gradient(ellipse at top right,rgba(245,166,35,.06) 0%,transparent 60%)">
     <span style="display:inline-block;background:var(--gnd);color:var(--gn);border:1px solid rgba(245,166,35,.25);padding:3px 12px;border-radius:20px;font-size:11.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:14px">Pro · Simple Pricing</span>
     <h2>Try Everything Free, <span>Pay When You're Ready</span></h2>
-    <p>Every feature is free — design unlimited cards with custom branding, any font and theme, and even download them with a demo watermark to see exactly what you'll get. When you're ready for clean, watermark-free cards, grab a one-time <strong>Day Pass for $6.99</strong> (24 hours — perfect for a single event), go <strong>Monthly for $24</strong>, or save 60% with <strong>Annual at $116</strong> — under $10 a month for year-round hosts. No accounts to manage, no surprises — just the cards you need, when you need them.</p>
+    <p>Designing is free — unlimited cards, any font and theme, and downloads with a demo watermark so you can see exactly what you'll get. When you're ready for clean, watermark-free cards carrying your own logo and branding, grab a one-time <strong>Day Pass for $6.99</strong> (24 hours — perfect for a single event), go <strong>Monthly for $24</strong>, or save 60% with <strong>Annual at $116</strong> — under $10 a month for year-round hosts. No accounts to manage, no surprises — just the cards you need, when you need them.</p>
   </div>
 
   <!-- Sections 4 + 5 -->
@@ -1006,7 +1042,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
     </div>
     <div class="faq-item" onclick="togFaq(this)">
       <button class="faq-q">How much does Pro cost? <span class="faq-chev">▼</span></button>
-      <div class="faq-a">Every feature is free — designing, previewing, and even downloading cards with a demo watermark costs nothing. To remove the watermark, choose a pass: a one-time Day Pass at $6.99 for 24 hours — perfect for a single event — Monthly at $24/month, or Annual at $116/year (about $10/month). Every pass unlocks clean, watermark-free PDF, PNG, and ZIP downloads plus share links.</div>
+      <div class="faq-a">Designing and previewing is free — unlimited cards, every font and theme, and downloads carrying a demo watermark all cost nothing. A pass removes the watermark and unlocks custom branding, so your logo or your night's details print on every card: a one-time Day Pass at $6.99 for 24 hours, Monthly at $24/month, or Annual at $116/year (about $10/month). Every pass unlocks clean, watermark-free PDF, PNG, and ZIP downloads plus share links.</div>
     </div>
     <div class="faq-item" onclick="togFaq(this)">
       <button class="faq-q">Do you sell ready-made bingo games? <span class="faq-chev">▼</span></button>
@@ -1034,8 +1070,11 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
   <p style="margin-top:10px">Made by <a href="https://www.fatcityentertainment.com/" style="color:var(--gn)" onclick="gev('fce_link_click',{placement:'footer_text'})">Fat City Entertainment</a> — music bingo &amp; trivia games tested on live audiences.</p>
   <p style="margin-top:8px">© 2026 BingoCardGenerator.Online · New Brunswick, Canada</p>
   <p style="margin-top:8px">
-    <a href="/music-bingo-generator.html">Music Bingo</a>
     <a href="/custom-bingo-cards.html">Custom Bingo Cards</a>
+    <a href="/bingo-card-maker.html">Bingo Card Maker</a>
+    <a href="/online-bingo-generator.html">Online Bingo</a>
+    <a href="/bingo-board-generator.html">Bingo Boards</a>
+    <a href="/music-bingo-generator.html">Music Bingo</a>
     <a href="/terms.html">Terms &amp; Conditions</a>
     <a href="/privacy.html">Privacy Policy</a>
     <a href="/refund.html">Refund Policy</a>
@@ -1314,10 +1353,23 @@ function pdfBtnLabel(){
   return getW().length<25 ? 'Add 25+ songs to continue' : '↓ Download PDF';
 }
 function applyProLocks(){
-  // Every design feature is free — free downloads carry a demo watermark
+  // Free downloads still work; they carry a demo watermark, so these footnotes
+  // only show while the user is on the free tier.
   document.getElementById('fnp').style.display=isPro?'none':'';
   document.getElementById('fns').style.display=isPro?'none':'';
+  // Branding (logo + the two text lines) is Pro-only. brandingOn stays whatever
+  // the user last chose — brandingActive() is what the renderers read — so a
+  // saved layout comes back intact the moment a pass is activated.
+  const sec=document.getElementById('branding-section');
+  if(sec)sec.classList.toggle('plocked',!isPro);
+  const lock=document.getElementById('brand-lock');
+  if(lock)lock.style.display=isPro?'none':'';
 }
+// The branding strip renders only when the user both switched it on and can pay
+// for it. Every height/draw path goes through this, so preview and PDF agree.
+function brandingActive(){return brandingOn&&isPro;}
+function brandLine1(){return document.getElementById('brand-text')?.value?.trim()||'';}
+function brandLine2(){return document.getElementById('brand-text2')?.value?.trim()||'';}
 
 // ============================================================
 // DEMO WATERMARK — free downloads keep working, marked as demos;
@@ -1517,10 +1569,14 @@ function setLogoScale(val){
   dPrev();
 }
 function togBranding(){
+  if(!isPro){goCheckout();return;}
   brandingOn=!brandingOn;
+  syncBrandingUI();
+  dPrev();
+}
+function syncBrandingUI(){
   document.getElementById('brand-tg').classList.toggle('on',brandingOn);
   document.getElementById('brand-opts').style.display=brandingOn?'':'none';
-  dPrev();
 }
 
 // ============================================================
@@ -1768,20 +1824,29 @@ function drawCardCanvas(ctx,W,H,words,seed,opts={}){
 // Mirrors drawBrandingStrip (PDF) but draws straight to a canvas context —
 // ox/oy/w/h are already in canvas px (caller pre-scales from page pt).
 function drawBrandingStripCanvas(ctx,ox,oy,w,h){
-  const brandText=document.getElementById('brand-text')?.value?.trim()||'';
+  const l1=brandLine1(),l2=brandLine2();
+  const fit=(txt,start,bold)=>{
+    let sz=start;ctx.font=cvf(sz,bold);
+    while(ctx.measureText(txt).width>w*.88&&sz>7){sz--;ctx.font=cvf(sz,bold);}
+    return sz;
+  };
+  ctx.fillStyle=rgb(THEMES[theme].tx);
+  ctx.textAlign='center';ctx.textBaseline='middle';
   if(logoUrl&&logoImg){
-    const maxH=h*.9,maxW=Math.min(w*.92,w*.75*(logoScale/100));
+    const promoH=h*promoBandFrac(),logoH=h-promoH;
+    const maxH=logoH*.9,maxW=Math.min(w*.92,w*.75*(logoScale/100));
     let lh=maxH,lw=(logoImg.width/logoImg.height)*lh;
     if(lw>maxW){lw=maxW;lh=lw*(logoImg.height/logoImg.width);}
-    ctx.drawImage(logoImg,ox+w/2-lw/2,oy+(h-lh)/2,lw,lh);
-  } else if(brandText){
-    const T=THEMES[theme];
-    let sz=Math.min(h*.55,22);
-    ctx.font=cvf(sz,true);
-    while(ctx.measureText(brandText).width>w*.88&&sz>7){sz--;ctx.font=cvf(sz,true);}
-    ctx.fillStyle=rgb(T.tx);
-    ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText(brandText,ox+w/2,oy+h/2);
+    ctx.drawImage(logoImg,ox+w/2-lw/2,oy+(logoH-lh)/2,lw,lh);
+    if(l2&&promoH>0){fit(l2,Math.min(promoH*.6,13),false);ctx.fillText(l2,ox+w/2,oy+logoH+promoH/2);}
+    return;
+  }
+  if(l1&&l2){
+    fit(l1,Math.min(h*.40,20),true);ctx.fillText(l1,ox+w/2,oy+h*.36);
+    fit(l2,Math.min(h*.26,13),false);ctx.fillText(l2,ox+w/2,oy+h*.70);
+  } else if(l1||l2){
+    const only=l1||l2;
+    fit(only,Math.min(h*.55,22),true);ctx.fillText(only,ox+w/2,oy+h/2);
   }
 }
 
@@ -1804,7 +1869,7 @@ function dPrev(){
 
   if(!isLand){
     const{brandY,ox,oy,cardW,cardH}=portraitLayout(PW,PH,brandH);
-    if(brandingOn) drawBrandingStripCanvas(ctx,ox*S,brandY*S,cardW*S,brandH*S);
+    if(brandingActive()) drawBrandingStripCanvas(ctx,ox*S,brandY*S,cardW*S,brandH*S);
     ctx.save();ctx.translate(ox*S,oy*S);
     drawCardCanvas(ctx,cardW*S,cardH*S,words,42,{title,freeLabel});
     ctx.restore();
@@ -1816,7 +1881,7 @@ function dPrev(){
     ctx.save();ctx.translate((cutX+gap/2)*S,M*S);
     drawCardCanvas(ctx,cw*S,ch*S,words,43,{title,freeLabel});
     ctx.restore();
-    if(brandingOn){
+    if(brandingActive()){
       drawBrandingStripCanvas(ctx,M*S,stripY*S,cw*S,brandH*S);
       drawBrandingStripCanvas(ctx,(cutX+gap/2)*S,stripY*S,cw*S,brandH*S);
     }
@@ -1983,32 +2048,62 @@ function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
 // card in portrait and below each card in landscape. Uploaded logos scale
 // continuously via the user's logoScale slider (50%-200%); a typed brand
 // name always gets the small fixed strip since it doesn't need to scale.
-const LOGO_STRIP_BASE=150,LOGO_STRIP_TEXT=60;
+// LOGO_STRIP_TEXT2 is the two-line text strip; PROMO_EXTRA is the band added
+// under a logo when a promo line is also set.
+const LOGO_STRIP_BASE=150,LOGO_STRIP_TEXT=60,LOGO_STRIP_TEXT2=88,PROMO_EXTRA=30;
 function brandStripHeight(){
-  if(!brandingOn)return 0;
-  return logoUrl?Math.round(LOGO_STRIP_BASE*(logoScale/100)):LOGO_STRIP_TEXT;
+  if(!brandingActive())return 0;
+  if(logoUrl)return Math.round(LOGO_STRIP_BASE*(logoScale/100))+(brandLine2()?PROMO_EXTRA:0);
+  return brandLine2()?LOGO_STRIP_TEXT2:LOGO_STRIP_TEXT;
+}
+// Share of the strip given to the promo line under a logo, as a fraction — the
+// preview receives canvas px and the PDF receives pt, so only a ratio survives
+// the trip through both.
+function promoBandFrac(){
+  if(!logoUrl||!brandLine2())return 0;
+  const t=brandStripHeight();
+  return t?PROMO_EXTRA/t:0;
 }
 
 // Draws logo or brand text centered in a strip at (ox, oy, w, h)
 function drawBrandingStrip(doc,ff,T,ox,oy,w,h){
-  const brandText=document.getElementById('brand-text')?.value?.trim()||'';
+  const l1=brandLine1(),l2=brandLine2();
+  doc.setTextColor(...T.tx);
+  // fit one line to the column — start large and shrink
+  const fit=(txt,start,bold)=>{
+    let sz=start;
+    doc.setFont(ff,bold?'bold':'normal');doc.setFontSize(sz);
+    while(doc.getTextWidth(txt)>w*.88&&sz>7){sz--;doc.setFontSize(sz);}
+    return sz;
+  };
   if(logoUrl&&logoImg){
+    // A promo line sits under the logo rather than replacing it — a host with
+    // a logo still wants "Every Thursday · 8pm" on the card.
+    const promoH=h*promoBandFrac(),logoH=h-promoH;
     try{
       // maxW must grow with logoScale too, not just maxH — otherwise wide
       // (horizontal) logos hit the width cap and the scale slider does
       // nothing, since width was always a fixed fraction of the column.
-      const maxH=h*.9,maxW=Math.min(w*.92,w*.75*(logoScale/100));
+      const maxH=logoH*.9,maxW=Math.min(w*.92,w*.75*(logoScale/100));
       let lh=maxH,lw=(logoImg.width/logoImg.height)*lh;
       if(lw>maxW){lw=maxW;lh=lw*(logoImg.height/logoImg.width);}
-      doc.addImage(logoUrl,'PNG',ox+w/2-lw/2,oy+(h-lh)/2,lw,lh);
+      doc.addImage(logoUrl,'PNG',ox+w/2-lw/2,oy+(logoH-lh)/2,lw,lh);
     }catch(e){}
-  } else if(brandText){
-    // fit text to strip height — start large and shrink
-    let sz=Math.min(h*.55,22);
-    doc.setFont(ff,'bold');doc.setFontSize(sz);
-    while(doc.getTextWidth(brandText)>w*.88&&sz>7){sz--;doc.setFontSize(sz);}
-    doc.setTextColor(...T.tx);
-    doc.text(brandText,ox+w/2,oy+h/2+sz*.28,{align:'center'});
+    if(l2&&promoH>0){
+      const sz=fit(l2,Math.min(promoH*.6,13),false);
+      doc.text(l2,ox+w/2,oy+logoH+promoH/2+sz*.32,{align:'center'});
+    }
+    return;
+  }
+  if(l1&&l2){
+    const s1=fit(l1,Math.min(h*.40,20),true);
+    doc.text(l1,ox+w/2,oy+h*.40+s1*.30,{align:'center'});
+    const s2=fit(l2,Math.min(h*.26,13),false);
+    doc.text(l2,ox+w/2,oy+h*.74+s2*.30,{align:'center'});
+  } else if(l1||l2){
+    const only=l1||l2;
+    const sz=fit(only,Math.min(h*.55,22),true);
+    doc.text(only,ox+w/2,oy+h/2+sz*.28,{align:'center'});
   }
 }
 
@@ -2070,7 +2165,7 @@ async function genPDF(){
           if(i>0)doc.addPage();
           pdfDrawCard(doc,T,ff,fs,title,fl,words,5000+i,ox,oy,cardW,cardH);
 
-          if(brandingOn){
+          if(brandingActive()){
             drawBrandingStrip(doc,ff,T,ox,brandY,cardW,brandH);
           }
 
@@ -2090,7 +2185,7 @@ async function genPDF(){
           if(li<pCount) pdfDrawCard(doc,T,ff,fs,title,fl,words,5000+li,M,M,cw,ch);
           if(ri<pCount) pdfDrawCard(doc,T,ff,fs,title,fl,words,5000+ri,cutX+gap/2,M,cw,ch);
 
-          if(brandingOn){
+          if(brandingActive()){
             if(li<pCount) drawBrandingStrip(doc,ff,T,M,stripY,cw,brandH);
             if(ri<pCount) drawBrandingStrip(doc,ff,T,cutX+gap/2,stripY,cw,brandH);
           }
@@ -2279,6 +2374,7 @@ function collectState(){
     ft:document.getElementById('fst').value,br:bingoRow,
     md:mode,ly:layout,pc:pCount,sc:sCount,
     bo:brandingOn,bt:document.getElementById('brand-text').value,
+    bt2:document.getElementById('brand-text2').value,
     lu:(logoUrl&&logoUrl.length<400000)?logoUrl:null,ls:logoScale
   };
 }
@@ -2297,8 +2393,9 @@ function applyState(st){
   layout=st.ly||'portrait';selPill('.lcrd','layout',layout);
   pCount=st.pc||5;document.getElementById('cnp').value=pCount;
   sCount=st.sc||10;document.getElementById('cns').value=sCount;
-  brandingOn=st.bo!==false;document.getElementById('brand-tg').classList.toggle('on',brandingOn);document.getElementById('brand-opts').style.display=brandingOn?'':'none';
+  brandingOn=st.bo!==false;syncBrandingUI();
   document.getElementById('brand-text').value=st.bt||'';
+  document.getElementById('brand-text2').value=st.bt2||'';
   logoScale=st.ls||100;document.getElementById('lsz').value=logoScale;document.getElementById('lszv').textContent=logoScale+'%';
   if(st.lu){
     logoUrl=st.lu;const img=new Image();
@@ -2370,7 +2467,9 @@ mgRefresh();
 if(!qp.has('card')){
   try{
     const as=JSON.parse(localStorage.getItem(AUTOSAVE_KEY)||'null');
-    if(as&&(as.w||as.t)){applyState(as);toast('Welcome back — your work was restored.','ok');}
+    // src:'starter' means the squares were typed on a landing page and handed
+    // over — that is a first arrival, not a return visit, so say so.
+    if(as&&(as.w||as.t)){applyState(as);toast(as.src==='starter'?'Your squares came with you — pick a look and generate.':'Welcome back — your work was restored.','ok');}
   }catch(e){}
 }
 if(qp.has("activated")){window.history.replaceState({},document.title,location.pathname);setTimeout(()=>{oUnlock();const s=document.getElementById("unlock-status");if(s){s.textContent="✓ Payment confirmed! Check your email for your license key, then paste it below.";s.style.color="var(--gn)";}},400);}
