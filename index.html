@@ -1070,8 +1070,11 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
   <p style="margin-top:10px">Made by <a href="https://www.fatcityentertainment.com/" style="color:var(--gn)" onclick="gev('fce_link_click',{placement:'footer_text'})">Fat City Entertainment</a> — music bingo &amp; trivia games tested on live audiences.</p>
   <p style="margin-top:8px">© 2026 BingoCardGenerator.Online · New Brunswick, Canada</p>
   <p style="margin-top:8px">
-    <a href="/music-bingo-generator.html">Music Bingo</a>
     <a href="/custom-bingo-cards.html">Custom Bingo Cards</a>
+    <a href="/bingo-card-maker.html">Bingo Card Maker</a>
+    <a href="/online-bingo-generator.html">Online Bingo</a>
+    <a href="/bingo-board-generator.html">Bingo Boards</a>
+    <a href="/music-bingo-generator.html">Music Bingo</a>
     <a href="/terms.html">Terms &amp; Conditions</a>
     <a href="/privacy.html">Privacy Policy</a>
     <a href="/refund.html">Refund Policy</a>
@@ -2464,7 +2467,9 @@ mgRefresh();
 if(!qp.has('card')){
   try{
     const as=JSON.parse(localStorage.getItem(AUTOSAVE_KEY)||'null');
-    if(as&&(as.w||as.t)){applyState(as);toast('Welcome back — your work was restored.','ok');}
+    // src:'starter' means the squares were typed on a landing page and handed
+    // over — that is a first arrival, not a return visit, so say so.
+    if(as&&(as.w||as.t)){applyState(as);toast(as.src==='starter'?'Your squares came with you — pick a look and generate.':'Welcome back — your work was restored.','ok');}
   }catch(e){}
 }
 if(qp.has("activated")){window.history.replaceState({},document.title,location.pathname);setTimeout(()=>{oUnlock();const s=document.getElementById("unlock-status");if(s){s.textContent="✓ Payment confirmed! Check your email for your license key, then paste it below.";s.style.color="var(--gn)";}},400);}
