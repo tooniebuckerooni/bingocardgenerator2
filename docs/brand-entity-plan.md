@@ -3,10 +3,22 @@
 > Status: WS-A and WS-B are DONE. Shipped 2026-07-19 (footer attribution, FAQ,
 > index.html schema), with the remaining gap — Organization/publisher schema
 > was missing from music-bingo-generator.html and all 3 blog posts — closed
-> 2026-08-06. WS-C (FCE side) is NOT started: confirmed 2026-08-06 that
-> fatcityentertainment.com's legacy generator is still live and no reciprocal
-> links to Gen 2 exist yet. The hand-off prompt below is unchanged and ready
-> to use whenever that side gets picked up.
+> **2026-08-30 — WS-C status corrected. The wrong half had already shipped.**
+> The 2026-08-06 note below said "no reciprocal links to Gen 2 exist yet."
+> Measured against the actual repo, that was not true: fatcityentertainment.com
+> was carrying **914 sitewide nav links** to this domain (the Featured! dropdown,
+> twice per page across 457 pages) plus ~46 in-body editorial links. Every one of
+> the 914 read the same exact-match commercial anchor, "Bingo Card Generator" —
+> precisely the over-optimisation this workstream exists to avoid.
+>
+> Fixed 2026-08-30: the nav label is now "Free Bingo Card Maker"
+> (`_tools/vary-bcg-nav-anchor.js` in the FCE repo — idempotent, href unchanged),
+> and features.html's block was rewritten with four varied natural anchors, three
+> of them deep links into the new guide pages. Anchor profile now: 914 nav links
+> on one label, 46 editorial links across 26 distinct anchors.
+>
+> The legacy generator on fatcityentertainment.com is still live — that part of
+> WS-C is genuinely untouched.
 
 ## Positioning guardrail (applies to every workstream)
 
