@@ -63,13 +63,62 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {"@type":"Question","name":"Can I make bingo cards from a Spotify playlist?","acceptedAnswer":{"@type":"Answer","text":"Yes. Export your Spotify playlist as a TXT or CSV file using the free tool at tunemymusic.com, then upload that file to the generator. Every song becomes a bingo square and the cards are randomized automatically."}},
-    {"@type":"Question","name":"Does it work with Apple Music and YouTube Music?","acceptedAnswer":{"@type":"Answer","text":"Yes. The import accepts a playlist exported from any service TuneMyMusic supports, including Spotify, Apple Music, YouTube Music, Tidal, and Amazon Music. The generator reads the exported file, so the service you started from does not matter."}},
-    {"@type":"Question","name":"How many songs do I need to make music bingo cards?","acceptedAnswer":{"@type":"Answer","text":"At least 25 songs, which fills one 5x5 card. More songs mean less repetition across cards, so most hosts import 50 to 75 for a full night."}},
-    {"@type":"Question","name":"How many bingo cards can I generate at once?","acceptedAnswer":{"@type":"Answer","text":"Up to 999 cards per batch, each with a different randomized arrangement of your songs. Print them as a single PDF or download them as a ZIP of images."}},
-    {"@type":"Question","name":"Should the squares show song titles or artist names?","acceptedAnswer":{"@type":"Answer","text":"Song titles are the standard and easiest for players to match. Artist names make a harder game, and the Title - Artist format suits themed nights where several songs share a title. You can switch between all three at import."}},
-    {"@type":"Question","name":"Is the music bingo generator free?","acceptedAnswer":{"@type":"Answer","text":"Designing, previewing, and downloading cards is free, with a demo watermark on the output. A Day Pass at $6.99 for 24 hours, Monthly at $24, or Annual at $116 removes the watermark from PDFs, images, and share links. No account is needed to start."}},
-    {"@type":"Question","name":"Can players use the cards on their phones?","acceptedAnswer":{"@type":"Answer","text":"Yes. Switch to Share Online and each card gets its own link that players open on any device, which works well for remote teams and hybrid events. You can also print PDFs for in-person nights."}}
+    {
+      "@type": "Question",
+      "name": "Can I make bingo cards from a Spotify playlist?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Export your Spotify playlist as a TXT or CSV file using the free tool at tunemymusic.com, then upload that file to the generator. Every song becomes a bingo square and the cards are randomized automatically. There is no Spotify login step — the export file is all the generator needs."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it work with Apple Music and YouTube Music?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The import accepts a playlist exported from any service TuneMyMusic supports, including Spotify, Apple Music, YouTube Music, Tidal, and Amazon Music. Because the generator reads the exported file rather than connecting to an account, the service you started from does not matter."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many songs do I need to make music bingo cards?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "At least 25, which fills one 5×5 card — the download button unlocks at that point. More songs mean less repetition across cards, so most hosts import 50 to 75 for a full night with multiple rounds."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many bingo cards can I generate at once?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Up to 999 per batch, each with a different randomized arrangement of your songs. Print them as one PDF or download them as a ZIP of images."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should the squares show song titles or artist names?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Song titles are the standard and the easiest for players to match. Artist names make a noticeably harder game. The Title – Artist format suits themed nights where several songs share a title. You can switch between all three at import, so you can run an easy round and a hard round from one playlist."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the music bingo generator free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Designing, previewing, and downloading cards is free, with a demo watermark on the output. A Day Pass at $6.99 for 24 hours, Monthly at $24, or Annual at $116 removes the watermark from PDFs, images, and share links. No account is needed to start."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can players use the cards on their phones?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Switch to Share Online and each card gets its own link players open on any device — this is what remote teams and hybrid events use. You can also print PDFs for in-person nights, from the same set of songs."
+      }
+    }
   ]
 }
 </script>
@@ -342,7 +391,7 @@ footer a:hover{color:var(--tx)}
         <div class="faq-a">Yes. The import accepts a playlist exported from any service TuneMyMusic supports, including Spotify, Apple Music, YouTube Music, Tidal, and Amazon Music. Because the generator reads the exported file rather than connecting to an account, the service you started from does not matter.</div>
       </div>
       <div class="faq-item" onclick="this.classList.toggle('open')">
-        <button class="faq-q">How many songs do I need? <span class="chev">▼</span></button>
+        <button class="faq-q">How many songs do I need to make music bingo cards? <span class="chev">▼</span></button>
         <div class="faq-a">At least 25, which fills one 5×5 card — the download button unlocks at that point. More songs mean less repetition across cards, so most hosts import 50 to 75 for a full night with multiple rounds.</div>
       </div>
       <div class="faq-item" onclick="this.classList.toggle('open')">
@@ -354,7 +403,7 @@ footer a:hover{color:var(--tx)}
         <div class="faq-a">Song titles are the standard and the easiest for players to match. Artist names make a noticeably harder game. The Title – Artist format suits themed nights where several songs share a title. You can switch between all three at import, so you can run an easy round and a hard round from one playlist.</div>
       </div>
       <div class="faq-item" onclick="this.classList.toggle('open')">
-        <button class="faq-q">Is it free? <span class="chev">▼</span></button>
+        <button class="faq-q">Is the music bingo generator free? <span class="chev">▼</span></button>
         <div class="faq-a">Designing, previewing, and downloading cards is free, with a demo watermark on the output. A Day Pass at $6.99 for 24 hours, Monthly at $24, or Annual at $116 removes the watermark from PDFs, images, and share links. No account is needed to start.</div>
       </div>
       <div class="faq-item" onclick="this.classList.toggle('open')">
