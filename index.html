@@ -809,9 +809,27 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
           </div>
         </div>
       </div>
-      <div style="font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--dm);margin:14px 0 8px">Color themes — great for digital sharing</div>
+      <div style="font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--dm);margin:14px 0 8px">Colour themes — still print well</div>
       <div class="trow">
-        <div class="tsw" data-t="classic" onclick="pTheme(this)" title="Classic"><div class="stp" style="background:#fcfcff"></div><div class="stb" style="background:#163262"></div><span class="stl" style="color:#fff">Classic</span></div>
+        <div class="tsw" data-t="elite" onclick="pTheme(this)" title="Elite — crisp navy and orange"><div class="stp" style="background:#fafbfd"></div><div class="stb" style="background:#0e203b"></div><span class="stl" style="color:#fff">Elite</span></div>
+        <div class="tsw" data-t="classroom" onclick="pTheme(this)" title="Classroom — soft, low ink, for teachers"><div class="stp" style="background:#f7f6f0"></div><div class="stb" style="background:#4a6359"></div><span class="stl" style="color:#fff">Class</span></div>
+        <div class="tsw" data-t="celebration" onclick="pTheme(this)" title="Celebration — parties, showers, birthdays"><div class="stp" style="background:#fdf4f0"></div><div class="stb" style="background:#bc5156"></div><span class="stl" style="color:#fff">Party</span></div>
+        <div class="tsw" data-t="retro" onclick="pTheme(this)" title="Retro — warm vintage"><div class="stp" style="background:#f0e0c4"></div><div class="stb" style="background:#6e3e1e"></div><span class="stl" style="color:#fff">Retro</span></div>
+      </div>
+      <div style="font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--dm);margin:16px 0 8px">Best on a screen — heavy on ink</div>
+      <div class="trow">
+        <div class="tsw" data-t="midnight" onclick="pTheme(this)" title="Midnight — best for share links, not printing"><div class="stp" style="background:#141821"></div><div class="stb" style="background:#262e40"></div><span class="stl" style="color:#fff">Night</span></div>
+      </div>
+      <div style="font-size:11.5px;color:var(--mt);margin-top:10px">Dark cards look great on a phone but soak a printer. For a stack of paper, Eco Print or any of the four above.</div>
+      <div style="margin-top:18px">
+        <div class="ot">Background</div>
+        <div class="ppills">
+          <button class="pp sl" type="button" data-mo="none" onclick="pMotif(this)">None</button>
+          <button class="pp" type="button" data-mo="subtle" onclick="pMotif(this)">Subtle dots</button>
+          <button class="pp" type="button" data-mo="school" onclick="pMotif(this)">School</button>
+        </div>
+        <div style="font-size:11.5px;color:var(--mt);margin-top:8px">A faint texture behind the squares. Very light on ink — Classroom turns School on for you.</div>
+      </div><span class="stl" style="color:#fff">Classic</span></div>
         <div class="tsw" data-t="night" onclick="pTheme(this)" title="Night"><div class="stp" style="background:#1a1a2e"></div><div class="stb" style="background:#4e3478"></div><span class="stl" style="color:#fff">Night</span></div>
         <div class="tsw" data-t="tropical" onclick="pTheme(this)" title="Tropical"><div class="stp" style="background:#ffeea7"></div><div class="stb" style="background:#00806b"></div><span class="stl" style="color:#fff">Tropic</span></div>
         <div class="tsw" data-t="electric" onclick="pTheme(this)" title="Electric"><div class="stp" style="background:#0d0d14"></div><div class="stb" style="background:#166e3a"></div><span class="stl" style="color:#fff">Electric</span></div>
@@ -843,6 +861,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
           </div>
           <div class="ord" style="margin:12px 0 10px">and / or type your own lines</div>
           <input type="text" id="brand-text" placeholder="Line 1 — e.g. Game Night with Sarah" oninput="dPrev()" style="margin-bottom:10px">
+          <div id="bl1-note" style="display:none;font-size:11.5px;color:var(--mt);margin:-4px 0 10px;padding-left:2px">Your logo takes Line 1's place on the card — <b>Line 1 won't print</b> while a logo is uploaded. Line 2 still prints underneath the logo.</div>
           <input type="text" id="brand-text2" placeholder="Line 2 — e.g. Every Thursday · 8pm · $5 a card" oninput="dPrev()" style="margin-bottom:0">
         </div>
       </div>
@@ -890,7 +909,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
     <div class="og">
       <div class="ot">Free Space</div>
       <div class="tgr" onclick="togFS()"><div class="tg on" id="fstg"></div><span class="ttx">Include Free Space</span></div>
-      <div id="fsna" style="display:none;font-size:11.5px;color:var(--mt);margin-top:8px">A free space needs a true middle square, which only exists when both sides are an odd number. Your card is <b id="fsna-dim">4 × 4</b> — switch to an odd size like 3 × 3 or 5 × 5 to turn it back on.</div>
+      <div id="fsna" style="display:none;font-size:11.5px;color:var(--mt);margin-top:8px">A <b>centred</b> free space needs a true middle square, which only exists when both sides are odd. Your card is <b id="fsna-dim">4 × 4</b>, so the free space is placed <b>randomly</b> — a different spot on every card.</div>
       <div id="fso">
         <div id="free-pro-section">
           <label class="fl">Free Space Label</label>
@@ -1212,6 +1231,7 @@ const EXPORT_TOKEN_PUBKEY_SPKI_B64 = 'MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE74W23g
 let isPro=false, font='oswald', theme='eco', freeOn=true, freePos='center';
 let pCount=5, sCount=10, mode='print', fontSize=11, layout='portrait', bingoRow=true;
 let spFmt='title'; // playlist import format: title | artist | both
+let motif='none';     // background texture: none | subtle | school
 let gridW=5, gridH=5; // card grid dimensions (2-8 each); 5x5 is the classic default
 let logoUrl=null, logoImg=null, brandingOn=true, logoScale=100;
 
@@ -1220,13 +1240,24 @@ let logoUrl=null, logoImg=null, brandingOn=true, logoScale=100;
 // eco flag means render as outline-only (eco print)
 // ============================================================
 const THEMES={
-  classic: {bg:[252,252,255],tx:[26,28,38],  hd:[22,50,98],  fr:[22,50,98],   st:[241,244,250],bd:[199,205,222],ht:[255,255,255],ma:[196,155,74], mh:[230,196,120],eco:false},
-  night:   {bg:[26,26,46],  tx:[222,222,236],hd:[78,52,120], fr:[170,42,68],  st:[34,34,58],   bd:[55,55,88],   ht:[255,255,255],ma:[140,110,190],mh:[255,140,170],eco:false},
-  tropical:{bg:[255,238,167],tx:[40,46,55],  hd:[0,128,107], fr:[180,78,52],  st:[255,248,205],bd:[190,168,110],ht:[255,255,255],ma:[230,126,34], mh:[255,183,94], eco:false},
-  electric:{bg:[13,13,20],  tx:[230,230,244],hd:[22,110,58], fr:[125,64,178], st:[19,19,29],   bd:[40,40,58],   ht:[255,255,255],ma:[34,150,90],  mh:[110,255,170],eco:false},
-  retro:   {bg:[245,230,208],tx:[58,26,12],  hd:[125,70,33], fr:[160,83,38],  st:[239,222,198],bd:[178,148,105],ht:[255,255,255],ma:[196,148,60], mh:[224,178,96], eco:false},
-  eco:     {bg:[255,255,255],tx:[0,0,0],      hd:[255,255,255],fr:[245,245,245],st:[255,255,255],bd:[180,180,180],ht:[0,0,0],    eco:true}
+  // Occasion-led, not colour-led. Five print-friendly + one screen theme.
+  // Every pair below is WCAG-verified: tx on bg/st >= 7.0; ht on hd, white on
+  // fr, and white on both hd and drk(hd,-16) >= 4.5 — that last pair matters
+  // because the B-I-N-G-O letters are hardcoded white in both renderers.
+  eco:        {bg:[255,255,255],tx:[0,0,0],      hd:[255,255,255],fr:[245,245,245],st:[255,255,255],bd:[180,180,180],ht:[0,0,0],      eco:true},
+  elite:      {bg:[250,251,253],tx:[17,26,41],   hd:[14,32,59],  fr:[166,94,10], st:[236,240,246],bd:[196,204,216],ht:[255,255,255],ma:[232,148,15], mh:[247,186,90], eco:false},
+  classroom:  {bg:[247,246,240],tx:[46,58,53],   hd:[74,99,89],  fr:[134,113,79],st:[240,239,231],bd:[196,201,187],ht:[255,255,255],ma:[139,120,88], mh:[186,163,120],eco:false},
+  celebration:{bg:[253,244,240],tx:[74,35,42],   hd:[188,81,86], fr:[166,98,81], st:[248,231,224],bd:[224,180,172],ht:[255,255,255],ma:[212,150,150],mh:[240,190,180],eco:false},
+  retro:      {bg:[240,224,196],tx:[59,36,20],   hd:[110,62,30], fr:[157,79,35], st:[231,211,178],bd:[181,150,105],ht:[255,255,255],ma:[168,110,45], mh:[214,158,84], eco:false},
+  midnight:   {bg:[20,24,33],   tx:[229,233,240],hd:[38,46,64],  fr:[47,58,84],  st:[27,32,44],   bd:[64,72,92],   ht:[255,255,255],ma:[245,166,35], mh:[250,200,110],eco:false}
 };
+
+// Retired theme keys still live in the wild — ?card= share links encode the
+// theme (showCard reads st.th) and bcg_autosave stores it. An unknown key would
+// make THEMES[theme] undefined and throw inside the renderer, which surfaces as
+// "Invalid card link" on someone else's shared card. Map them, then guard.
+const THEME_ALIAS={classic:'elite',tropical:'celebration',night:'midnight',electric:'midnight'};
+function resolveTheme(k){k=THEME_ALIAS[k]||k;return THEMES[k]?k:'eco';}
 const PFONTS={
   oswald:   ['helvetica','bold'],
   playfair: ['times','bold'],
@@ -1598,6 +1629,7 @@ function hLogo(inp){
       document.getElementById('lpr').classList.add('show');
       document.getElementById('lpls').classList.add('show');
       document.getElementById('ldt').textContent='Click to replace logo';
+      syncBrandLine1();
       dPrev();
     };
     img.src=logoUrl;
@@ -1611,6 +1643,7 @@ function clrLogo(){
   document.getElementById('lsz').value=100;
   document.getElementById('lszv').textContent='100%';
   document.getElementById('ldt').textContent='Click to upload your logo';
+  syncBrandLine1();
   dPrev();
 }
 function setLogoScale(val){
@@ -1627,6 +1660,17 @@ function togBranding(){
 function syncBrandingUI(){
   document.getElementById('brand-tg').classList.toggle('on',brandingOn);
   document.getElementById('brand-opts').style.display=brandingOn?'':'none';
+  syncBrandLine1();
+}
+// drawBrandingStrip() draws the logo and then only Line 2 — Line 1 is never
+// rendered when a logo is present. That is the intended layout, but it used to
+// happen silently, so say it plainly instead of letting typed text vanish.
+function syncBrandLine1(){
+  const has=!!logoUrl;
+  const n=document.getElementById('bl1-note'),i=document.getElementById('brand-text');
+  if(!n||!i)return;
+  n.style.display=has?'':'none';
+  i.style.opacity=has?'.5':'';
 }
 
 // ============================================================
@@ -1744,8 +1788,13 @@ document.getElementById('ct').addEventListener('input',updTitle);
 function pFont(el){document.querySelectorAll('.fo').forEach(f=>f.classList.remove('sl'));el.classList.add('sl');font=el.dataset.f;dPrev();}
 function pTheme(el){
   document.querySelectorAll('.tsw,.tsw-eco').forEach(s=>s.classList.remove('sl'));el.classList.add('sl');theme=el.dataset.t;
+  // Classroom is the theme the motif was designed for, so it arrives switched
+  // on. Anything else clears it. Either way the user can override afterwards.
+  setMotif(theme==='classroom'?'school':'none');
   dPrev();
 }
+function pMotif(el){setMotif(el.dataset.mo);dPrev();}
+function setMotif(m){motif=m;selPill('.pp[data-mo]','mo',motif);}
 function pFSize(v){
   fontSize=v;
   document.getElementById('fszval').textContent=v+'pt';
@@ -1759,16 +1808,25 @@ function pFSize(v){
   dPrev();
 }
 function pLayout(el){document.querySelectorAll('.lcrd').forEach(c=>c.classList.remove('sl'));el.classList.add('sl');layout=el.dataset.layout;scheduleWordCheck();dPrev();}
-function togFS(){
-  if(!freeEligible())return; // inert on an even grid — #fsna says why
-  freeOn=!freeOn;syncFreeUI();updW();dPrev();
-}
+function togFS(){freeOn=!freeOn;syncFreeUI();updW();dPrev();}
 function syncFreeUI(){
-  const ok=freeEligible();
-  document.getElementById('fstg').classList.toggle('on',freeActive());
-  document.getElementById('fso').style.display=freeActive()?'':'none';
-  document.getElementById('fsna').style.display=ok?'none':'';
-  if(!ok)document.getElementById('fsna-dim').textContent=`${gridW} × ${gridH}`;
+  const canCenter=centerEligible();
+  document.getElementById('fstg').classList.toggle('on',freeOn);
+  document.getElementById('fso').style.display=freeOn?'':'none';
+  // On an even grid, Center isn't geometrically possible — fall back to Random
+  // and disable the pill rather than pretending the choice is available.
+  const cp=document.querySelector('.pp[data-p="center"]');
+  cp.disabled=!canCenter;
+  cp.style.opacity=canCenter?'':'.45';
+  cp.style.cursor=canCenter?'':'not-allowed';
+  cp.title=canCenter?'':'Needs an odd × odd grid';
+  // Never overwrite freePos: it is the user's stored preference. An even grid
+  // suspends Center rather than discarding it, so returning to an odd grid
+  // centres again — same contract as the B-I-N-G-O row toggle.
+  selPill('.pp[data-p]','p',freeCentered()?'center':'random');
+  const na=document.getElementById('fsna');
+  na.style.display=(freeOn&&!canCenter)?'':'none';
+  if(freeOn&&!canCenter)document.getElementById('fsna-dim').textContent=`${gridW} × ${gridH}`;
 }
 function togBingoRow(){
   if(gridW!==5)return; // inert off 5-wide — #brna says why
@@ -1812,7 +1870,7 @@ function syncGridUI(){
     :`${gridW} × ${gridH} — ${requiredSquares()} squares to fill.`;
   syncFreeUI();syncBingoUI();
 }
-function pPos(el){document.querySelectorAll('.pp[data-p]').forEach(b=>b.classList.remove('sl'));el.classList.add('sl');freePos=el.dataset.p;dPrev();}
+function pPos(el){if(el.disabled)return;document.querySelectorAll('.pp[data-p]').forEach(b=>b.classList.remove('sl'));el.classList.add('sl');freePos=el.dataset.p;dPrev();}
 function pFmt(el){document.querySelectorAll('[data-fmt]').forEach(b=>b.classList.remove('sl'));el.classList.add('sl');spFmt=el.dataset.fmt;}
 function sMode(el){
   document.querySelectorAll('.mtab').forEach(t=>t.classList.remove('sl'));el.classList.add('sl');mode=el.dataset.m;
@@ -1853,12 +1911,13 @@ function seededShuffle(arr,seed){
   return a;
 }
 
-// A free space is only geometrically honest on an odd x odd grid — an even
-// dimension has no center cell, so rather than faking one we stand the toggle
-// down and say so in the UI. freeActive() is the single truth both the
-// renderers and the square-count math read.
-function freeEligible(){return gridW%2===1&&gridH%2===1;}
-function freeActive(){return freeOn&&freeEligible();}
+// A free space works at any grid size — only CENTRING it needs a true middle
+// cell, which exists just on an odd x odd grid. On an even grid we place it
+// randomly instead of refusing it, so every card in a batch gets its free
+// square somewhere different.
+function centerEligible(){return gridW%2===1&&gridH%2===1;}
+function freeActive(){return freeOn;}
+function freeCentered(){return freePos==='center'&&centerEligible();}
 // The minimum is the full cell count, not cells-minus-free-space: a 5x5 has
 // always asked for 25 and every page on the site says so. With a free space on,
 // the spare word simply widens the pool the shuffle draws from.
@@ -1874,9 +1933,101 @@ function buildGrid(words,seed){
   const list=pool.slice(0,need);
   while(list.length<need)list.push('');
   if(!free)return list;
-  const idx=freePos==='center'?Math.floor(cells/2):Math.abs(Math.floor(Math.sin(seed)*1000)%cells);
+  const idx=freeCentered()?Math.floor(cells/2):Math.abs(Math.floor(Math.sin(seed)*1000)%cells);
   list.splice(idx,0,null);
   return list.slice(0,cells);
+}
+
+// ============================================================
+// BACKGROUND MOTIF
+// Drawn as a FINAL overlay across the card rather than behind the grid: the cell
+// loop fills every cell opaquely, so anything painted underneath is covered.
+// Painting it behind would mean splitting that loop into fill/motif/text passes,
+// and that loop is what must stay pixel-identical on the eco default. At ~5.5%
+// an overlay is indistinguishable from sitting behind the text — the demo
+// watermark already overlays the whole card at 13%.
+// ASCII glyphs only: jsPDF's core fonts have no emoji or box-drawing symbols.
+const MOTIF_ALPHA=.055;
+
+// One source of truth for mark placement so canvas and PDF cannot drift apart.
+function motifPlan(w,h){
+  const plan={rules:[],dots:[],marks:[]};
+  if(motif==='subtle'){
+    // Squares on a wide pitch, not circles: doc.circle() writes four bezier
+    // curves per dot, which at a tight pitch made a single page 25x larger and
+    // would blow up a 999-card batch. At 5% a square reads identically.
+    const step=Math.max(15,w*.062),r=Math.max(.7,w*.0032);
+    for(let y=step/2;y<h;y+=step)for(let x=step/2;x<w;x+=step)plan.dots.push({x,y,r});
+    return plan;
+  }
+  const lh=Math.max(11,h*.052);
+  for(let y=lh;y<h-2;y+=lh)plan.rules.push(y);
+  const step=Math.max(40,w*.235),sz=Math.max(9,w*.052);
+  let i=0;
+  for(let y=step*.6;y<h;y+=step)for(let x=step*.5;x<w;x+=step)plan.marks.push({x,y,sz,t:(i++)%5});
+  return plan;
+}
+
+// mark types: 0 pencil - 1 "ABC" - 2 ruler - 3 apple - 4 "A+"
+function drawMotifCanvas(ctx,w,h,dark){
+  if(motif==='none')return;
+  const P=motifPlan(w,h),col=dark?'#ffffff':'#141414';
+  ctx.save();ctx.beginPath();ctx.rect(0,0,w,h);ctx.clip();
+  ctx.globalAlpha=MOTIF_ALPHA;ctx.strokeStyle=col;ctx.fillStyle=col;
+  P.dots.forEach(d=>ctx.fillRect(d.x-d.r,d.y-d.r,d.r*2,d.r*2));
+  ctx.lineWidth=Math.max(.4,w*.0016);
+  P.rules.forEach(y=>{ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();});
+  P.marks.forEach(m=>{
+    const s=m.sz,x=m.x,y=m.y;
+    if(m.t===0){
+      ctx.fillRect(x-s*.12,y-s*.5,s*.24,s*.72);
+      ctx.beginPath();ctx.moveTo(x-s*.12,y+s*.22);ctx.lineTo(x+s*.12,y+s*.22);ctx.lineTo(x,y+s*.5);ctx.closePath();ctx.fill();
+    } else if(m.t===2){
+      ctx.strokeRect(x-s*.5,y-s*.18,s,s*.36);
+      for(let k=1;k<4;k++){const tx=x-s*.5+k*s*.25;
+        ctx.beginPath();ctx.moveTo(tx,y-s*.18);ctx.lineTo(tx,y-s*.02);ctx.stroke();}
+    } else if(m.t===3){
+      ctx.beginPath();ctx.arc(x,y+s*.06,s*.3,0,6.2832);ctx.fill();
+      ctx.fillRect(x-s*.03,y-s*.34,s*.06,s*.18);
+    } else {
+      ctx.font=cvf(Math.round(s*.62),true);ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(m.t===1?'ABC':'A+',x,y);
+    }
+  });
+  ctx.restore();
+}
+
+function pdfDrawMotif(doc,ff,ox,oy,w,h,dark){
+  if(motif==='none')return;
+  const P=motifPlan(w,h);
+  let hasOp=false;
+  // Same guard wmPdfPage uses: GState is not guaranteed, so fall back to a very
+  // light flat tint rather than painting the motif at full strength.
+  if(doc.saveGraphicsState&&doc.GState){
+    try{doc.saveGraphicsState();doc.setGState(new doc.GState({opacity:MOTIF_ALPHA}));hasOp=true;}catch(e){}
+  }
+  const lv=hasOp?(dark?255:20):(dark?70:228);
+  doc.setDrawColor(lv,lv,lv);doc.setFillColor(lv,lv,lv);doc.setTextColor(lv,lv,lv);
+  P.dots.forEach(d=>doc.rect(ox+d.x-d.r,oy+d.y-d.r,d.r*2,d.r*2,'F'));
+  doc.setLineWidth(.4);
+  P.rules.forEach(y=>doc.line(ox,oy+y,ox+w,oy+y));
+  P.marks.forEach(m=>{
+    const s=m.sz,x=ox+m.x,y=oy+m.y;
+    if(m.t===0){
+      doc.rect(x-s*.12,y-s*.5,s*.24,s*.72,'F');
+      try{doc.triangle(x-s*.12,y+s*.22,x+s*.12,y+s*.22,x,y+s*.5,'F');}catch(e){}
+    } else if(m.t===2){
+      doc.rect(x-s*.5,y-s*.18,s,s*.36,'S');
+      for(let k=1;k<4;k++){const tx=x-s*.5+k*s*.25;doc.line(tx,y-s*.18,tx,y-s*.02);}
+    } else if(m.t===3){
+      try{doc.circle(x,y+s*.06,s*.3,'F');}catch(e){}
+      doc.rect(x-s*.03,y-s*.34,s*.06,s*.18,'F');
+    } else {
+      doc.setFont(ff,'bold');doc.setFontSize(Math.round(s*.62));
+      doc.text(m.t===1?'ABC':'A+',x,y,{align:'center'});
+    }
+  });
+  if(hasOp)doc.restoreGraphicsState();
 }
 
 // Wrap text with hyphenation — respects fixed fontSize, never overflows cell width
@@ -2023,6 +2174,8 @@ function drawCardCanvas(ctx,W,H,words,seed,opts={}){
       }
     }
   }
+
+  drawMotifCanvas(ctx,W,H,themeIsDark());
 }
 
 // ============================================================
@@ -2249,6 +2402,8 @@ function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
       }
     }
   }
+
+  pdfDrawMotif(doc,ff,ox,oy,cw,ch,T.eco?false:themeIsDark());
 }
 
 // Height (in pt) of the logo/branding strip, used consistently above the
@@ -2542,7 +2697,7 @@ function showCard(enc){
     const st=JSON.parse(decodeURIComponent(atob(enc)));
     sharedSt=st;
     // apply state to renderer
-    font=st.fn||'oswald';theme=st.th||'classic';freeOn=st.fo!==false;freePos=st.fp||'center';
+    font=st.fn||'oswald';theme=resolveTheme(st.th||'eco');freeOn=st.fo!==false;freePos=st.fp||'center';
     document.getElementById('fst').value=st.ft||'FREE';
     document.getElementById('gen').style.display='none';
     document.getElementById('cview').style.display='block';
@@ -2577,7 +2732,7 @@ const AUTOSAVE_KEY='bcg_autosave',GAMES_KEY='bcg_games';
 function collectState(){
   return{
     v:1,t:document.getElementById('ct').value,w:document.getElementById('wl').value,
-    fn:font,fz:fontSize,th:theme,fo:freeOn,fp:freePos,gw:gridW,gh:gridH,
+    fn:font,fz:fontSize,th:theme,fo:freeOn,fp:freePos,gw:gridW,gh:gridH,mo:motif,
     ft:document.getElementById('fst').value,br:bingoRow,
     md:mode,ly:layout,pc:pCount,sc:sCount,
     bo:brandingOn,bt:document.getElementById('brand-text').value,
@@ -2591,13 +2746,14 @@ function applyState(st){
   document.getElementById('ct').value=st.t||'';
   document.getElementById('wl').value=st.w||'';
   font=st.fn||'oswald';selPill('.fo','f',font);
-  theme=st.th||'eco';document.querySelectorAll('.tsw,.tsw-eco').forEach(e=>e.classList.toggle('sl',e.dataset.t===theme));
+  theme=resolveTheme(st.th||'eco');document.querySelectorAll('.tsw,.tsw-eco').forEach(e=>e.classList.toggle('sl',e.dataset.t===theme));
   fontSize=st.fz||11;document.getElementById('fsz').value=fontSize;
   gridW=Math.max(2,Math.min(8,st.gw||5));gridH=Math.max(2,Math.min(8,st.gh||5));
   freeOn=st.fo!==false;
   freePos=st.fp||'center';selPill('.pp[data-p]','p',freePos);
   document.getElementById('fst').value=st.ft||'FREE';
   bingoRow=st.br!==false;
+  setMotif(['none','subtle','school'].includes(st.mo)?st.mo:'none');
   syncGridUI(); // owns the free-space and BINGO-row toggles too
   layout=st.ly||'portrait';selPill('.lcrd','layout',layout);
   pCount=st.pc||5;document.getElementById('cnp').value=pCount;
@@ -2617,7 +2773,7 @@ function applyState(st){
   }
   mode=st.md||'print';
   const tab=document.querySelector(`.mtab[data-m="${mode}"]`);if(tab)sMode(tab);
-  updTitle();updW();pFSize(fontSize);dPrev();
+  updTitle();updW();pFSize(fontSize);syncBrandLine1();dPrev();
 }
 let _asT=null;
 function scheduleAutosave(){clearTimeout(_asT);_asT=setTimeout(autosaveNow,800);}
