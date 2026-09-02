@@ -212,7 +212,7 @@
     {
       "@type": "HowToStep",
       "name": "Enter your content",
-      "text": "Type your words, songs, or phrases into the square list — one item per line. You need at least 25 items to fill a 5×5 card."
+      "text": "Type your words, songs, or phrases into the square list — one item per line. You need at least 25 items to fill a 5×5 card; pick a smaller or larger grid and the generator tells you the new number."
     },
     {
       "@type": "HowToStep",
@@ -723,7 +723,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
       <span style="font-size:11.5px;font-weight:600" id="title-count">0 / 48</span>
     </div>
     <label class="fl">Square List</label>
-    <textarea id="wl" placeholder="One item per line.&#10;&#10;Don't Stop Believin'&#10;Sweet Child O' Mine&#10;Livin' on a Prayer&#10;Hotel California&#10;&#10;Minimum 25 squares required."></textarea>
+    <textarea id="wl" placeholder="One item per line.&#10;&#10;Don't Stop Believin'&#10;Sweet Child O' Mine&#10;Livin' on a Prayer&#10;Hotel California&#10;&#10;Minimum 25 squares for a 5 × 5 card."></textarea>
     <div class="ws warn" id="wst">0 squares — need at least 25</div>
 
     <!-- Collapsible import section -->
@@ -842,8 +842,48 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
     </div>
 
     <div class="og">
+      <div class="ot">Card Size</div>
+      <div class="ppills">
+        <button class="pp" data-g="3x3" onclick="pGrid(this)">3 × 3</button>
+        <button class="pp" data-g="4x4" onclick="pGrid(this)">4 × 4</button>
+        <button class="pp sl" data-g="5x5" onclick="pGrid(this)">5 × 5</button>
+        <button class="pp" data-g="6x6" onclick="pGrid(this)">6 × 6</button>
+      </div>
+      <div style="font-size:11.5px;color:var(--mt);margin-top:8px" id="gsz-note">Classic bingo is 5 × 5. Smaller grids suit younger players and quick rounds.</div>
+      <div style="margin-top:12px">
+        <button onclick="togCustomGrid()" id="cg-toggle-btn"
+          style="width:100%;background:var(--sf2);border:1px solid var(--bd);border-radius:var(--rs);padding:11px 14px;color:var(--mt);font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;text-align:left;display:flex;align-items:center;justify-content:space-between;transition:all var(--t)">
+          <span>Need a custom size? Set width and height →</span>
+          <span id="cg-chevron" style="font-size:11px;transition:transform .2s">▼</span>
+        </button>
+        <div id="cg-panel" style="display:none;margin-top:2px;background:var(--sf2);border:1px solid var(--bd);border-top:none;border-radius:0 0 var(--rs) var(--rs);padding:14px">
+          <div style="display:flex;gap:18px;flex-wrap:wrap">
+            <div>
+              <div class="ot" style="margin-bottom:8px">Across</div>
+              <div class="cct">
+                <div class="ccb" onclick="adjG(-1,'w')">−</div>
+                <input type="number" id="gwi" class="cni" min="2" max="8" value="5" oninput="setG(this,'w')">
+                <div class="ccb" onclick="adjG(1,'w')">+</div>
+              </div>
+            </div>
+            <div>
+              <div class="ot" style="margin-bottom:8px">Down</div>
+              <div class="cct">
+                <div class="ccb" onclick="adjG(-1,'h')">−</div>
+                <input type="number" id="ghi" class="cni" min="2" max="8" value="5" oninput="setG(this,'h')">
+                <div class="ccb" onclick="adjG(1,'h')">+</div>
+              </div>
+            </div>
+          </div>
+          <div style="font-size:11.5px;color:var(--mt);margin-top:10px">Anything from 2 to 8 each way. Cards don't have to be square — 4 across by 7 down works fine.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="og">
       <div class="ot">Free Space</div>
       <div class="tgr" onclick="togFS()"><div class="tg on" id="fstg"></div><span class="ttx">Include Free Space</span></div>
+      <div id="fsna" style="display:none;font-size:11.5px;color:var(--mt);margin-top:8px">A free space needs a true middle square, which only exists when both sides are an odd number. Your card is <b id="fsna-dim">4 × 4</b> — switch to an odd size like 3 × 3 or 5 × 5 to turn it back on.</div>
       <div id="fso">
         <div id="free-pro-section">
           <label class="fl">Free Space Label</label>
@@ -861,6 +901,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
       <div class="ot">Card Header</div>
       <div class="tgr" onclick="togBingoRow()"><div class="tg on" id="brtg"></div><span class="ttx">Show B-I-N-G-O letter row</span></div>
       <div style="font-size:11.5px;color:var(--mt);margin-top:6px">Turn off for a clean grid — useful when your squares aren't a traditional bingo game.</div>
+      <div id="brna" style="display:none;font-size:11.5px;color:var(--mt);margin-top:6px">B-I-N-G-O is five letters, so the header row only appears on a card that is 5 across. Yours is <b id="brna-w">4</b> — the grid prints without it.</div>
     </div>
   </div>
 
@@ -895,7 +936,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
         </div>
       </div>
       <div class="fn2" id="fnp">Free downloads include a demo watermark · <a href="#" onclick="goCheckout();return false">Remove it with a pass →</a></div>
-      <button class="bdl" id="dlb" onclick="genPDF()" disabled>Add 25+ songs to continue</button>
+      <button class="bdl" id="dlb" onclick="genPDF()" disabled>Add 25+ squares to continue</button>
     </div>
     <div id="sp2" style="display:none">
       <div style="background:var(--sf2);border:1px solid var(--bd);border-radius:var(--rs);padding:14px 16px;margin-bottom:16px;font-size:13.5px;color:var(--mt);line-height:1.55">
@@ -1164,6 +1205,7 @@ const EXPORT_TOKEN_PUBKEY_SPKI_B64 = 'MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE74W23g
 let isPro=false, font='oswald', theme='eco', freeOn=true, freePos='center';
 let pCount=5, sCount=10, mode='print', fontSize=11, layout='portrait', bingoRow=true;
 let spFmt='title'; // playlist import format: title | artist | both
+let gridW=5, gridH=5; // card grid dimensions (2-8 each); 5x5 is the classic default
 let logoUrl=null, logoImg=null, brandingOn=true, logoScale=100;
 
 // ============================================================
@@ -1350,7 +1392,8 @@ function goCheckout(plan){
 function pdfBtnLabel(){
   // Free users can download too (watermarked) — the only blocked state is
   // not having enough songs yet.
-  return getW().length<25 ? 'Add 25+ songs to continue' : '↓ Download PDF';
+  const need=requiredSquares();
+  return getW().length<need ? `Add ${need}+ squares to continue` : '↓ Download PDF';
 }
 function applyProLocks(){
   // Free downloads still work; they carry a demo watermark, so these footnotes
@@ -1584,9 +1627,9 @@ function syncBrandingUI(){
 // ============================================================
 function getW(){return document.getElementById('wl').value.split('\n').map(w=>w.trim()).filter(Boolean);}
 function updW(){
-  const n=getW().length,ok=n>=25;
+  const need=requiredSquares(),n=getW().length,ok=n>=need;
   const el=document.getElementById('wst');
-  el.textContent=ok?`${n} squares ✓ ready`:`${n} square${n!==1?'s':''} — need ${25-n} more`;
+  el.textContent=ok?`${n} squares ✓ ready`:`${n} square${n!==1?'s':''} — need ${need-n} more`;
   el.className='ws '+(ok?'ok':'warn');
   const dlb=document.getElementById('dlb');
   dlb.disabled=!ok;
@@ -1626,9 +1669,60 @@ function pFSize(v){
   dPrev();
 }
 function pLayout(el){document.querySelectorAll('.lcrd').forEach(c=>c.classList.remove('sl'));el.classList.add('sl');layout=el.dataset.layout;dPrev();}
-function togFS(){freeOn=!freeOn;document.getElementById('fstg').classList.toggle('on',freeOn);document.getElementById('fso').style.display=freeOn?'':'none';dPrev();}
-function togBingoRow(){bingoRow=!bingoRow;document.getElementById('brtg').classList.toggle('on',bingoRow);dPrev();}
-function pPos(el){document.querySelectorAll('.pp').forEach(b=>b.classList.remove('sl'));el.classList.add('sl');freePos=el.dataset.p;dPrev();}
+function togFS(){
+  if(!freeEligible())return; // inert on an even grid — #fsna says why
+  freeOn=!freeOn;syncFreeUI();updW();dPrev();
+}
+function syncFreeUI(){
+  const ok=freeEligible();
+  document.getElementById('fstg').classList.toggle('on',freeActive());
+  document.getElementById('fso').style.display=freeActive()?'':'none';
+  document.getElementById('fsna').style.display=ok?'none':'';
+  if(!ok)document.getElementById('fsna-dim').textContent=`${gridW} × ${gridH}`;
+}
+function togBingoRow(){
+  if(gridW!==5)return; // inert off 5-wide — #brna says why
+  bingoRow=!bingoRow;syncBingoUI();dPrev();
+}
+function syncBingoUI(){
+  document.getElementById('brtg').classList.toggle('on',showBingoRow());
+  document.getElementById('brna').style.display=gridW===5?'none':'';
+  if(gridW!==5)document.getElementById('brna-w').textContent=gridW;
+}
+
+// ---------- GRID SIZE ----------
+function pGrid(el){
+  const[w,h]=el.dataset.g.split('x').map(Number);
+  setGrid(w,h);
+}
+function togCustomGrid(){
+  const p=document.getElementById('cg-panel'),c=document.getElementById('cg-chevron');
+  const open=p.style.display==='none';
+  p.style.display=open?'':'none';
+  c.style.transform=open?'rotate(180deg)':'';
+}
+function adjG(d,axis){setGrid(axis==='w'?gridW+d:gridW,axis==='h'?gridH+d:gridH);}
+function setG(el,axis){
+  const v=parseInt(el.value,10);
+  if(!v)return; // let them finish typing
+  setGrid(axis==='w'?v:gridW,axis==='h'?v:gridH);
+}
+function setGrid(w,h){
+  gridW=Math.max(2,Math.min(8,w||5));
+  gridH=Math.max(2,Math.min(8,h||5));
+  syncGridUI();updW();dPrev();
+}
+function syncGridUI(){
+  selPill('.pp[data-g]','g',`${gridW}x${gridH}`);
+  document.getElementById('gwi').value=gridW;
+  document.getElementById('ghi').value=gridH;
+  const note=document.getElementById('gsz-note');
+  note.textContent=(gridW===5&&gridH===5)
+    ?'Classic bingo is 5 × 5. Smaller grids suit younger players and quick rounds.'
+    :`${gridW} × ${gridH} — ${requiredSquares()} squares to fill.`;
+  syncFreeUI();syncBingoUI();
+}
+function pPos(el){document.querySelectorAll('.pp[data-p]').forEach(b=>b.classList.remove('sl'));el.classList.add('sl');freePos=el.dataset.p;dPrev();}
 function pFmt(el){document.querySelectorAll('[data-fmt]').forEach(b=>b.classList.remove('sl'));el.classList.add('sl');spFmt=el.dataset.fmt;}
 function sMode(el){
   document.querySelectorAll('.mtab').forEach(t=>t.classList.remove('sl'));el.classList.add('sl');mode=el.dataset.m;
@@ -1654,6 +1748,12 @@ function setC(el,m){
 // ============================================================
 const SAMPLE=['Don\'t Stop Believin\'','Sweet Home Alabama','Bohemian Rhapsody','Hotel California','Stairway to Heaven','Purple Haze','Good Vibrations','Let It Be','Yesterday','Hey Jude','Satisfaction','Piano Man','Superstition','What\'s Going On','Respect','American Pie','Johnny B. Goode','Sweet Child O\' Mine','Livin\' on a Prayer','You Shook Me All Night Long','Eye of the Tiger','Girls Just Want to Have Fun','Jump','Tainted Love','Don\'t You (Forget About Me)'];
 
+// The B-I-N-G-O header only means anything on a 5-wide card. At any other
+// width we suppress it rather than slicing or padding the word into nonsense;
+// the user's own toggle still governs the 5-wide case.
+const BINGO_LETTERS=['B','I','N','G','O'];
+function showBingoRow(){return bingoRow&&gridW===5;}
+
 function seededShuffle(arr,seed){
   const a=[...arr];
   // Guard: seed=0 causes infinite loop in mulberry32 — use 1 as fallback
@@ -1663,13 +1763,30 @@ function seededShuffle(arr,seed){
   return a;
 }
 
+// A free space is only geometrically honest on an odd x odd grid — an even
+// dimension has no center cell, so rather than faking one we stand the toggle
+// down and say so in the UI. freeActive() is the single truth both the
+// renderers and the square-count math read.
+function freeEligible(){return gridW%2===1&&gridH%2===1;}
+function freeActive(){return freeOn&&freeEligible();}
+// The minimum is the full cell count, not cells-minus-free-space: a 5x5 has
+// always asked for 25 and every page on the site says so. With a free space on,
+// the spare word simply widens the pool the shuffle draws from.
+function requiredSquares(){return gridW*gridH;}
+
 function buildGrid(words,seed){
-  const pool=seededShuffle(words.length>=25?words:SAMPLE,seed);
-  if(!freeOn)return pool.slice(0,25);
-  const list=pool.slice(0,24);
-  const idx=freePos==='center'?12:Math.abs(Math.floor(Math.sin(seed)*1000)%25);
+  const cells=gridW*gridH,free=freeActive(),need=cells-(free?1:0);
+  let src=words.length>=requiredSquares()?words:SAMPLE;
+  // SAMPLE is 25 long; cycle it so a 6x6+ preview still fills before the user
+  // has typed enough of their own squares.
+  if(src.length<need){const base=src;src=[];while(src.length<need)src=src.concat(base);}
+  const pool=seededShuffle(src,seed);
+  const list=pool.slice(0,need);
+  while(list.length<need)list.push('');
+  if(!free)return list;
+  const idx=freePos==='center'?Math.floor(cells/2):Math.abs(Math.floor(Math.sin(seed)*1000)%cells);
   list.splice(idx,0,null);
-  return list.slice(0,25);
+  return list.slice(0,cells);
 }
 
 // Wrap text with hyphenation — respects fixed fontSize, never overflows cell width
@@ -1733,10 +1850,10 @@ function drawCardCanvas(ctx,W,H,words,seed,opts={}){
   const scaledFontSize=Math.max(5,Math.round(fontSize*(W/316)));
   const footH=0; // footer logo now in PDF branding zone only
   const tH=Math.round(H*.096); // title bar
-  const bH=bingoRow?Math.round(H*.068):0; // BINGO row (0 when hidden)
+  const bH=showBingoRow()?Math.round(H*.068):0; // BINGO row (0 when hidden or off 5-wide)
   const gT=M+tH+bH;            // grid top
   const gH=H-gT-M-footH;
-  const cW=(W-2*M)/5,cH=gH/5;
+  const cW=(W-2*M)/gridW,cH=gH/gridH;
 
   // bg
   ctx.fillStyle=rgb(T.bg);ctx.fillRect(0,0,W,H);
@@ -1759,7 +1876,7 @@ function drawCardCanvas(ctx,W,H,words,seed,opts={}){
   ctx.fillText(titleTxt,W/2,M+tH/2);
 
   // BINGO row (only when enabled)
-  if(bingoRow) ['B','I','N','G','O'].forEach((l,i)=>{
+  if(showBingoRow()) BINGO_LETTERS.forEach((l,i)=>{
     const x=M+i*cW;
     if(T.eco){
       ctx.strokeStyle='#000';ctx.lineWidth=Math.max(.4,W*.001);
@@ -1775,9 +1892,9 @@ function drawCardCanvas(ctx,W,H,words,seed,opts={}){
   // Grid
   const grid=buildGrid(words,seed);
   let freeRect=null;
-  for(let r=0;r<5;r++){
-    for(let c=0;c<5;c++){
-      const x=M+c*cW,y=gT+r*cH,word=grid[r*5+c],isFree=word===null;
+  for(let r=0;r<gridH;r++){
+    for(let c=0;c<gridW;c++){
+      const x=M+c*cW,y=gT+r*cH,word=grid[r*gridW+c],isFree=word===null;
       if(isFree){freeRect={x,y,w:cW,h:cH};ctx.fillStyle=T.eco?'rgb(245,245,245)':rgb(T.fr);}
       else ctx.fillStyle=(r+c)%2===0?rgb(T.st):rgb(T.bg);
       ctx.fillRect(x,y,cW,cH);
@@ -1967,9 +2084,9 @@ function pdfFitTxt(doc,text,maxW,maxH,baseSz){
 function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
   const M=14;
   const footH=0; // footer handled by genPDF caller
-  const tH=Math.round(ch*.09),bH=bingoRow?Math.round(ch*.06):0;
+  const tH=Math.round(ch*.09),bH=showBingoRow()?Math.round(ch*.06):0;
   const gY=oy+M+tH+bH,gH=ch-M-tH-bH-M-footH;
-  const colW=(cw-2*M)/5,rowH=gH/5;
+  const colW=(cw-2*M)/gridW,rowH=gH/gridH;
   const grid=buildGrid(words,seed);
 
   // bg
@@ -1988,7 +2105,7 @@ function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
   doc.text(titleTxt,ox+cw/2,oy+M+tH*.68,{align:'center'});
 
   // BINGO row (only when enabled)
-  if(bingoRow) ['B','I','N','G','O'].forEach((l,j)=>{
+  if(showBingoRow()) BINGO_LETTERS.forEach((l,j)=>{
     const x=ox+M+j*colW;
     if(T.eco){doc.setDrawColor(0,0,0);doc.setLineWidth(.4);doc.rect(x,oy+M+tH,colW,bH,'S');doc.setTextColor(0,0,0);}
     else{doc.setFillColor(...drk(T.hd,j%2===0?-16:0));doc.rect(x,oy+M+tH,colW,bH,'F');doc.setTextColor(255,255,255);}
@@ -1998,10 +2115,10 @@ function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
 
   // Grid cells
   let frd=null;
-  for(let r=0;r<5;r++){
-    for(let c=0;c<5;c++){
+  for(let r=0;r<gridH;r++){
+    for(let c=0;c<gridW;c++){
       const x=ox+M+c*colW,y=gY+r*rowH;
-      const word=grid[r*5+c],isFree=word===null;
+      const word=grid[r*gridW+c],isFree=word===null;
       if(isFree){frd={x,y,w:colW,h:rowH};doc.setFillColor(...(T.eco?[245,245,245]:T.fr));}
       else doc.setFillColor(...((r+c)%2===0?T.st:T.bg));
       doc.rect(x,y,colW,rowH,'F');
@@ -2131,7 +2248,7 @@ function landscapeLayout(PW,PH,brandH){
 }
 
 async function genPDF(){
-  const words=getW();if(words.length<25){toast('Need at least 25 songs.','err');return;}
+  const words=getW();if(words.length<requiredSquares()){toast(`Need at least ${requiredSquares()} squares.`,'err');return;}
   pCount=Math.max(1,Math.min(999,parseInt(document.getElementById('cnp').value)||1));
   document.getElementById('cnp').value=pCount;
   const btn=document.getElementById('dlb');
@@ -2214,7 +2331,7 @@ async function genPDF(){
       gev('pdf_downloaded',{card_count:pCount,layout,theme,is_pro:clean});
       toast(clean?`Downloaded ${pCount} card${pCount>1?'s':''}!`:`Downloaded ${pCount} demo card${pCount>1?'s':''} — a pass removes the watermark.`,'ok');
     }catch(err){console.error(err);toast('PDF generation failed.','err');}
-    finally{btn.innerHTML=pdfBtnLabel();btn.disabled=getW().length<25;}
+    finally{btn.innerHTML=pdfBtnLabel();btn.disabled=getW().length<requiredSquares();}
   },60);
   }).catch(()=>toast('Failed to load PDF library — check your connection.','err'));
 }
@@ -2227,7 +2344,7 @@ let galCvs=[],galSeeds=[];
 async function openGal(){
   sCount=Math.max(1,Math.min(999,parseInt(document.getElementById('cns').value)||1));
   document.getElementById('cns').value=sCount;
-  const words=getW();if(words.length<25){toast('Need at least 25 songs.','err');return;}
+  const words=getW();if(words.length<requiredSquares()){toast(`Need at least ${requiredSquares()} squares.`,'err');return;}
   const btn=document.getElementById('sgb');
   btn.innerHTML='<span class="sp"></span> Checking license...';btn.disabled=true;
   // Generating the gallery is free — unauthorized users see watermarked
@@ -2370,7 +2487,7 @@ const AUTOSAVE_KEY='bcg_autosave',GAMES_KEY='bcg_games';
 function collectState(){
   return{
     v:1,t:document.getElementById('ct').value,w:document.getElementById('wl').value,
-    fn:font,fz:fontSize,th:theme,fo:freeOn,fp:freePos,
+    fn:font,fz:fontSize,th:theme,fo:freeOn,fp:freePos,gw:gridW,gh:gridH,
     ft:document.getElementById('fst').value,br:bingoRow,
     md:mode,ly:layout,pc:pCount,sc:sCount,
     bo:brandingOn,bt:document.getElementById('brand-text').value,
@@ -2386,10 +2503,12 @@ function applyState(st){
   font=st.fn||'oswald';selPill('.fo','f',font);
   theme=st.th||'eco';document.querySelectorAll('.tsw,.tsw-eco').forEach(e=>e.classList.toggle('sl',e.dataset.t===theme));
   fontSize=st.fz||11;document.getElementById('fsz').value=fontSize;
-  freeOn=st.fo!==false;document.getElementById('fstg').classList.toggle('on',freeOn);document.getElementById('fso').style.display=freeOn?'':'none';
-  freePos=st.fp||'center';selPill('.pp','p',freePos);
+  gridW=Math.max(2,Math.min(8,st.gw||5));gridH=Math.max(2,Math.min(8,st.gh||5));
+  freeOn=st.fo!==false;
+  freePos=st.fp||'center';selPill('.pp[data-p]','p',freePos);
   document.getElementById('fst').value=st.ft||'FREE';
-  bingoRow=st.br!==false;document.getElementById('brtg').classList.toggle('on',bingoRow);
+  bingoRow=st.br!==false;
+  syncGridUI(); // owns the free-space and BINGO-row toggles too
   layout=st.ly||'portrait';selPill('.lcrd','layout',layout);
   pCount=st.pc||5;document.getElementById('cnp').value=pCount;
   sCount=st.sc||10;document.getElementById('cns').value=sCount;
@@ -2458,7 +2577,7 @@ updW();
 updThemeBtn();
 // chkPro: run immediately for cached state, defer network re-verification to after paint
 chkPro();
-document.fonts.ready.then(()=>{applyProLocks();pFSize(fontSize);dPrev();});
+document.fonts.ready.then(()=>{applyProLocks();pFSize(fontSize);updW();dPrev();});
 const qp=new URLSearchParams(location.search);
 if(qp.has('code'))hCb(qp.get('code'));
 if(qp.has('card'))showCard(qp.get('card'));

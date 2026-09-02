@@ -43,11 +43,21 @@ is deliberate: the older pages drifted apart — visible answers grew and the
 schema didn't follow — and `sync-faq-schema.js` exists to repair the pages the
 builder doesn't own.
 
-## Two things that are easy to get wrong
+## Three things that are easy to get wrong
 
-**The grid is fixed at 5×5.** `buildGrid()` slices 25 from the pool and the free
-space is hardcoded to index 12. There is no size selector. Nothing on the site
-may imply 4×4 or 6×6 — a prior round of content briefs claimed it three times.
+**The grid is selectable, and two things depend on its shape.** `gridW`/`gridH`
+default to 5×5; presets cover 3×3/4×4/5×5/6×6 and a custom panel allows 2–8 each
+way, so non-square cards like 4×7 are valid. `requiredSquares()` is `gridW*gridH`
+— the full cell count, *not* cells-minus-free-space, so a 5×5 still asks for 25
+exactly as it always has and every page saying "minimum 25" stays true.
+Two derived rules, both with UI that explains itself rather than failing silently:
+a **free space needs both sides odd** (`freeEligible()`) since an even grid has no
+middle cell, and the **B-I-N-G-O header only renders at width 5** (`showBingoRow()`)
+because the word is five letters. In both cases the user's toggle keeps its
+preference and goes inert — it is not silently flipped.
+
+`drawCardCanvas()` and `pdfDrawCard()` are deliberate mirrors of each other.
+Change them together or the preview and the PDF drift apart.
 
 **Branding is Pro.** Logo and the two branding text lines are gated behind a
 pass (`brandingActive()` = `brandingOn && isPro`). Free users get everything
@@ -58,7 +68,8 @@ that last one is the document a customer gets pointed at in a dispute.
 ## The autosave contract
 
 `localStorage['bcg_autosave']` holds `{v:1, t:<title>, w:<newline-separated
-squares>, …}`. On load, with no `?card=` param, `index.html` calls `applyState()`
+squares>, gw:<grid width>, gh:<grid height>, …}`. `gw`/`gh` are optional and
+default to 5 when absent, so blobs written before grid sizing still restore. On load, with no `?card=` param, `index.html` calls `applyState()`
 on it and toasts the user. Any page can hand work to the generator by writing
 that key and navigating to `/` — no forking required. `src:"starter"` marks a
 landing-page handoff so the toast reads as a first arrival rather than a return.
