@@ -99,7 +99,7 @@ module.exports = {
     { q: "Can I add my own logo or images to the cards?",
       a: "You can add a logo or two lines of your own text on a Pro pass, and it prints in a branding strip above or below the card grid. Each square itself is text rather than an image slot, so photos per square aren't supported — your fonts, colors, and logo carry the branding." },
     { q: "What fonts and colors can I choose from?",
-      a: "Five card fonts — Oswald, Playfair Display, Fredoka One, Righteous, or a monospace style — and five colour themes: the ink-saving Eco Print black-and-white default, plus Elite, Classroom, Celebration and Retro, all of which still print well. You can also put a faint background texture behind the squares. Font size is adjustable from 6pt to 22pt, with long words auto-hyphenated so nothing gets cut off." },
+      a: "Five card fonts — Oswald, Playfair Display, Fredoka One, Righteous, or a monospace style — and five colour themes: the ink-saving Eco Print black-and-white default, plus Elite, Classroom, Celebration and Retro, all of which still print well — or set your own colours for the background, square text, title bar, title text and free space. Font size is adjustable from 6pt to 22pt, with long words auto-hyphenated so nothing gets cut off." },
     { q: "Do I need Canva or design experience to make a bingo card?",
       a: "No. A bingo card maker replaces the parts of Canva or a slide template you would normally fight with — layout, spacing, grid alignment — with a few dropdowns and toggles. You bring the words and pick the look; the generator handles the design and the randomization." },
     { q: "What is the difference between a bingo card maker and a bingo sheet maker?",
