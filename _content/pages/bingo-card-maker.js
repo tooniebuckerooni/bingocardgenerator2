@@ -67,7 +67,7 @@ module.exports = {
       </div>
       <div class="gcard">
         <h3>Color themes for print or for screens</h3>
-        <p>Eco Print is the default: black and white, minimal ink, built for running off a stack. Elite, Classroom, Celebration and Retro add colour while still printing sensibly, and Midnight is the dark one — it looks best on a phone and is the one to avoid if you are printing a class set.</p>
+        <p>Eco Print is the default: black and white, minimal ink, built for running off a stack. Elite, Classroom, Celebration and Retro add colour while still printing sensibly — there is no dark theme to burn through a cartridge by accident.</p>
       </div>
       <div class="gcard">
         <h3>Free space, header row, and the small stuff</h3>
@@ -99,7 +99,7 @@ module.exports = {
     { q: "Can I add my own logo or images to the cards?",
       a: "You can add a logo or two lines of your own text on a Pro pass, and it prints in a branding strip above or below the card grid. Each square itself is text rather than an image slot, so photos per square aren't supported — your fonts, colors, and logo carry the branding." },
     { q: "What fonts and colors can I choose from?",
-      a: "Five card fonts — Oswald, Playfair Display, Fredoka One, Righteous, or a monospace style — and six colour themes: the ink-saving Eco Print black-and-white default, then Elite, Classroom, Celebration and Retro, which all still print well, plus Midnight for cards meant to be viewed on a screen. You can also put a faint background texture behind the squares. Font size is adjustable from 6pt to 22pt, with long words auto-hyphenated so nothing gets cut off." },
+      a: "Five card fonts — Oswald, Playfair Display, Fredoka One, Righteous, or a monospace style — and five colour themes: the ink-saving Eco Print black-and-white default, plus Elite, Classroom, Celebration and Retro, all of which still print well. You can also put a faint background texture behind the squares. Font size is adjustable from 6pt to 22pt, with long words auto-hyphenated so nothing gets cut off." },
     { q: "Do I need Canva or design experience to make a bingo card?",
       a: "No. A bingo card maker replaces the parts of Canva or a slide template you would normally fight with — layout, spacing, grid alignment — with a few dropdowns and toggles. You bring the words and pick the look; the generator handles the design and the randomization." },
     { q: "What is the difference between a bingo card maker and a bingo sheet maker?",
