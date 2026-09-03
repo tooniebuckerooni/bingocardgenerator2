@@ -41,7 +41,7 @@ module.exports = {
   },
 
   body: `
-    <p>A bingo card maker is not a template picker. It is a blank 5×5 grid and a set of controls: you bring the content, and the generator handles the grid, the randomization, and the print formatting. Every part of the card that can be set, you set.</p>
+    <p>A bingo card maker is not a template picker. It is a blank grid — 5×5 by default, or any size from 3×3 up to 8×8 — and a set of controls: you bring the content, and the generator handles the grid, the randomization, and the print formatting. Every part of the card that can be set, you set.</p>
 
     <h2>How to Make a Bingo Card From Scratch</h2>
     <div class="steps">
@@ -51,7 +51,7 @@ module.exports = {
       <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Download or share.</strong> A print-ready PDF, a ZIP of card images, or a link per player. Set the count to 1 for a single card or up to 999 for a full room.</div></div>
     </div>
     <div class="note">
-      <p><strong>Minimum 25 squares.</strong> A 5×5 card needs 25 items to fill it. Add more than 25 and the randomizer draws from a bigger pool, which cuts repetition across a large batch — the single biggest thing that makes a class set or a bar night feel varied.</p>
+      <p><strong>Minimum 25 squares for a 5×5 card.</strong> A 5×5 card needs 25 items to fill it; a smaller grid needs fewer and a larger one needs more, and the counter under the square list always shows the number for the size you picked. Add more than the minimum and the randomizer draws from a bigger pool, which cuts repetition across a large batch — the single biggest thing that makes a class set or a bar night feel varied.</p>
     </div>
 
     <h2>Every Piece of the Card Is Yours to Set</h2>
@@ -67,7 +67,7 @@ module.exports = {
       </div>
       <div class="gcard">
         <h3>Color themes for print or for screens</h3>
-        <p>Eco Print is the default: black and white, minimal ink, built for running off a stack. Classic, Night, Tropic, Electric, and Retro are there for cards that will be looked at on a phone.</p>
+        <p>Eco Print is the default: black and white, minimal ink, built for running off a stack. Elite, Classroom, Celebration and Retro add colour while still printing sensibly — there is no dark theme to burn through a cartridge by accident.</p>
       </div>
       <div class="gcard">
         <h3>Free space, header row, and the small stuff</h3>
@@ -77,7 +77,7 @@ module.exports = {
     <p>On a Pro pass you can also print your own branding on every card: upload a logo, or type two lines of text — a venue or host name on the first, and whatever you want to promote on the second, like <em>Every Thursday · 8pm · $5 a card</em>.</p>
 
     <h2>Bingo Sheet Maker, Bingo Card Creator, Same Thing</h2>
-    <p>Sheet, card, board, creator, maker — people search all of these and mean roughly one thing, so it is worth saying plainly that this tool produces a single artefact: a 5×5, 25-square grid filled with your content. Whichever word brought you here, the file you download is the same one.</p>
+    <p>Sheet, card, board, creator, maker — people search all of these and mean roughly one thing, so it is worth saying plainly that this tool produces a single artefact: a printable grid filled with your content, 5×5 and 25 squares unless you pick another size. Whichever word brought you here, the file you download is the same one.</p>
     <p>The words do carry a hint about use, though. "Sheet" usually means a page handed out to a class or a table; "card" usually means one of a stack, one per player. If you meant the third sense — one shared board on a screen for a meeting or a watch party — the <a href="/bingo-board-generator.html">bingo board generator</a> is the page for that.</p>
 
     <h2>One Maker, Any List You Bring</h2>
@@ -95,15 +95,15 @@ module.exports = {
     { q: "Is this bingo card maker free to use?",
       a: "Making a card is free — writing your squares, choosing a font and color theme, setting the layout, and previewing the result all cost nothing. Downloads carry a small demo watermark until you activate a Day Pass, Monthly, or Annual pass, which unlock clean PDF, PNG, ZIP, and share-link downloads plus custom branding." },
     { q: "Can I write my own words instead of using a template?",
-      a: "Yes — that is the whole point of a maker rather than a template. Type at least 25 words, phrases, trivia questions, or anything else into the square list and the generator turns your list into randomized 5×5 cards. Nothing is pre-filled for you." },
+      a: "Yes — that is the whole point of a maker rather than a template. Type at least 25 words, phrases, trivia questions, or anything else into the square list and the generator turns your list into randomized 5×5 cards, or whatever grid size you choose. Nothing is pre-filled for you." },
     { q: "Can I add my own logo or images to the cards?",
       a: "You can add a logo or two lines of your own text on a Pro pass, and it prints in a branding strip above or below the card grid. Each square itself is text rather than an image slot, so photos per square aren't supported — your fonts, colors, and logo carry the branding." },
     { q: "What fonts and colors can I choose from?",
-      a: "Five card fonts — Oswald, Playfair Display, Fredoka One, Righteous, or a monospace style — and six color themes, from the ink-saving Eco Print black-and-white mode to Classic, Night, Tropic, Electric, and Retro. Font size is adjustable from 6pt to 22pt, with long words auto-hyphenated so nothing gets cut off." },
+      a: "Five card fonts — Oswald, Playfair Display, Fredoka One, Righteous, or a monospace style — and five colour themes: the ink-saving Eco Print black-and-white default, plus Elite, Classroom, Celebration and Retro, all of which still print well — or set your own colours for the background, square text, title bar, title text and free space. Font size is adjustable from 6pt to 22pt, with long words auto-hyphenated so nothing gets cut off." },
     { q: "Do I need Canva or design experience to make a bingo card?",
       a: "No. A bingo card maker replaces the parts of Canva or a slide template you would normally fight with — layout, spacing, grid alignment — with a few dropdowns and toggles. You bring the words and pick the look; the generator handles the design and the randomization." },
     { q: "What is the difference between a bingo card maker and a bingo sheet maker?",
-      a: "Nothing, on this site. Sheet, board, and card are three words people use for the same 5x5 grid, and the file you download is identical. The only real difference is how many you make: one for a shared board, or a stack with one per player." },
+      a: "Nothing, on this site. Sheet, board, and card are three words people use for the same grid, and the file you download is identical. The only real difference is how many you make: one for a shared board, or a stack with one per player." },
     { q: "How many unique cards can I make from one list, and will squares repeat?",
       a: "Up to 999 cards from a single square list, each with its own randomized layout, so a full room can play without two players holding an identical card. More squares in your original list means less repetition across a large batch." },
   ],
