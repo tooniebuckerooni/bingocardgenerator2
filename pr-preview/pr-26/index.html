@@ -733,6 +733,22 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
     <div class="ws warn" id="wst">0 squares — need at least 25</div>
     <div id="wchk" style="display:none;margin-top:10px"></div>
 
+    <div style="margin-top:14px">
+      <button onclick="togFill()" id="fill-toggle-btn"
+        style="width:100%;background:var(--sf2);border:1px solid var(--bd);border-radius:var(--rs);padding:11px 14px;color:var(--mt);font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;text-align:left;display:flex;align-items:center;justify-content:space-between;transition:all var(--t)">
+        <span>Want a category per column? Fill by column or row →</span>
+        <span id="fill-chevron" style="font-size:11px;transition:transform .2s">▼</span>
+      </button>
+      <div id="fill-panel" style="display:none;margin-top:2px;background:var(--sf2);border:1px solid var(--bd);border-top:none;border-radius:0 0 var(--rs) var(--rs);padding:14px">
+        <div class="ppills">
+          <button class="pp sl" type="button" data-fm="simple" onclick="pFill(this)">One list</button>
+          <button class="pp" type="button" data-fm="col" onclick="pFill(this)">By column</button>
+          <button class="pp" type="button" data-fm="row" onclick="pFill(this)">By row</button>
+        </div>
+        <div id="fill-hint" style="font-size:11.5px;color:var(--mt);margin-top:10px;line-height:1.7">One list, shuffled across the whole card — the normal way.</div>
+      </div>
+    </div>
+
     <!-- Collapsible import section -->
     <div style="margin-top:22px">
       <button onclick="togImport()" id="import-toggle-btn"
@@ -809,18 +825,13 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
           </div>
         </div>
       </div>
-      <div style="font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--dm);margin:14px 0 8px">Colour themes — still print well</div>
+      <div style="font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--dm);margin:14px 0 8px">Colour themes</div>
       <div class="trow">
         <div class="tsw" data-t="elite" onclick="pTheme(this)" title="Elite — crisp navy and orange"><div class="stp" style="background:#fafbfd"></div><div class="stb" style="background:#0e203b"></div><span class="stl" style="color:#fff">Elite</span></div>
         <div class="tsw" data-t="classroom" onclick="pTheme(this)" title="Classroom — soft, low ink, for teachers"><div class="stp" style="background:#f7f6f0"></div><div class="stb" style="background:#4a6359"></div><span class="stl" style="color:#fff">Class</span></div>
         <div class="tsw" data-t="celebration" onclick="pTheme(this)" title="Celebration — parties, showers, birthdays"><div class="stp" style="background:#fdf4f0"></div><div class="stb" style="background:#bc5156"></div><span class="stl" style="color:#fff">Party</span></div>
         <div class="tsw" data-t="retro" onclick="pTheme(this)" title="Retro — warm vintage"><div class="stp" style="background:#f0e0c4"></div><div class="stb" style="background:#6e3e1e"></div><span class="stl" style="color:#fff">Retro</span></div>
       </div>
-      <div style="font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--dm);margin:16px 0 8px">Best on a screen — heavy on ink</div>
-      <div class="trow">
-        <div class="tsw" data-t="midnight" onclick="pTheme(this)" title="Midnight — best for share links, not printing"><div class="stp" style="background:#141821"></div><div class="stb" style="background:#262e40"></div><span class="stl" style="color:#fff">Night</span></div>
-      </div>
-      <div style="font-size:11.5px;color:var(--mt);margin-top:10px">Dark cards look great on a phone but soak a printer. For a stack of paper, Eco Print or any of the four above.</div>
       <div style="margin-top:18px">
         <div class="ot">Background</div>
         <div class="ppills">
@@ -829,11 +840,6 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
           <button class="pp" type="button" data-mo="school" onclick="pMotif(this)">School</button>
         </div>
         <div style="font-size:11.5px;color:var(--mt);margin-top:8px">A faint texture behind the squares. Very light on ink — Classroom turns School on for you.</div>
-      </div><span class="stl" style="color:#fff">Classic</span></div>
-        <div class="tsw" data-t="night" onclick="pTheme(this)" title="Night"><div class="stp" style="background:#1a1a2e"></div><div class="stb" style="background:#4e3478"></div><span class="stl" style="color:#fff">Night</span></div>
-        <div class="tsw" data-t="tropical" onclick="pTheme(this)" title="Tropical"><div class="stp" style="background:#ffeea7"></div><div class="stb" style="background:#00806b"></div><span class="stl" style="color:#fff">Tropic</span></div>
-        <div class="tsw" data-t="electric" onclick="pTheme(this)" title="Electric"><div class="stp" style="background:#0d0d14"></div><div class="stb" style="background:#166e3a"></div><span class="stl" style="color:#fff">Electric</span></div>
-        <div class="tsw" data-t="retro" onclick="pTheme(this)" title="Retro"><div class="stp" style="background:#f5e6d0"></div><div class="stb" style="background:#7d4621"></div><span class="stl" style="color:#fff">Retro</span></div>
       </div>
     </div>
 
@@ -1231,6 +1237,7 @@ const EXPORT_TOKEN_PUBKEY_SPKI_B64 = 'MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE74W23g
 let isPro=false, font='oswald', theme='eco', freeOn=true, freePos='center';
 let pCount=5, sCount=10, mode='print', fontSize=11, layout='portrait', bingoRow=true;
 let spFmt='title'; // playlist import format: title | artist | both
+let fillMode='simple'; // simple | col | row — a blank line starts a new block
 let motif='none';     // background texture: none | subtle | school
 let gridW=5, gridH=5; // card grid dimensions (2-8 each); 5x5 is the classic default
 let logoUrl=null, logoImg=null, brandingOn=true, logoScale=100;
@@ -1430,8 +1437,9 @@ function goCheckout(plan){
 function pdfBtnLabel(){
   // Free users can download too (watermarked) — the only blocked state is
   // not having enough songs yet.
-  const need=requiredSquares();
-  return getW().length<need ? `Add ${need}+ squares to continue` : '↓ Download PDF';
+  const st=listStatus();
+  if(st.ok)return '↓ Download PDF';
+  return fillMode==='simple' ? `Add ${requiredSquares()}+ squares to continue` : 'Finish your blocks to continue';
 }
 function applyProLocks(){
   // Free downloads still work; they carry a demo watermark, so these footnotes
@@ -1677,10 +1685,40 @@ function syncBrandLine1(){
 // WORD LIST
 // ============================================================
 function getW(){return document.getElementById('wl').value.split('\n').map(w=>w.trim()).filter(Boolean);}
+
+// getW() flattens with .filter(Boolean), which throws away exactly the blank
+// lines block mode depends on — so grouped parsing needs its own reader.
+// Runs of blank lines collapse into one separator.
+function getBlocks(){
+  const out=[];let cur=[];
+  for(const raw of document.getElementById('wl').value.split('\n')){
+    const t=raw.trim();
+    if(t)cur.push(t); else if(cur.length){out.push(cur);cur=[];}
+  }
+  if(cur.length)out.push(cur);
+  return out;
+}
+function fillGroupCount(){return fillMode==='col'?gridW:gridH;}
+
+// Single source of readiness for both modes, so the six call sites that used to
+// consult requiredSquares() directly all ask the same question.
+function listStatus(){
+  if(fillMode==='simple'){
+    const need=requiredSquares(),n=getW().length,ok=n>=need;
+    return{ok,text:ok?`${n} squares ✓ ready`:`${n} square${n!==1?'s':''} — need ${need-n} more`};
+  }
+  const n=fillGroupCount(),b=getBlocks(),unit=fillMode==='col'?'column':'row';
+  if(!b.length)return{ok:false,text:`No squares yet — separate each ${unit} with a blank line`};
+  if(b.length===n)return{ok:true,text:`${b.length} blocks → ${n} ${unit}s ✓ ready`};
+  const d=n-b.length;
+  return{ok:false,text:d>0
+    ?`${b.length} block${b.length!==1?'s':''} but ${n} ${unit}s — add ${d} more, separated by a blank line`
+    :`${b.length} blocks but only ${n} ${unit}s — remove ${-d}, or make the card wider`};
+}
 function updW(){
-  const need=requiredSquares(),n=getW().length,ok=n>=need;
+  const st=listStatus(),ok=st.ok;
   const el=document.getElementById('wst');
-  el.textContent=ok?`${n} squares ✓ ready`:`${n} square${n!==1?'s':''} — need ${need-n} more`;
+  el.textContent=st.text;
   el.className='ws '+(ok?'ok':'warn');
   const dlb=document.getElementById('dlb');
   dlb.disabled=!ok;
@@ -1787,13 +1825,29 @@ document.getElementById('ct').addEventListener('input',updTitle);
 // ============================================================
 function pFont(el){document.querySelectorAll('.fo').forEach(f=>f.classList.remove('sl'));el.classList.add('sl');font=el.dataset.f;dPrev();}
 function pTheme(el){
-  document.querySelectorAll('.tsw,.tsw-eco').forEach(s=>s.classList.remove('sl'));el.classList.add('sl');theme=el.dataset.t;
+  document.querySelectorAll('.tsw,.tsw-eco').forEach(s=>s.classList.remove('sl'));el.classList.add('sl');theme=resolveTheme(el.dataset.t);
   // Classroom is the theme the motif was designed for, so it arrives switched
   // on. Anything else clears it. Either way the user can override afterwards.
   setMotif(theme==='classroom'?'school':'none');
   dPrev();
 }
 function pMotif(el){setMotif(el.dataset.mo);dPrev();}
+function openFill(v){
+  document.getElementById('fill-panel').style.display=v?'':'none';
+  document.getElementById('fill-chevron').style.transform=v?'rotate(180deg)':'';
+}
+function togFill(){openFill(document.getElementById('fill-panel').style.display==='none');}
+function pFill(el){setFill(el.dataset.fm);updW();dPrev();}
+function setFill(m){
+  fillMode=['simple','col','row'].includes(m)?m:'simple';
+  selPill('.pp[data-fm]','fm',fillMode);
+  const unit=fillMode==='col'?'column':'row',n=fillGroupCount();
+  document.getElementById('fill-hint').innerHTML=fillMode==='simple'
+    ?'One list, shuffled across the whole card — the normal way.'
+    :`Leave a <b>blank line</b> between blocks. Block 1 fills ${unit} 1, block 2 fills ${unit} 2, and so on — ${n} blocks for this card. A short block just leaves blank squares.`;
+  // never leave an active non-default mode hidden behind a collapsed panel
+  if(fillMode!=='simple')openFill(true);
+}
 function setMotif(m){motif=m;selPill('.pp[data-mo]','mo',motif);}
 function pFSize(v){
   fontSize=v;
@@ -1869,6 +1923,7 @@ function syncGridUI(){
     ?'Classic bingo is 5 × 5. Smaller grids suit younger players and quick rounds.'
     :`${gridW} × ${gridH} — ${requiredSquares()} squares to fill.`;
   syncFreeUI();syncBingoUI();
+  if(fillMode!=='simple')setFill(fillMode); // block count follows the grid
 }
 function pPos(el){if(el.disabled)return;document.querySelectorAll('.pp[data-p]').forEach(b=>b.classList.remove('sl'));el.classList.add('sl');freePos=el.dataset.p;dPrev();}
 function pFmt(el){document.querySelectorAll('[data-fmt]').forEach(b=>b.classList.remove('sl'));el.classList.add('sl');spFmt=el.dataset.fmt;}
@@ -1924,6 +1979,7 @@ function freeCentered(){return freePos==='center'&&centerEligible();}
 function requiredSquares(){return gridW*gridH;}
 
 function buildGrid(words,seed){
+  if(fillMode!=='simple')return buildGridGrouped(seed);
   const cells=gridW*gridH,free=freeActive(),need=cells-(free?1:0);
   let src=words.length>=requiredSquares()?words:SAMPLE;
   // SAMPLE is 25 long; cycle it so a 6x6+ preview still fills before the user
@@ -2028,6 +2084,30 @@ function pdfDrawMotif(doc,ff,ox,oy,w,h,dark){
     }
   });
   if(hasOp)doc.restoreGraphicsState();
+}
+
+// One block per column (or row). Each block is shuffled with its own seed
+// offset so columns vary independently from card to card, rather than the whole
+// grid moving as one. A short block simply leaves '' — the renderers already
+// draw that as an empty cell, which is the look we want.
+function buildGridGrouped(seed){
+  const cells=gridW*gridH,n=fillGroupCount();
+  let groups=getBlocks();
+  if(!groups.length){ // nothing typed yet — show a sample card rather than a blank
+    groups=Array.from({length:n},(_,g)=>SAMPLE.slice(g*3,g*3+Math.max(gridW,gridH))); 
+  }
+  const grid=new Array(cells).fill('');
+  for(let g=0;g<n;g++){
+    const pool=seededShuffle(groups[g]||[],seed+g*97+1);
+    if(fillMode==='col'){for(let r=0;r<gridH;r++)grid[r*gridW+g]=pool[r]!==undefined?pool[r]:'';}
+    else{for(let c=0;c<gridW;c++)grid[g*gridW+c]=pool[c]!==undefined?pool[c]:'';}
+  }
+  if(freeActive()){
+    // The free space overwrites its cell, exactly as classic number bingo does
+    // where the middle of the N column is the free square.
+    grid[freeCentered()?Math.floor(cells/2):Math.abs(Math.floor(Math.sin(seed)*1000)%cells)]=null;
+  }
+  return grid;
 }
 
 // Wrap text with hyphenation — respects fixed fontSize, never overflows cell width
@@ -2493,7 +2573,7 @@ function landscapeLayout(PW,PH,brandH){
 }
 
 async function genPDF(){
-  const words=getW();if(words.length<requiredSquares()){toast(`Need at least ${requiredSquares()} squares.`,'err');return;}
+  const words=getW();if(!listStatus().ok){toast(listStatus().text,'err');return;}
   pCount=Math.max(1,Math.min(999,parseInt(document.getElementById('cnp').value)||1));
   document.getElementById('cnp').value=pCount;
   const btn=document.getElementById('dlb');
@@ -2576,7 +2656,7 @@ async function genPDF(){
       gev('pdf_downloaded',{card_count:pCount,layout,theme,is_pro:clean});
       toast(clean?`Downloaded ${pCount} card${pCount>1?'s':''}!`:`Downloaded ${pCount} demo card${pCount>1?'s':''} — a pass removes the watermark.`,'ok');
     }catch(err){console.error(err);toast('PDF generation failed.','err');}
-    finally{btn.innerHTML=pdfBtnLabel();btn.disabled=getW().length<requiredSquares();}
+    finally{btn.innerHTML=pdfBtnLabel();btn.disabled=!listStatus().ok;}
   },60);
   }).catch(()=>toast('Failed to load PDF library — check your connection.','err'));
 }
@@ -2589,7 +2669,7 @@ let galCvs=[],galSeeds=[];
 async function openGal(){
   sCount=Math.max(1,Math.min(999,parseInt(document.getElementById('cns').value)||1));
   document.getElementById('cns').value=sCount;
-  const words=getW();if(words.length<requiredSquares()){toast(`Need at least ${requiredSquares()} squares.`,'err');return;}
+  const words=getW();if(!listStatus().ok){toast(listStatus().text,'err');return;}
   const btn=document.getElementById('sgb');
   btn.innerHTML='<span class="sp"></span> Checking license...';btn.disabled=true;
   // Generating the gallery is free — unauthorized users see watermarked
@@ -2732,7 +2812,7 @@ const AUTOSAVE_KEY='bcg_autosave',GAMES_KEY='bcg_games';
 function collectState(){
   return{
     v:1,t:document.getElementById('ct').value,w:document.getElementById('wl').value,
-    fn:font,fz:fontSize,th:theme,fo:freeOn,fp:freePos,gw:gridW,gh:gridH,mo:motif,
+    fn:font,fz:fontSize,th:theme,fo:freeOn,fp:freePos,gw:gridW,gh:gridH,mo:motif,fm:fillMode,
     ft:document.getElementById('fst').value,br:bingoRow,
     md:mode,ly:layout,pc:pCount,sc:sCount,
     bo:brandingOn,bt:document.getElementById('brand-text').value,
@@ -2754,6 +2834,7 @@ function applyState(st){
   document.getElementById('fst').value=st.ft||'FREE';
   bingoRow=st.br!==false;
   setMotif(['none','subtle','school'].includes(st.mo)?st.mo:'none');
+  setFill(st.fm||'simple');
   syncGridUI(); // owns the free-space and BINGO-row toggles too
   layout=st.ly||'portrait';selPill('.lcrd','layout',layout);
   pCount=st.pc||5;document.getElementById('cnp').value=pCount;
