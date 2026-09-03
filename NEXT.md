@@ -48,8 +48,9 @@ over month (76.3 → 70.6 → 71.8 → **60.5** in August).
 
 - **`bingo-generator.html`** — the fifth page from the original brief. On hold
   by your call. Its internal-linking job is already covered by the footer
-  cluster the other four carry. If it is ever revived it must (a) drop the
-  grid-size route card and (b) carry the square starter.
+  cluster the other four carry. If it is ever revived it must carry the
+  square starter. (The old "drop the grid-size route card" note no longer
+  applies — grid sizes from 2×2 to 8×8 now ship.)
 - **`index.html`'s hamburger and nav CTA are still 30px and 36px.** The five
   subpages went to 44px; the homepage header is a different, more elaborate
   component hand-tuned across nine breakpoints, and changing it deserves its own

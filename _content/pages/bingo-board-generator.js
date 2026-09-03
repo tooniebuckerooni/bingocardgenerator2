@@ -4,9 +4,10 @@
 // "bingo board maker / creator / randomizer" variants belong here rather than on
 // the card-maker page.
 //
-// The grid is fixed at 5x5 — buildGrid() slices 25 from the pool and the free
-// space is hardcoded to index 12. Nothing on this page may imply otherwise; the
-// differentiation is occasion and usage pattern, not grid size.
+// The grid defaults to 5x5 but is selectable — presets 3x3/4x4/5x5/6x6 plus a
+// custom 2-8 each way, so non-square boards like 4x7 are valid. A free space
+// needs both sides odd. The differentiation from the card-maker page is
+// occasion and usage pattern, not grid size.
 module.exports = {
   slug: "bingo-board-generator",
   title: "Bingo Board Generator | Build a Custom Bingo Board Free",
@@ -52,7 +53,7 @@ module.exports = {
     <p>"Card" searches skew toward a printed stack for a full classroom or party, one per player. "Board" searches skew toward a single shared thing: a meeting-bingo board dropped into a group chat, a predictions board for tonight's game, or one board up on a projector that the whole room plays off.</p>
     <p>This generator builds either from the same square list. Set the number of boards to 1 and you have a board. Set it to 40 and you have a stack of cards. The label is up to you.</p>
     <div class="note">
-      <p><strong>A bingo board here is the classic 5×5, 25-square grid</strong>, so 25 items fills it. There is no 4×4 or 6×6 option — what you control completely is what goes in each square, plus the font, the color theme, and whether there is a free space.</p>
+      <p><strong>A bingo board here starts as the classic 5×5, 25-square grid</strong>, so 25 items fills it. You can also pick 3×3, 4×4, or 6×6, or set any width and height from 2 to 8 — boards don't have to be square. What you control completely is what goes in each square, plus the font, the color theme, and whether there is a free space.</p>
     </div>
 
     <h2>Bingo Boards for Meetings, Predictions &amp; Game Nights</h2>
@@ -90,11 +91,11 @@ module.exports = {
 
   faq: [
     { q: "What's the difference between a bingo board and a bingo card?",
-      a: "Nothing in the file itself — both come from the same 5x5 generator. Board is the word a lot of people use for a single shareable one, as in meeting bingo or prediction bingo, while card usually means a printed set with one per player. Use whichever term fits how you're playing." },
+      a: "Nothing in the file itself — both come from the same generator, at whatever grid size you pick. Board is the word a lot of people use for a single shareable one, as in meeting bingo or prediction bingo, while card usually means a printed set with one per player. Use whichever term fits how you're playing." },
     { q: "Can I make just one board, or do I need a full set?",
       a: "Either. Set the number of boards to 1 for a single meeting or prediction board, or generate more — every board is uniquely randomized, so a group doesn't end up with duplicates." },
     { q: "Does the board have to be a 5x5 grid?",
-      a: "Yes. The generator builds the classic 5x5, 25-square board. There is no 4x4 or 6x6 option, but you fully control the words, phrases, or predictions in every square, plus the font, the color theme, and whether there is a free space." },
+      a: "No. 5x5 is the default because it is the classic, but you can pick 3x3, 4x4, or 6x6 with one click, or set any width and height from 2 to 8 under custom size — so a 4x7 board is fine too. A free space needs a true middle square, so it is available when both sides are odd numbers. You also fully control the words in every square, the font, and the color theme." },
     { q: "Can I use this for meeting or buzzword bingo?",
       a: "Yes. Type the phrases you expect to hear — corporate jargon, a coworker's go-to line, whatever your meeting is known for — as your squares, and generate one board per attendee or a single shared one for the screen." },
     { q: "Can I make a prediction board for a show, game, or event?",

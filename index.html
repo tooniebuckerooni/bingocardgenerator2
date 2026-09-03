@@ -212,7 +212,7 @@
     {
       "@type": "HowToStep",
       "name": "Enter your content",
-      "text": "Type your words, songs, or phrases into the square list — one item per line. You need at least 25 items to fill a 5×5 card."
+      "text": "Type your words, songs, or phrases into the square list — one item per line. You need at least 25 items to fill a 5×5 card; pick a smaller or larger grid and the generator tells you the new number."
     },
     {
       "@type": "HowToStep",
@@ -495,6 +495,17 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 .crow{display:flex;align-items:center;background:var(--sf2);border:1px solid var(--bd);border-radius:var(--rs);padding:14px 18px;margin-bottom:14px}
 .clb{flex:1;font-size:15px;font-weight:500}
 .cct{display:flex;align-items:center;gap:12px}
+.sel{width:100%;background:var(--sf2);border:1px solid var(--bd);color:var(--tx);padding:10px 12px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:13.5px;cursor:pointer}
+.sel:focus{outline:none;border-color:var(--gn)}
+.ccg{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:10px}
+.ccg label{display:flex;flex-direction:column;gap:5px;font-size:11px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;color:var(--dm)}
+.cpk{width:100%;height:32px;padding:2px;background:var(--sf3);border:1px solid var(--bd);border-radius:7px;cursor:pointer}
+.wcw{background:var(--sf2);border:1px solid var(--bd);border-left:3px solid var(--or);border-radius:var(--rs);padding:10px 13px;margin-bottom:8px}
+.wcw:last-child{margin-bottom:0}
+.wct{font-size:12px;color:var(--tx);font-weight:600;margin-bottom:6px}
+.wcs{font-size:11.5px;color:var(--mt);line-height:1.7}
+.wcc{display:inline-block;background:var(--sf3);border:1px solid var(--bd);border-radius:10px;padding:2px 9px;margin:3px 4px 0 0;font-size:11px;color:var(--mt);cursor:pointer;transition:all var(--t);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom}
+.wcc:hover{border-color:var(--or);color:var(--tx)}
 .ccb{width:30px;height:30px;background:var(--sf3);border:1px solid var(--bd);border-radius:50%;color:var(--tx);font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all var(--t);user-select:none}
 .ccb:hover{border-color:var(--gn);color:var(--gn)}
 .cnn{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:1px;min-width:44px;text-align:center}
@@ -723,8 +734,25 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
       <span style="font-size:11.5px;font-weight:600" id="title-count">0 / 48</span>
     </div>
     <label class="fl">Square List</label>
-    <textarea id="wl" placeholder="One item per line.&#10;&#10;Don't Stop Believin'&#10;Sweet Child O' Mine&#10;Livin' on a Prayer&#10;Hotel California&#10;&#10;Minimum 25 squares required."></textarea>
+    <textarea id="wl" placeholder="One item per line.&#10;&#10;Don't Stop Believin'&#10;Sweet Child O' Mine&#10;Livin' on a Prayer&#10;Hotel California&#10;&#10;Minimum 25 squares for a 5 × 5 card."></textarea>
     <div class="ws warn" id="wst">0 squares — need at least 25</div>
+    <div id="wchk" style="display:none;margin-top:10px"></div>
+
+    <div style="margin-top:14px">
+      <button onclick="togFill()" id="fill-toggle-btn"
+        style="width:100%;background:var(--sf2);border:1px solid var(--bd);border-radius:var(--rs);padding:11px 14px;color:var(--mt);font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;text-align:left;display:flex;align-items:center;justify-content:space-between;transition:all var(--t)">
+        <span>Want a category per column? Fill by column or row →</span>
+        <span id="fill-chevron" style="font-size:11px;transition:transform .2s">▼</span>
+      </button>
+      <div id="fill-panel" style="display:none;margin-top:2px;background:var(--sf2);border:1px solid var(--bd);border-top:none;border-radius:0 0 var(--rs) var(--rs);padding:14px">
+        <div class="ppills">
+          <button class="pp sl" type="button" data-fm="simple" onclick="pFill(this)">One list</button>
+          <button class="pp" type="button" data-fm="col" onclick="pFill(this)">By column</button>
+          <button class="pp" type="button" data-fm="row" onclick="pFill(this)">By row</button>
+        </div>
+        <div id="fill-hint" style="font-size:11.5px;color:var(--mt);margin-top:10px;line-height:1.7">One list, shuffled across the whole card — the normal way.</div>
+      </div>
+    </div>
 
     <!-- Collapsible import section -->
     <div style="margin-top:22px">
@@ -767,13 +795,13 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 
     <div class="og">
       <div class="ot">Card Font</div>
-      <div class="fg">
-        <div class="fo sl" data-f="oswald" onclick="pFont(this)"><span class="fp" style="font-family:'Oswald',sans-serif;font-weight:700">BINGO</span><span class="fn">Oswald</span></div>
-        <div class="fo" data-f="playfair" onclick="pFont(this)"><span class="fp" style="font-family:'Playfair Display',serif">Bingo</span><span class="fn">Playfair</span></div>
-        <div class="fo" data-f="fredoka" onclick="pFont(this)"><span class="fp" style="font-family:'Fredoka One',sans-serif">Bingo!</span><span class="fn">Fredoka</span></div>
-        <div class="fo" data-f="righteous" onclick="pFont(this)"><span class="fp" style="font-family:'Righteous',sans-serif">Bingo</span><span class="fn">Righteous</span></div>
-        <div class="fo" data-f="mono" onclick="pFont(this)"><span class="fp" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:-1px">BINGO</span><span class="fn">Mono</span></div>
-      </div>
+      <select id="fsel" class="sel" onchange="pFont(this)">
+        <option value="oswald" style="font-family:'Oswald',sans-serif">Oswald — bold and modern</option>
+        <option value="playfair" style="font-family:'Playfair Display',serif">Playfair Display — elegant serif</option>
+        <option value="fredoka" style="font-family:'Fredoka One',sans-serif">Fredoka One — round and playful</option>
+        <option value="righteous" style="font-family:'Righteous',sans-serif">Righteous — retro display</option>
+        <option value="mono" style="font-family:'JetBrains Mono',monospace">Mono — clean and technical</option>
+      </select>
     </div>
 
     <div class="og" style="margin-bottom:0">
@@ -802,13 +830,23 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
           </div>
         </div>
       </div>
-      <div style="font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--dm);margin:14px 0 8px">Color themes — great for digital sharing</div>
+      <div style="font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--dm);margin:14px 0 8px">Colour themes</div>
       <div class="trow">
-        <div class="tsw" data-t="classic" onclick="pTheme(this)" title="Classic"><div class="stp" style="background:#fff"></div><div class="stb" style="background:#1a3a6e"></div><span class="stl" style="color:#1a3a6e">Classic</span></div>
-        <div class="tsw" data-t="night" onclick="pTheme(this)" title="Night"><div class="stp" style="background:#1a1a2e"></div><div class="stb" style="background:#e94560"></div><span class="stl" style="color:#fff">Night</span></div>
-        <div class="tsw" data-t="tropical" onclick="pTheme(this)" title="Tropical"><div class="stp" style="background:#ffeaa7"></div><div class="stb" style="background:#00b894"></div><span class="stl" style="color:#006655">Tropic</span></div>
-        <div class="tsw" data-t="electric" onclick="pTheme(this)" title="Electric"><div class="stp" style="background:#0d0d14"></div><div class="stb" style="background:#1db954"></div><span class="stl" style="color:#1db954">Electric</span></div>
-        <div class="tsw" data-t="retro" onclick="pTheme(this)" title="Retro"><div class="stp" style="background:#f5e6d0"></div><div class="stb" style="background:#8B4513"></div><span class="stl" style="color:#5a2800">Retro</span></div>
+        <div class="tsw" data-t="elite" onclick="pTheme(this)" title="Elite — crisp navy and orange"><div class="stp" style="background:#fafbfd"></div><div class="stb" style="background:#0e203b"></div><span class="stl" style="color:#fff">Elite</span></div>
+        <div class="tsw" data-t="classroom" onclick="pTheme(this)" title="Classroom — soft, low ink, for teachers"><div class="stp" style="background:#f7f6f0"></div><div class="stb" style="background:#4a6359"></div><span class="stl" style="color:#fff">Class</span></div>
+        <div class="tsw" data-t="celebration" onclick="pTheme(this)" title="Celebration — parties, showers, birthdays"><div class="stp" style="background:#fdf4f0"></div><div class="stb" style="background:#bc5156"></div><span class="stl" style="color:#fff">Party</span></div>
+        <div class="tsw" data-t="retro" onclick="pTheme(this)" title="Retro — warm vintage"><div class="stp" style="background:#f0e0c4"></div><div class="stb" style="background:#6e3e1e"></div><span class="stl" style="color:#fff">Retro</span></div>
+        <div class="tsw" data-t="custom" onclick="pTheme(this)" title="Custom — pick your own colours" id="tsw-custom"><div class="stp" style="background:linear-gradient(135deg,#e8940f 0%,#bc5156 50%,#0e203b 100%)"></div><div class="stb" style="background:#3d4657"></div><span class="stl" style="color:#fff">Custom</span></div>
+      </div>
+      <div id="cc-panel" style="display:none;margin-top:12px;background:var(--sf2);border:1px solid var(--bd);border-radius:var(--rs);padding:14px">
+        <div class="ccg">
+          <label><span>Card background</span><input type="color" class="cpk" id="cc-bg" value="#ffffff" oninput="pCustom('bg',this.value)"></label>
+          <label><span>Square text</span><input type="color" class="cpk" id="cc-tx" value="#111a29" oninput="pCustom('tx',this.value)"></label>
+          <label><span>Title bar</span><input type="color" class="cpk" id="cc-hd" value="#0e203b" oninput="pCustom('hd',this.value)"></label>
+          <label><span>Title text</span><input type="color" class="cpk" id="cc-ht" value="#ffffff" oninput="pCustom('ht',this.value)"></label>
+          <label><span>Free space</span><input type="color" class="cpk" id="cc-fr" value="#a65e0a" oninput="pCustom('fr',this.value)"></label>
+        </div>
+        <div id="cc-warn" style="font-size:11.5px;color:var(--mt);margin-top:10px;line-height:1.7"></div>
       </div>
     </div>
 
@@ -836,7 +874,43 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
           </div>
           <div class="ord" style="margin:12px 0 10px">and / or type your own lines</div>
           <input type="text" id="brand-text" placeholder="Line 1 — e.g. Game Night with Sarah" oninput="dPrev()" style="margin-bottom:10px">
+          <div id="bl1-note" style="display:none;font-size:11.5px;color:var(--mt);margin:-4px 0 10px;padding-left:2px">Your logo takes Line 1's place on the card — <b>Line 1 won't print</b> while a logo is uploaded. Line 2 still prints underneath the logo.</div>
           <input type="text" id="brand-text2" placeholder="Line 2 — e.g. Every Thursday · 8pm · $5 a card" oninput="dPrev()" style="margin-bottom:0">
+        </div>
+      </div>
+    </div>
+
+    <div class="og">
+      <div class="ot">Card Size</div>
+      <select id="gsel" class="sel" onchange="pGrid(this)">
+        <option value="3x3">3 × 3 — 9 squares</option>
+        <option value="4x4">4 × 4 — 16 squares</option>
+        <option value="5x5" selected>5 × 5 — 25 squares (classic)</option>
+        <option value="6x6">6 × 6 — 36 squares</option>
+        <option value="custom">Custom size…</option>
+      </select>
+      <div style="font-size:11.5px;color:var(--mt);margin-top:8px" id="gsz-note">Classic bingo is 5 × 5. Smaller grids suit younger players and quick rounds.</div>
+      <div style="margin-top:12px">
+        <div id="cg-panel" style="display:none;background:var(--sf2);border:1px solid var(--bd);border-radius:var(--rs);padding:14px">
+          <div style="display:flex;gap:18px;flex-wrap:wrap">
+            <div>
+              <div class="ot" style="margin-bottom:8px">Across</div>
+              <div class="cct">
+                <div class="ccb" onclick="adjG(-1,'w')">−</div>
+                <input type="number" id="gwi" class="cni" min="2" max="8" value="5" oninput="setG(this,'w')">
+                <div class="ccb" onclick="adjG(1,'w')">+</div>
+              </div>
+            </div>
+            <div>
+              <div class="ot" style="margin-bottom:8px">Down</div>
+              <div class="cct">
+                <div class="ccb" onclick="adjG(-1,'h')">−</div>
+                <input type="number" id="ghi" class="cni" min="2" max="8" value="5" oninput="setG(this,'h')">
+                <div class="ccb" onclick="adjG(1,'h')">+</div>
+              </div>
+            </div>
+          </div>
+          <div style="font-size:11.5px;color:var(--mt);margin-top:10px">Anything from 2 to 8 each way. Cards don't have to be square — 4 across by 7 down works fine.</div>
         </div>
       </div>
     </div>
@@ -844,15 +918,16 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
     <div class="og">
       <div class="ot">Free Space</div>
       <div class="tgr" onclick="togFS()"><div class="tg on" id="fstg"></div><span class="ttx">Include Free Space</span></div>
+      <div id="fsna" style="display:none;font-size:11.5px;color:var(--mt);margin-top:8px">A <b>centred</b> free space needs a true middle square, which only exists when both sides are odd. Your card is <b id="fsna-dim">4 × 4</b>, so the free space is placed <b>randomly</b> — a different spot on every card.</div>
       <div id="fso">
         <div id="free-pro-section">
           <label class="fl">Free Space Label</label>
           <input type="text" id="fst" value="FREE" oninput="dPrev()" style="margin-bottom:10px">
           <div class="ot" style="margin-bottom:8px">Placement</div>
-          <div class="ppills">
-            <button class="pp sl" data-p="center" onclick="pPos(this)">Center</button>
-            <button class="pp" data-p="random" onclick="pPos(this)">Random</button>
-          </div>
+          <select id="psel" class="sel" onchange="pPos(this)">
+            <option value="center">Center</option>
+            <option value="random">Random — a different spot on every card</option>
+          </select>
         </div>
       </div>
     </div>
@@ -861,6 +936,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
       <div class="ot">Card Header</div>
       <div class="tgr" onclick="togBingoRow()"><div class="tg on" id="brtg"></div><span class="ttx">Show B-I-N-G-O letter row</span></div>
       <div style="font-size:11.5px;color:var(--mt);margin-top:6px">Turn off for a clean grid — useful when your squares aren't a traditional bingo game.</div>
+      <div id="brna" style="display:none;font-size:11.5px;color:var(--mt);margin-top:6px">B-I-N-G-O is five letters, so the header row only appears on a card that is 5 across. Yours is <b id="brna-w">4</b> — the grid prints without it.</div>
     </div>
   </div>
 
@@ -874,18 +950,10 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
     </div>
     <div id="pp2">
       <div class="ot">Page Layout</div>
-      <div class="lrow">
-        <div class="lcrd sl" data-layout="portrait" onclick="pLayout(this)">
-          <span class="lcrd-icon">📄</span>
-          <span class="lcrd-lbl">Portrait</span>
-          <span class="lcrd-sub">1 card per page<br>Full-size · more branding room</span>
-        </div>
-        <div class="lcrd" data-layout="landscape" onclick="pLayout(this)">
-          <span class="lcrd-icon">✂️</span>
-          <span class="lcrd-lbl">Landscape</span>
-          <span class="lcrd-sub">2 cards per page<br>Cut line in center · scissors</span>
-        </div>
-      </div>
+      <select id="lsel" class="sel" onchange="pLayout(this)">
+        <option value="portrait">📄 Portrait — 1 card per page, more branding room</option>
+        <option value="landscape">✂️ Landscape — 2 cards per page with a cut line</option>
+      </select>
       <div class="crow">
         <div class="clb">Number of Cards</div>
         <div class="cct">
@@ -895,7 +963,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
         </div>
       </div>
       <div class="fn2" id="fnp">Free downloads include a demo watermark · <a href="#" onclick="goCheckout();return false">Remove it with a pass →</a></div>
-      <button class="bdl" id="dlb" onclick="genPDF()" disabled>Add 25+ songs to continue</button>
+      <button class="bdl" id="dlb" onclick="genPDF()" disabled>Add 25+ squares to continue</button>
     </div>
     <div id="sp2" style="display:none">
       <div style="background:var(--sf2);border:1px solid var(--bd);border-radius:var(--rs);padding:14px 16px;margin-bottom:16px;font-size:13.5px;color:var(--mt);line-height:1.55">
@@ -1164,6 +1232,8 @@ const EXPORT_TOKEN_PUBKEY_SPKI_B64 = 'MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE74W23g
 let isPro=false, font='oswald', theme='eco', freeOn=true, freePos='center';
 let pCount=5, sCount=10, mode='print', fontSize=11, layout='portrait', bingoRow=true;
 let spFmt='title'; // playlist import format: title | artist | both
+let fillMode='simple'; // simple | col | row — a blank line starts a new block
+let gridW=5, gridH=5; // card grid dimensions (2-8 each); 5x5 is the classic default
 let logoUrl=null, logoImg=null, brandingOn=true, logoScale=100;
 
 // ============================================================
@@ -1171,13 +1241,47 @@ let logoUrl=null, logoImg=null, brandingOn=true, logoScale=100;
 // eco flag means render as outline-only (eco print)
 // ============================================================
 const THEMES={
-  classic: {bg:[255,255,255],tx:[25,25,35],  hd:[26,58,110], fr:[26,58,110],  st:[245,247,252],bd:[205,210,225],ht:[255,255,255],eco:false},
-  night:   {bg:[26,26,46],  tx:[220,220,235],hd:[83,52,131], fr:[233,69,96],  st:[32,32,56],  bd:[50,50,85],  ht:[255,255,255],eco:false},
-  tropical:{bg:[255,238,167],tx:[34,48,60],  hd:[0,184,148], fr:[225,112,85], st:[255,248,200],bd:[195,175,100],ht:[255,255,255],eco:false},
-  electric:{bg:[13,13,20],  tx:[235,235,248],hd:[20,130,65], fr:[140,70,200], st:[18,18,28],  bd:[38,38,55],  ht:[255,255,255],eco:false},
-  retro:   {bg:[245,230,208],tx:[55,22,8],   hd:[139,69,19], fr:[180,82,20],  st:[238,220,195],bd:[175,145,100],ht:[255,255,255],eco:false},
-  eco:     {bg:[255,255,255],tx:[0,0,0],      hd:[255,255,255],fr:[245,245,245],st:[255,255,255],bd:[180,180,180],ht:[0,0,0],    eco:true}
+  // Occasion-led, not colour-led. Five print-friendly + one screen theme.
+  // Every pair below is WCAG-verified: tx on bg/st >= 7.0; ht on hd, white on
+  // fr, and white on both hd and drk(hd,-16) >= 4.5 — that last pair matters
+  // because the B-I-N-G-O letters are hardcoded white in both renderers.
+  eco:        {bg:[255,255,255],tx:[0,0,0],      hd:[255,255,255],fr:[245,245,245],st:[255,255,255],bd:[180,180,180],ht:[0,0,0],      eco:true},
+  elite:      {bg:[250,251,253],tx:[17,26,41],   hd:[14,32,59],  fr:[166,94,10], st:[236,240,246],bd:[196,204,216],ht:[255,255,255],ma:[232,148,15], mh:[247,186,90], eco:false},
+  classroom:  {bg:[247,246,240],tx:[46,58,53],   hd:[74,99,89],  fr:[134,113,79],st:[240,239,231],bd:[196,201,187],ht:[255,255,255],ma:[139,120,88], mh:[186,163,120],eco:false},
+  celebration:{bg:[253,244,240],tx:[74,35,42],   hd:[188,81,86], fr:[166,98,81], st:[248,231,224],bd:[224,180,172],ht:[255,255,255],ma:[212,150,150],mh:[240,190,180],eco:false},
+  retro:      {bg:[240,224,196],tx:[59,36,20],   hd:[110,62,30], fr:[157,79,35], st:[231,211,178],bd:[181,150,105],ht:[255,255,255],ma:[168,110,45], mh:[214,158,84], eco:false},
+  custom:     {bg:[255,255,255],tx:[17,26,41],   hd:[14,32,59],  fr:[166,94,10], st:[242,244,248],bd:[198,202,210],ht:[255,255,255],ma:[232,148,15], mh:[247,186,90], eco:false},
+  midnight:   {bg:[20,24,33],   tx:[229,233,240],hd:[38,46,64],  fr:[47,58,84],  st:[27,32,44],   bd:[64,72,92],   ht:[255,255,255],ma:[245,166,35], mh:[250,200,110],eco:false}
 };
+
+// Retired theme keys still live in the wild — ?card= share links encode the
+// theme (showCard reads st.th) and bcg_autosave stores it. An unknown key would
+// make THEMES[theme] undefined and throw inside the renderer, which surfaces as
+// "Invalid card link" on someone else's shared card. Map them, then guard.
+// The five colours a user actually picks. st (stripe) and bd (border) are
+// derived from bg rather than exposed — they are the two that ruin a card when
+// set badly, and they only ever want to be a step away from the background.
+let customCols={bg:'#ffffff',tx:'#111a29',hd:'#0e203b',ht:'#ffffff',fr:'#a65e0a'};
+function hex2rgb(h){h=(h||'#000000').replace('#','');return[parseInt(h.slice(0,2),16)||0,parseInt(h.slice(2,4),16)||0,parseInt(h.slice(4,6),16)||0];}
+function rgb2hex(a){return'#'+a.map(v=>Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')).join('');}
+function relLum(c){const s=c.map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4);});return .2126*s[0]+.7152*s[1]+.0722*s[2];}
+function contrast(a,b){const x=relLum(a),y=relLum(b);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05);}
+function hydrateCustom(cc){
+  if(!Array.isArray(cc)||cc.length!==5)return;
+  const k=['bg','tx','hd','ht','fr'];
+  cc.forEach((v,i)=>{if(typeof v==='string'&&/^#[0-9a-f]{6}$/i.test(v))customCols[k[i]]=v;});
+  applyCustom();
+}
+function applyCustom(){
+  const bg=hex2rgb(customCols.bg),light=relLum(bg)>.4;
+  THEMES.custom={bg,tx:hex2rgb(customCols.tx),hd:hex2rgb(customCols.hd),
+    fr:hex2rgb(customCols.fr),ht:hex2rgb(customCols.ht),
+    st:drk(bg,light?-12:14),   // subtle alternating tint, matching the presets
+    bd:drk(bg,light?-58:52),   // hairline border, visible but not heavy
+    ma:[232,148,15],mh:[247,186,90],eco:false};
+}
+const THEME_ALIAS={classic:'elite',tropical:'celebration',night:'midnight',electric:'midnight'};
+function resolveTheme(k){k=THEME_ALIAS[k]||k;return THEMES[k]?k:'eco';}
 const PFONTS={
   oswald:   ['helvetica','bold'],
   playfair: ['times','bold'],
@@ -1350,7 +1454,9 @@ function goCheckout(plan){
 function pdfBtnLabel(){
   // Free users can download too (watermarked) — the only blocked state is
   // not having enough songs yet.
-  return getW().length<25 ? 'Add 25+ songs to continue' : '↓ Download PDF';
+  const st=listStatus();
+  if(st.ok)return '↓ Download PDF';
+  return fillMode==='simple' ? `Add ${requiredSquares()}+ squares to continue` : 'Finish your blocks to continue';
 }
 function applyProLocks(){
   // Free downloads still work; they carry a demo watermark, so these footnotes
@@ -1548,6 +1654,7 @@ function hLogo(inp){
       document.getElementById('lpr').classList.add('show');
       document.getElementById('lpls').classList.add('show');
       document.getElementById('ldt').textContent='Click to replace logo';
+      syncBrandLine1();
       dPrev();
     };
     img.src=logoUrl;
@@ -1561,6 +1668,7 @@ function clrLogo(){
   document.getElementById('lsz').value=100;
   document.getElementById('lszv').textContent='100%';
   document.getElementById('ldt').textContent='Click to upload your logo';
+  syncBrandLine1();
   dPrev();
 }
 function setLogoScale(val){
@@ -1577,23 +1685,147 @@ function togBranding(){
 function syncBrandingUI(){
   document.getElementById('brand-tg').classList.toggle('on',brandingOn);
   document.getElementById('brand-opts').style.display=brandingOn?'':'none';
+  syncBrandLine1();
+}
+// drawBrandingStrip() draws the logo and then only Line 2 — Line 1 is never
+// rendered when a logo is present. That is the intended layout, but it used to
+// happen silently, so say it plainly instead of letting typed text vanish.
+function syncBrandLine1(){
+  const has=!!logoUrl;
+  const n=document.getElementById('bl1-note'),i=document.getElementById('brand-text');
+  if(!n||!i)return;
+  n.style.display=has?'':'none';
+  i.style.opacity=has?'.5':'';
 }
 
 // ============================================================
 // WORD LIST
 // ============================================================
 function getW(){return document.getElementById('wl').value.split('\n').map(w=>w.trim()).filter(Boolean);}
+
+// getW() flattens with .filter(Boolean), which throws away exactly the blank
+// lines block mode depends on — so grouped parsing needs its own reader.
+// Runs of blank lines collapse into one separator.
+function getBlocks(){
+  const out=[];let cur=[];
+  for(const raw of document.getElementById('wl').value.split('\n')){
+    const t=raw.trim();
+    if(t)cur.push(t); else if(cur.length){out.push(cur);cur=[];}
+  }
+  if(cur.length)out.push(cur);
+  return out;
+}
+function fillGroupCount(){return fillMode==='col'?gridW:gridH;}
+
+// Single source of readiness for both modes, so the six call sites that used to
+// consult requiredSquares() directly all ask the same question.
+function listStatus(){
+  if(fillMode==='simple'){
+    const need=requiredSquares(),n=getW().length,ok=n>=need;
+    return{ok,text:ok?`${n} squares ✓ ready`:`${n} square${n!==1?'s':''} — need ${need-n} more`};
+  }
+  const n=fillGroupCount(),b=getBlocks(),unit=fillMode==='col'?'column':'row';
+  if(!b.length)return{ok:false,text:`No squares yet — separate each ${unit} with a blank line`};
+  if(b.length===n)return{ok:true,text:`${b.length} blocks → ${n} ${unit}s ✓ ready`};
+  const d=n-b.length;
+  return{ok:false,text:d>0
+    ?`${b.length} block${b.length!==1?'s':''} but ${n} ${unit}s — add ${d} more, separated by a blank line`
+    :`${b.length} blocks but only ${n} ${unit}s — remove ${-d}, or make the card wider`};
+}
 function updW(){
-  const n=getW().length,ok=n>=25;
+  const st=listStatus(),ok=st.ok;
   const el=document.getElementById('wst');
-  el.textContent=ok?`${n} squares ✓ ready`:`${n} square${n!==1?'s':''} — need ${25-n} more`;
+  el.textContent=st.text;
   el.className='ws '+(ok?'ok':'warn');
   const dlb=document.getElementById('dlb');
   dlb.disabled=!ok;
   if(!dlb.querySelector('.sp')) dlb.innerHTML=pdfBtnLabel(); // don't clobber the spinner mid-download
   document.getElementById('sgb').disabled=!ok;
+  scheduleWordCheck();
 }
 document.getElementById('wl').addEventListener('input',()=>{updW();dPrev();});
+
+// ============================================================
+// SQUARE LIST HEALTH CHECK
+// Non-blocking. Nothing here can stop a download — it only warns, using the
+// same measurement the renderers use so a warning matches what actually prints.
+// ============================================================
+let wchkTimer=null;
+const wchkCanvas=document.createElement('canvas'),wchkCtx=wchkCanvas.getContext('2d');
+
+// Cell size in PDF points, mirroring pdfDrawCard's geometry exactly so the
+// warning reflects the printed card rather than the scaled-down preview.
+function printCellSize(){
+  const isLand=layout==='landscape';
+  const PW=isLand?792:612,PH=isLand?612:792;
+  const brandH=brandStripHeight();
+  let cw,ch;
+  if(isLand){const L=landscapeLayout(PW,PH,brandH);cw=L.cw;ch=L.ch;}
+  else{const L=portraitLayout(PW,PH,brandH);cw=L.cardW;ch=L.cardH;}
+  const M=14,tH=Math.round(ch*.09),bH=showBingoRow()?Math.round(ch*.06):0;
+  const gH=ch-M-tH-bH-M;
+  return{cw:(cw-2*M)/gridW,ch:gH/gridH};
+}
+
+// Mirror of fitTxt's loop, but reporting *why* rather than returning glyphs.
+// clipped:true means fitTxt would drop lines — text silently missing from the card.
+function fitReport(ctx,text,mxW,mxH){
+  for(let sz=fontSize;sz>=5;sz--){
+    const lines=wrapWords(ctx,text,mxW-4,sz);
+    if(lines.length<=Math.floor((mxH-4)/(sz*1.35)))return{sz,clipped:false};
+  }
+  const lines=wrapWords(ctx,text,mxW-4,5);
+  return{sz:5,clipped:lines.length>Math.max(1,Math.floor((mxH-4)/(5*1.35)))};
+}
+
+function selectLine(idx){
+  const el=document.getElementById('wl'),raw=el.value.split('\n');
+  let seen=-1,start=0;
+  for(let i=0;i<raw.length;i++){
+    if(raw[i].trim()){seen++;if(seen===idx){el.focus();el.setSelectionRange(start,start+raw[i].length);
+      el.blur();el.focus();return;}}
+    start+=raw[i].length+1;
+  }
+}
+
+function esc(t){return t.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+function runWordCheck(){
+  const box=document.getElementById('wchk');
+  const words=getW();
+  if(!words.length){box.style.display='none';box.innerHTML='';return;}
+
+  // exact duplicates, case-insensitive
+  const seen=new Map(),dupes=[];
+  words.forEach((w,i)=>{
+    const k=w.toLowerCase();
+    if(seen.has(k)){if(!dupes.some(d=>d.k===k))dupes.push({k,text:w,idx:i});}
+    else seen.set(k,i);
+  });
+
+  // overflow, measured against the real print cell
+  const{cw,ch}=printCellSize();
+  const tight=[],cut=[];
+  wchkCtx.font=cvf(fontSize);
+  words.forEach((w,i)=>{
+    const r=fitReport(wchkCtx,w,cw-6,ch);
+    if(r.clipped)cut.push({text:w,idx:i});
+    else if(r.sz<fontSize)tight.push({text:w,idx:i});
+  });
+
+  const chips=list=>list.slice(0,8).map(d=>
+    `<span class="wcc" onclick="selectLine(${d.idx})" title="Click to find this line">${esc(d.text.length>34?d.text.slice(0,32)+'…':d.text)}</span>`
+  ).join('')+(list.length>8?`<span class="wcs"> +${list.length-8} more</span>`:'');
+
+  let html='';
+  if(cut.length)html+=`<div class="wcw"><div class="wct">${cut.length} ${cut.length===1?'square is':'squares are'} too long to fit</div><div class="wcs">Even at the smallest size, ${cut.length===1?'this one':'these'} won't fit a ${gridW} × ${gridH} cell and will be cut short on the card. Shorten ${cut.length===1?'it':'them'}, or use a bigger grid.</div><div>${chips(cut)}</div></div>`;
+  if(tight.length)html+=`<div class="wcw"><div class="wct">${tight.length} ${tight.length===1?'square':'squares'} will print smaller</div><div class="wcs">${tight.length===1?'This one is':'These are'} long enough that the text shrinks below your ${fontSize}pt setting to fit. Still readable — just a heads-up.</div><div>${chips(tight)}</div></div>`;
+  if(dupes.length)html+=`<div class="wcw"><div class="wct">${dupes.length} duplicate ${dupes.length===1?'entry':'entries'}</div><div class="wcs">Repeated squares can land twice on the same card. Fine if that's deliberate.</div><div>${chips(dupes)}</div></div>`;
+
+  box.innerHTML=html;
+  box.style.display=html?'':'none';
+}
+function scheduleWordCheck(){clearTimeout(wchkTimer);wchkTimer=setTimeout(runWordCheck,250);}
 function updTitle(){
   const v=document.getElementById('ct').value;
   const el=document.getElementById('title-count');
@@ -1608,11 +1840,42 @@ document.getElementById('ct').addEventListener('input',updTitle);
 // ============================================================
 // CONTROLS
 // ============================================================
-function pFont(el){document.querySelectorAll('.fo').forEach(f=>f.classList.remove('sl'));el.classList.add('sl');font=el.dataset.f;dPrev();}
+function pFont(el){font=el.value;dPrev();}
 function pTheme(el){
-  document.querySelectorAll('.tsw,.tsw-eco').forEach(s=>s.classList.remove('sl'));el.classList.add('sl');theme=el.dataset.t;
+  document.querySelectorAll('.tsw,.tsw-eco').forEach(s=>s.classList.remove('sl'));el.classList.add('sl');theme=resolveTheme(el.dataset.t);
+  syncCustomUI();
   dPrev();
-  dPrev();
+}
+function pCustom(k,v){customCols[k]=v;applyCustom();syncCustomUI();dPrev();}
+function syncCustomUI(){
+  const on=theme==='custom';
+  document.getElementById('cc-panel').style.display=on?'':'none';
+  for(const k of ['bg','tx','hd','ht','fr'])document.getElementById('cc-'+k).value=customCols[k];
+  if(!on)return;
+  // Non-blocking readout — custom colours can build an unreadable card, but the
+  // download is never gated on taste.
+  const T=THEMES.custom;
+  const sq=contrast(T.tx,T.bg),ti=contrast(T.ht,T.hd);
+  const row=(lbl,v)=>`${lbl} <b style="color:${v>=4.5?'var(--gn)':'var(--or)'}">${v.toFixed(1)}:1</b>${v>=4.5?' ✓':' — hard to read'}`;
+  document.getElementById('cc-warn').innerHTML=
+    row('Square text on background:',sq)+'<br>'+row('Title text on title bar:',ti)+
+    (sq<4.5||ti<4.5?'<br><span style="color:var(--mt)">Anything under 4.5:1 gets hard to read across a room. You can still download it.</span>':'');
+}
+function openFill(v){
+  document.getElementById('fill-panel').style.display=v?'':'none';
+  document.getElementById('fill-chevron').style.transform=v?'rotate(180deg)':'';
+}
+function togFill(){openFill(document.getElementById('fill-panel').style.display==='none');}
+function pFill(el){setFill(el.dataset.fm);updW();dPrev();}
+function setFill(m){
+  fillMode=['simple','col','row'].includes(m)?m:'simple';
+  selPill('.pp[data-fm]','fm',fillMode);
+  const unit=fillMode==='col'?'column':'row',n=fillGroupCount();
+  document.getElementById('fill-hint').innerHTML=fillMode==='simple'
+    ?'One list, shuffled across the whole card — the normal way.'
+    :`Leave a <b>blank line</b> between blocks. Block 1 fills ${unit} 1, block 2 fills ${unit} 2, and so on — ${n} blocks for this card. A short block just leaves blank squares.`;
+  // never leave an active non-default mode hidden behind a collapsed panel
+  if(fillMode!=='simple')openFill(true);
 }
 function pFSize(v){
   fontSize=v;
@@ -1623,12 +1886,74 @@ function pFSize(v){
   const cellW=103; // ~portrait cell inner width in pts
   const avgCW=tx.measureText('abcdefghijklmnopqrstuvwxyz').width/26;
   document.getElementById('fshint').textContent=`≈ ${Math.floor(cellW/avgCW)} chars per line`;
+  scheduleWordCheck();
   dPrev();
 }
-function pLayout(el){document.querySelectorAll('.lcrd').forEach(c=>c.classList.remove('sl'));el.classList.add('sl');layout=el.dataset.layout;dPrev();}
-function togFS(){freeOn=!freeOn;document.getElementById('fstg').classList.toggle('on',freeOn);document.getElementById('fso').style.display=freeOn?'':'none';dPrev();}
-function togBingoRow(){bingoRow=!bingoRow;document.getElementById('brtg').classList.toggle('on',bingoRow);dPrev();}
-function pPos(el){document.querySelectorAll('.pp').forEach(b=>b.classList.remove('sl'));el.classList.add('sl');freePos=el.dataset.p;dPrev();}
+function pLayout(el){layout=el.value;scheduleWordCheck();dPrev();}
+function togFS(){freeOn=!freeOn;syncFreeUI();updW();dPrev();}
+function syncFreeUI(){
+  const canCenter=centerEligible();
+  document.getElementById('fstg').classList.toggle('on',freeOn);
+  document.getElementById('fso').style.display=freeOn?'':'none';
+  // On an even grid, Center isn't geometrically possible — fall back to Random
+  // and disable the pill rather than pretending the choice is available.
+  // Center is only geometrically possible on an odd x odd grid; disable the
+  // option rather than pretending the choice exists.
+  const co=document.querySelector('#psel option[value="center"]');
+  co.disabled=!canCenter;
+  co.textContent=canCenter?'Center':'Center — needs an odd × odd grid';
+  // Never overwrite freePos: it is the user's stored preference. An even grid
+  // suspends Center rather than discarding it, so returning to an odd grid
+  // centres again — same contract as the B-I-N-G-O row toggle.
+  document.getElementById('psel').value=freeCentered()?'center':'random';
+  const na=document.getElementById('fsna');
+  na.style.display=(freeOn&&!canCenter)?'':'none';
+  if(freeOn&&!canCenter)document.getElementById('fsna-dim').textContent=`${gridW} × ${gridH}`;
+}
+function togBingoRow(){
+  if(gridW!==5)return; // inert off 5-wide — #brna says why
+  bingoRow=!bingoRow;syncBingoUI();dPrev();
+}
+function syncBingoUI(){
+  document.getElementById('brtg').classList.toggle('on',showBingoRow());
+  document.getElementById('brna').style.display=gridW===5?'none':'';
+  if(gridW!==5)document.getElementById('brna-w').textContent=gridW;
+}
+
+// ---------- GRID SIZE ----------
+function pGrid(el){
+  if(el.value==='custom'){document.getElementById('cg-panel').style.display='';return;}
+  const[w,h]=el.value.split('x').map(Number);
+  document.getElementById('cg-panel').style.display='none';
+  setGrid(w,h);
+}
+function adjG(d,axis){setGrid(axis==='w'?gridW+d:gridW,axis==='h'?gridH+d:gridH);}
+function setG(el,axis){
+  const v=parseInt(el.value,10);
+  if(!v)return; // let them finish typing
+  setGrid(axis==='w'?v:gridW,axis==='h'?v:gridH);
+}
+function setGrid(w,h){
+  gridW=Math.max(2,Math.min(8,w||5));
+  gridH=Math.max(2,Math.min(8,h||5));
+  syncGridUI();updW();dPrev();
+}
+function syncGridUI(){
+  // a preset key when the size matches one, otherwise the custom entry
+  const key=`${gridW}x${gridH}`,sel=document.getElementById('gsel');
+  const preset=[...sel.options].some(o=>o.value===key);
+  sel.value=preset?key:'custom';
+  document.getElementById('cg-panel').style.display=preset?'none':'';
+  document.getElementById('gwi').value=gridW;
+  document.getElementById('ghi').value=gridH;
+  const note=document.getElementById('gsz-note');
+  note.textContent=(gridW===5&&gridH===5)
+    ?'Classic bingo is 5 × 5. Smaller grids suit younger players and quick rounds.'
+    :`${gridW} × ${gridH} — ${requiredSquares()} squares to fill.`;
+  syncFreeUI();syncBingoUI();
+  if(fillMode!=='simple')setFill(fillMode); // block count follows the grid
+}
+function pPos(el){freePos=el.value;dPrev();}
 function pFmt(el){document.querySelectorAll('[data-fmt]').forEach(b=>b.classList.remove('sl'));el.classList.add('sl');spFmt=el.dataset.fmt;}
 function sMode(el){
   document.querySelectorAll('.mtab').forEach(t=>t.classList.remove('sl'));el.classList.add('sl');mode=el.dataset.m;
@@ -1654,6 +1979,12 @@ function setC(el,m){
 // ============================================================
 const SAMPLE=['Don\'t Stop Believin\'','Sweet Home Alabama','Bohemian Rhapsody','Hotel California','Stairway to Heaven','Purple Haze','Good Vibrations','Let It Be','Yesterday','Hey Jude','Satisfaction','Piano Man','Superstition','What\'s Going On','Respect','American Pie','Johnny B. Goode','Sweet Child O\' Mine','Livin\' on a Prayer','You Shook Me All Night Long','Eye of the Tiger','Girls Just Want to Have Fun','Jump','Tainted Love','Don\'t You (Forget About Me)'];
 
+// The B-I-N-G-O header only means anything on a 5-wide card. At any other
+// width we suppress it rather than slicing or padding the word into nonsense;
+// the user's own toggle still governs the 5-wide case.
+const BINGO_LETTERS=['B','I','N','G','O'];
+function showBingoRow(){return bingoRow&&gridW===5;}
+
 function seededShuffle(arr,seed){
   const a=[...arr];
   // Guard: seed=0 causes infinite loop in mulberry32 — use 1 as fallback
@@ -1663,13 +1994,56 @@ function seededShuffle(arr,seed){
   return a;
 }
 
+// A free space works at any grid size — only CENTRING it needs a true middle
+// cell, which exists just on an odd x odd grid. On an even grid we place it
+// randomly instead of refusing it, so every card in a batch gets its free
+// square somewhere different.
+function centerEligible(){return gridW%2===1&&gridH%2===1;}
+function freeActive(){return freeOn;}
+function freeCentered(){return freePos==='center'&&centerEligible();}
+// The minimum is the full cell count, not cells-minus-free-space: a 5x5 has
+// always asked for 25 and every page on the site says so. With a free space on,
+// the spare word simply widens the pool the shuffle draws from.
+function requiredSquares(){return gridW*gridH;}
+
 function buildGrid(words,seed){
-  const pool=seededShuffle(words.length>=25?words:SAMPLE,seed);
-  if(!freeOn)return pool.slice(0,25);
-  const list=pool.slice(0,24);
-  const idx=freePos==='center'?12:Math.abs(Math.floor(Math.sin(seed)*1000)%25);
+  if(fillMode!=='simple')return buildGridGrouped(seed);
+  const cells=gridW*gridH,free=freeActive(),need=cells-(free?1:0);
+  let src=words.length>=requiredSquares()?words:SAMPLE;
+  // SAMPLE is 25 long; cycle it so a 6x6+ preview still fills before the user
+  // has typed enough of their own squares.
+  if(src.length<need){const base=src;src=[];while(src.length<need)src=src.concat(base);}
+  const pool=seededShuffle(src,seed);
+  const list=pool.slice(0,need);
+  while(list.length<need)list.push('');
+  if(!free)return list;
+  const idx=freeCentered()?Math.floor(cells/2):Math.abs(Math.floor(Math.sin(seed)*1000)%cells);
   list.splice(idx,0,null);
-  return list.slice(0,25);
+  return list.slice(0,cells);
+}
+
+// One block per column (or row). Each block is shuffled with its own seed
+// offset so columns vary independently from card to card, rather than the whole
+// grid moving as one. A short block simply leaves '' — the renderers already
+// draw that as an empty cell, which is the look we want.
+function buildGridGrouped(seed){
+  const cells=gridW*gridH,n=fillGroupCount();
+  let groups=getBlocks();
+  if(!groups.length){ // nothing typed yet — show a sample card rather than a blank
+    groups=Array.from({length:n},(_,g)=>SAMPLE.slice(g*3,g*3+Math.max(gridW,gridH))); 
+  }
+  const grid=new Array(cells).fill('');
+  for(let g=0;g<n;g++){
+    const pool=seededShuffle(groups[g]||[],seed+g*97+1);
+    if(fillMode==='col'){for(let r=0;r<gridH;r++)grid[r*gridW+g]=pool[r]!==undefined?pool[r]:'';}
+    else{for(let c=0;c<gridW;c++)grid[g*gridW+c]=pool[c]!==undefined?pool[c]:'';}
+  }
+  if(freeActive()){
+    // The free space overwrites its cell, exactly as classic number bingo does
+    // where the middle of the N column is the free square.
+    grid[freeCentered()?Math.floor(cells/2):Math.abs(Math.floor(Math.sin(seed)*1000)%cells)]=null;
+  }
+  return grid;
 }
 
 // Wrap text with hyphenation — respects fixed fontSize, never overflows cell width
@@ -1733,10 +2107,10 @@ function drawCardCanvas(ctx,W,H,words,seed,opts={}){
   const scaledFontSize=Math.max(5,Math.round(fontSize*(W/316)));
   const footH=0; // footer logo now in PDF branding zone only
   const tH=Math.round(H*.096); // title bar
-  const bH=bingoRow?Math.round(H*.068):0; // BINGO row (0 when hidden)
+  const bH=showBingoRow()?Math.round(H*.068):0; // BINGO row (0 when hidden or off 5-wide)
   const gT=M+tH+bH;            // grid top
   const gH=H-gT-M-footH;
-  const cW=(W-2*M)/5,cH=gH/5;
+  const cW=(W-2*M)/gridW,cH=gH/gridH;
 
   // bg
   ctx.fillStyle=rgb(T.bg);ctx.fillRect(0,0,W,H);
@@ -1759,7 +2133,7 @@ function drawCardCanvas(ctx,W,H,words,seed,opts={}){
   ctx.fillText(titleTxt,W/2,M+tH/2);
 
   // BINGO row (only when enabled)
-  if(bingoRow) ['B','I','N','G','O'].forEach((l,i)=>{
+  if(showBingoRow()) BINGO_LETTERS.forEach((l,i)=>{
     const x=M+i*cW;
     if(T.eco){
       ctx.strokeStyle='#000';ctx.lineWidth=Math.max(.4,W*.001);
@@ -1775,9 +2149,9 @@ function drawCardCanvas(ctx,W,H,words,seed,opts={}){
   // Grid
   const grid=buildGrid(words,seed);
   let freeRect=null;
-  for(let r=0;r<5;r++){
-    for(let c=0;c<5;c++){
-      const x=M+c*cW,y=gT+r*cH,word=grid[r*5+c],isFree=word===null;
+  for(let r=0;r<gridH;r++){
+    for(let c=0;c<gridW;c++){
+      const x=M+c*cW,y=gT+r*cH,word=grid[r*gridW+c],isFree=word===null;
       if(isFree){freeRect={x,y,w:cW,h:cH};ctx.fillStyle=T.eco?'rgb(245,245,245)':rgb(T.fr);}
       else ctx.fillStyle=(r+c)%2===0?rgb(T.st):rgb(T.bg);
       ctx.fillRect(x,y,cW,cH);
@@ -1816,6 +2190,7 @@ function drawCardCanvas(ctx,W,H,words,seed,opts={}){
       }
     }
   }
+
 }
 
 // ============================================================
@@ -1967,9 +2342,9 @@ function pdfFitTxt(doc,text,maxW,maxH,baseSz){
 function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
   const M=14;
   const footH=0; // footer handled by genPDF caller
-  const tH=Math.round(ch*.09),bH=bingoRow?Math.round(ch*.06):0;
+  const tH=Math.round(ch*.09),bH=showBingoRow()?Math.round(ch*.06):0;
   const gY=oy+M+tH+bH,gH=ch-M-tH-bH-M-footH;
-  const colW=(cw-2*M)/5,rowH=gH/5;
+  const colW=(cw-2*M)/gridW,rowH=gH/gridH;
   const grid=buildGrid(words,seed);
 
   // bg
@@ -1988,7 +2363,7 @@ function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
   doc.text(titleTxt,ox+cw/2,oy+M+tH*.68,{align:'center'});
 
   // BINGO row (only when enabled)
-  if(bingoRow) ['B','I','N','G','O'].forEach((l,j)=>{
+  if(showBingoRow()) BINGO_LETTERS.forEach((l,j)=>{
     const x=ox+M+j*colW;
     if(T.eco){doc.setDrawColor(0,0,0);doc.setLineWidth(.4);doc.rect(x,oy+M+tH,colW,bH,'S');doc.setTextColor(0,0,0);}
     else{doc.setFillColor(...drk(T.hd,j%2===0?-16:0));doc.rect(x,oy+M+tH,colW,bH,'F');doc.setTextColor(255,255,255);}
@@ -1998,10 +2373,10 @@ function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
 
   // Grid cells
   let frd=null;
-  for(let r=0;r<5;r++){
-    for(let c=0;c<5;c++){
+  for(let r=0;r<gridH;r++){
+    for(let c=0;c<gridW;c++){
       const x=ox+M+c*colW,y=gY+r*rowH;
-      const word=grid[r*5+c],isFree=word===null;
+      const word=grid[r*gridW+c],isFree=word===null;
       if(isFree){frd={x,y,w:colW,h:rowH};doc.setFillColor(...(T.eco?[245,245,245]:T.fr));}
       else doc.setFillColor(...((r+c)%2===0?T.st:T.bg));
       doc.rect(x,y,colW,rowH,'F');
@@ -2042,6 +2417,7 @@ function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
       }
     }
   }
+
 }
 
 // Height (in pt) of the logo/branding strip, used consistently above the
@@ -2131,7 +2507,7 @@ function landscapeLayout(PW,PH,brandH){
 }
 
 async function genPDF(){
-  const words=getW();if(words.length<25){toast('Need at least 25 songs.','err');return;}
+  const words=getW();if(!listStatus().ok){toast(listStatus().text,'err');return;}
   pCount=Math.max(1,Math.min(999,parseInt(document.getElementById('cnp').value)||1));
   document.getElementById('cnp').value=pCount;
   const btn=document.getElementById('dlb');
@@ -2214,7 +2590,7 @@ async function genPDF(){
       gev('pdf_downloaded',{card_count:pCount,layout,theme,is_pro:clean});
       toast(clean?`Downloaded ${pCount} card${pCount>1?'s':''}!`:`Downloaded ${pCount} demo card${pCount>1?'s':''} — a pass removes the watermark.`,'ok');
     }catch(err){console.error(err);toast('PDF generation failed.','err');}
-    finally{btn.innerHTML=pdfBtnLabel();btn.disabled=getW().length<25;}
+    finally{btn.innerHTML=pdfBtnLabel();btn.disabled=!listStatus().ok;}
   },60);
   }).catch(()=>toast('Failed to load PDF library — check your connection.','err'));
 }
@@ -2227,7 +2603,7 @@ let galCvs=[],galSeeds=[];
 async function openGal(){
   sCount=Math.max(1,Math.min(999,parseInt(document.getElementById('cns').value)||1));
   document.getElementById('cns').value=sCount;
-  const words=getW();if(words.length<25){toast('Need at least 25 songs.','err');return;}
+  const words=getW();if(!listStatus().ok){toast(listStatus().text,'err');return;}
   const btn=document.getElementById('sgb');
   btn.innerHTML='<span class="sp"></span> Checking license...';btn.disabled=true;
   // Generating the gallery is free — unauthorized users see watermarked
@@ -2279,6 +2655,7 @@ function buildLink(words,seed,n,title,clean){
   try{
     const w=words.length>300?words.slice(0,300):words; // cap for URL safety
     const st={t:title,w,fn:font,th:theme,fo:freeOn,fp:freePos,ft:document.getElementById("fst").value||"FREE",s:seed,n,wm:clean?0:1};
+    if(theme==="custom")st.cc=[customCols.bg,customCols.tx,customCols.hd,customCols.ht,customCols.fr];
     const url=location.origin+location.pathname+"?card="+btoa(encodeURIComponent(JSON.stringify(st)));
     return url.length>6000?null:url;
   }catch(e){return null;}
@@ -2335,7 +2712,8 @@ function showCard(enc){
     const st=JSON.parse(decodeURIComponent(atob(enc)));
     sharedSt=st;
     // apply state to renderer
-    font=st.fn||'oswald';theme=st.th||'classic';freeOn=st.fo!==false;freePos=st.fp||'center';
+    hydrateCustom(st.cc);
+    font=st.fn||'oswald';theme=resolveTheme(st.th||'eco');freeOn=st.fo!==false;freePos=st.fp||'center';
     document.getElementById('fst').value=st.ft||'FREE';
     document.getElementById('gen').style.display='none';
     document.getElementById('cview').style.display='block';
@@ -2370,7 +2748,7 @@ const AUTOSAVE_KEY='bcg_autosave',GAMES_KEY='bcg_games';
 function collectState(){
   return{
     v:1,t:document.getElementById('ct').value,w:document.getElementById('wl').value,
-    fn:font,fz:fontSize,th:theme,fo:freeOn,fp:freePos,
+    fn:font,fz:fontSize,th:theme,fo:freeOn,fp:freePos,gw:gridW,gh:gridH,fm:fillMode,cc:[customCols.bg,customCols.tx,customCols.hd,customCols.ht,customCols.fr],
     ft:document.getElementById('fst').value,br:bingoRow,
     md:mode,ly:layout,pc:pCount,sc:sCount,
     bo:brandingOn,bt:document.getElementById('brand-text').value,
@@ -2383,14 +2761,18 @@ function applyState(st){
   if(!st)return;
   document.getElementById('ct').value=st.t||'';
   document.getElementById('wl').value=st.w||'';
-  font=st.fn||'oswald';selPill('.fo','f',font);
-  theme=st.th||'eco';document.querySelectorAll('.tsw,.tsw-eco').forEach(e=>e.classList.toggle('sl',e.dataset.t===theme));
+  font=st.fn||'oswald';document.getElementById('fsel').value=font;
+  theme=resolveTheme(st.th||'eco');document.querySelectorAll('.tsw,.tsw-eco').forEach(e=>e.classList.toggle('sl',e.dataset.t===theme));
   fontSize=st.fz||11;document.getElementById('fsz').value=fontSize;
-  freeOn=st.fo!==false;document.getElementById('fstg').classList.toggle('on',freeOn);document.getElementById('fso').style.display=freeOn?'':'none';
-  freePos=st.fp||'center';selPill('.pp','p',freePos);
+  gridW=Math.max(2,Math.min(8,st.gw||5));gridH=Math.max(2,Math.min(8,st.gh||5));
+  freeOn=st.fo!==false;
+  freePos=st.fp||'center';
   document.getElementById('fst').value=st.ft||'FREE';
-  bingoRow=st.br!==false;document.getElementById('brtg').classList.toggle('on',bingoRow);
-  layout=st.ly||'portrait';selPill('.lcrd','layout',layout);
+  bingoRow=st.br!==false;
+  hydrateCustom(st.cc);
+  setFill(st.fm||'simple');
+  syncGridUI(); // owns the free-space and BINGO-row toggles too
+  layout=st.ly||'portrait';document.getElementById('lsel').value=layout;
   pCount=st.pc||5;document.getElementById('cnp').value=pCount;
   sCount=st.sc||10;document.getElementById('cns').value=sCount;
   brandingOn=st.bo!==false;syncBrandingUI();
@@ -2408,7 +2790,7 @@ function applyState(st){
   }
   mode=st.md||'print';
   const tab=document.querySelector(`.mtab[data-m="${mode}"]`);if(tab)sMode(tab);
-  updTitle();updW();pFSize(fontSize);dPrev();
+  updTitle();updW();pFSize(fontSize);syncBrandLine1();dPrev();
 }
 let _asT=null;
 function scheduleAutosave(){clearTimeout(_asT);_asT=setTimeout(autosaveNow,800);}
@@ -2458,7 +2840,8 @@ updW();
 updThemeBtn();
 // chkPro: run immediately for cached state, defer network re-verification to after paint
 chkPro();
-document.fonts.ready.then(()=>{applyProLocks();pFSize(fontSize);dPrev();});
+applyCustom();
+document.fonts.ready.then(()=>{applyProLocks();pFSize(fontSize);updW();dPrev();});
 const qp=new URLSearchParams(location.search);
 if(qp.has('code'))hCb(qp.get('code'));
 if(qp.has('card'))showCard(qp.get('card'));
