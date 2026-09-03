@@ -59,6 +59,15 @@ preference and goes inert — it is not silently flipped.
 `drawCardCanvas()` and `pdfDrawCard()` are deliberate mirrors of each other.
 Change them together or the preview and the PDF drift apart.
 
+**Retired theme keys must stay aliased.** `?card=` share links encode the theme
+(`showCard()` reads `st.th`) and `bcg_autosave` stores it, so a key that once
+shipped lives in the wild forever. Delete one and `THEMES[theme]` is `undefined`,
+the renderer throws, and someone else's shared card shows "Invalid card link".
+`THEME_ALIAS` maps the retired keys and `resolveTheme()` falls back to `eco`
+rather than throwing — every read of a persisted theme key goes through it.
+`midnight` is still in `THEMES` for exactly this reason even though its swatch
+was removed from the picker.
+
 **Branding is Pro.** Logo and the two branding text lines are gated behind a
 pass (`brandingActive()` = `brandingOn && isPro`). Free users get everything
 else, with a demo watermark on exports. If you change this, the claim appears in
@@ -68,8 +77,11 @@ that last one is the document a customer gets pointed at in a dispute.
 ## The autosave contract
 
 `localStorage['bcg_autosave']` holds `{v:1, t:<title>, w:<newline-separated
-squares>, gw:<grid width>, gh:<grid height>, …}`. `gw`/`gh` are optional and
-default to 5 when absent, so blobs written before grid sizing still restore. On load, with no `?card=` param, `index.html` calls `applyState()`
+squares>, gw:<grid width>, gh:<grid height>, fm:<fill mode>, cc:<5 custom
+colours>, …}`. Everything after `w` is optional with a safe default — `gw`/`gh`
+fall back to 5, `fm` to `'simple'`, `cc` to the built-in custom palette — so
+blobs written by any earlier version still restore.
+On load, with no `?card=` param, `index.html` calls `applyState()`
 on it and toasts the user. Any page can hand work to the generator by writing
 that key and navigating to `/` — no forking required. `src:"starter"` marks a
 landing-page handoff so the toast reads as a first arrival rather than a return.
