@@ -8,10 +8,15 @@
  *
  * Degrades to a plain link with JS off — the button is an <a href="/">.
  *
- * Optional data attributes on the button let a page hand over more than a word
+ * Optional data attributes on a trigger let a page hand over more than a word
  * list. data-gw/data-gh set the grid, data-fm sets the fill mode ("col"/"row",
  * where a blank line starts a new block). Omit them and behaviour is exactly as
- * before, which is what every existing starter page does. */
+ * before, which is what every existing starter page does.
+ *
+ * Any element carrying data-starter is a trigger too, not just #st-go, so a
+ * page's hero and closing buttons can hand over the same list. Binding to one id
+ * was a real bug: the number-bingo hero button said "with 1-75 loaded" and
+ * loaded nothing, because only #st-go was ever wired up. */
 (function () {
   var KEY = "bcg_autosave";
   var t = document.getElementById("st-t"),
@@ -20,12 +25,10 @@
       go = document.getElementById("st-go");
   if (!w || !go || !c) return;
 
-  var d = go.dataset || {};
-  var gw = clampGrid(d.gw), gh = clampGrid(d.gh);
-  var fm = (d.fm === "col" || d.fm === "row") ? d.fm : null;
-  // The minimum follows the grid the page hands over, so a 3x3 starter does not
-  // demand 25. Falls back to the classic 5x5 count when no grid is given.
-  var MIN = (gw || 5) * (gh || 5);
+  // The counter follows the grid the starter block itself hands over, so a 3x3
+  // starter does not demand 25. Falls back to the classic 5x5 count.
+  var MIN = (clampGrid(go.dataset && go.dataset.gw) || 5) *
+            (clampGrid(go.dataset && go.dataset.gh) || 5);
 
   function clampGrid(v) {
     var n = parseInt(v, 10);
@@ -45,7 +48,10 @@
   w.addEventListener("input", update);
   update();
 
-  go.addEventListener("click", function (e) {
+  function handoff(e) {
+    var d = (this && this.dataset) || {};
+    var gw = clampGrid(d.gw), gh = clampGrid(d.gh);
+    var fm = (d.fm === "col" || d.fm === "row") ? d.fm : null;
     var list = lines();
     if (!list.length) return;          // nothing typed — let the plain link through
     // Block mode needs the blank lines kept intact — they are the separators.
@@ -54,7 +60,7 @@
       // Never quietly destroy a card someone left half-finished in this browser.
       var prev = JSON.parse(localStorage.getItem(KEY) || "null");
       if (prev && prev.w && prev.w.trim() && prev.w.trim() !== text.trim() &&
-          !confirm("You have an unfinished card saved in this browser. Replace it with the squares you just typed?")) {
+          !confirm("You have an unfinished card saved in this browser. Replace it with these squares?")) {
         e.preventDefault();
         return;
       }
@@ -71,5 +77,14 @@
     if (window.gtag) try {
       gtag("event", "starter_handoff", { squares: list.length, page: document.body.dataset.page || "" });
     } catch (err) {}
-  });
+  }
+
+  // Every route into the generator that should carry the list, not just #st-go.
+  var triggers = [go].concat(
+    [].slice.call(document.querySelectorAll("[data-starter]")));
+  for (var i = 0; i < triggers.length; i++) {
+    if (triggers[i] && triggers.indexOf(triggers[i]) === i) {
+      triggers[i].addEventListener("click", handoff);
+    }
+  }
 })();
