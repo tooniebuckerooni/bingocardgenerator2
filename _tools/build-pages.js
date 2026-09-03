@@ -74,6 +74,13 @@ const stripTags = (s) => s.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replac
 // block), both emitted as data attributes card-starter.js reads. `prefill` puts
 // the list in the textarea so a page can ship a ready-made card. Pages that set
 // none of these render exactly as before.
+// A page whose starter ships a ready-made list (number bingo) wants its hero and
+// closing buttons to hand that list over too, not just the small starter button.
+// Opt in with starter.ctaHandoff; every other page renders plain links as before.
+const ctaData = (p) => (p.starter && p.starter.ctaHandoff)
+  ? ` data-starter${p.starter.grid ? ` data-gw="${p.starter.grid[0]}" data-gh="${p.starter.grid[1]}"` : ""}${p.starter.fill ? ` data-fm="${p.starter.fill}"` : ""}`
+  : "";
+
 const starter = (p) => !p.starter ? "" : `
     <div class="starter">
       <h3>${p.starter.h}</h3>
@@ -181,7 +188,7 @@ ${header()}
     <h1>${p.h1}</h1>
     <p class="answer">${p.answer}</p>
     <div class="hero-cta">
-      <a href="/" class="btn-primary" onclick="gtag('event','pillar_cta_click',{placement:'hero',page:'${p.slug}'})">${p.heroCta}</a>
+      <a href="/" class="btn-primary"${ctaData(p)} onclick="gtag('event','pillar_cta_click',{placement:'hero',page:'${p.slug}'})">${p.heroCta}</a>
       <span class="cta-sub">Free to start · no login · print or play online</span>
     </div>
     <div class="services">
@@ -203,7 +210,7 @@ ${faqHtml(p.faq)}
     <div class="closing-cta">
       <h3>${p.closing.h}</h3>
       <p>${p.closing.p}</p>
-      <a href="/" onclick="gtag('event','pillar_cta_click',{placement:'footer',page:'${p.slug}'})">${p.closing.cta}</a>
+      <a href="/"${ctaData(p)} onclick="gtag('event','pillar_cta_click',{placement:'footer',page:'${p.slug}'})">${p.closing.cta}</a>
     </div>
 
   </div>
