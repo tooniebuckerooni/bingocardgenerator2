@@ -32,6 +32,7 @@ const LINKS = [
   ["/bingo-card-maker.html", "Card Maker"],
   ["/online-bingo-generator.html", "Online"],
   ["/bingo-board-generator.html", "Boards"],
+  ["/number-bingo-cards.html", "Number Bingo"],
   ["/music-bingo-generator.html", "Music Bingo"],
   ["/blog/", "Blog"],
 ];
@@ -68,6 +69,11 @@ const faqHtml = (faq) => faq.map((x) => `      <div class="faq-item" onclick="th
 const stripTags = (s) => s.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&quot;/g, '"')
   .replace(/&#39;/g, "'").replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim();
 
+// A page may hand the generator more than a word list: `grid` sets the card
+// size and `fill` the fill mode ("col"/"row", where a blank line starts a new
+// block), both emitted as data attributes card-starter.js reads. `prefill` puts
+// the list in the textarea so a page can ship a ready-made card. Pages that set
+// none of these render exactly as before.
 const starter = (p) => !p.starter ? "" : `
     <div class="starter">
       <h3>${p.starter.h}</h3>
@@ -75,9 +81,11 @@ const starter = (p) => !p.starter ? "" : `
       <label for="st-t">Game title <span style="text-transform:none;letter-spacing:0;font-weight:400">(optional)</span></label>
       <input type="text" id="st-t" maxlength="48" placeholder="${esc(p.starter.titlePlaceholder)}">
       <label for="st-w">Your squares — one per line</label>
-      <textarea id="st-w" placeholder="${esc(p.starter.squaresPlaceholder)}"></textarea>
+      <textarea id="st-w" placeholder="${esc(p.starter.squaresPlaceholder)}">${esc(p.starter.prefill || "")}</textarea>
       <div class="starter-c" id="st-c">0 squares — need 25 more</div>
-      <a class="starter-b" id="st-go" href="/">Open the Generator →</a>
+      <a class="starter-b" id="st-go" href="/"${
+        p.starter.grid ? ` data-gw="${p.starter.grid[0]}" data-gh="${p.starter.grid[1]}"` : ""
+      }${p.starter.fill ? ` data-fm="${p.starter.fill}"` : ""}>Open the Generator →</a>
       <p class="starter-n">${p.starter.note}</p>
     </div>`;
 

@@ -51,10 +51,12 @@ way, so non-square cards like 4×7 are valid. `requiredSquares()` is `gridW*grid
 — the full cell count, *not* cells-minus-free-space, so a 5×5 still asks for 25
 exactly as it always has and every page saying "minimum 25" stays true.
 Two derived rules, both with UI that explains itself rather than failing silently:
-a **free space needs both sides odd** (`freeEligible()`) since an even grid has no
-middle cell, and the **B-I-N-G-O header only renders at width 5** (`showBingoRow()`)
-because the word is five letters. In both cases the user's toggle keeps its
-preference and goes inert — it is not silently flipped.
+a free space works at **any** size but can only be **centred** on an odd x odd grid
+(`centerEligible()` / `freeCentered()`) — on an even grid it is placed randomly, a
+different square on every card — and the **B-I-N-G-O header only renders at width
+5** (`showBingoRow()`) because the word is five letters. In both cases the user's
+stored preference is kept rather than overwritten: `freePos` stays `center` while
+an even grid suspends it, so returning to an odd grid centres again.
 
 `drawCardCanvas()` and `pdfDrawCard()` are deliberate mirrors of each other.
 Change them together or the preview and the PDF drift apart.

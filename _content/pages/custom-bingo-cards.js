@@ -34,7 +34,7 @@ module.exports = {
       "Type your own squares, personalize the look, then print a set or share digital cards.",
     step: [
       { name: "Type your list", text: "Type at least 25 words, phrases, or questions specific to your classroom, party, or event." },
-      { name: "Personalize the look", text: "Pick a font, a color theme, and a card title. A Pro pass also prints your logo or two lines of your own branding on every card." },
+      { name: "Personalize the look", text: "Pick a card size, a font, a colour theme or your own custom colours, and a card title. Matching the cards to a wedding palette or a company brand costs nothing. A Pro pass also prints your logo or two lines of your own branding on every card." },
       { name: "Download or share", text: "Get a print-ready PDF, a ZIP of card images, or individual shareable links players open on their phones." },
     ],
   },
@@ -79,7 +79,7 @@ module.exports = {
     <p>Sponsor names, silent-auction items, or theme-night terms turn a card into a subtle sponsor shout-out or a scavenger-hunt-style mixer — without needing a designer to lay it out. Galas, church socials, school fun nights, and legion fundraisers all run on the same set.</p>
 
     <h3>Anything Else</h3>
-    <p>If it can be reduced to 25 short items, it can be a custom bingo card: book clubs, family reunions, conference booths, gym challenges, road trips, a season finale watch party. There is no fixed category list to work around.</p>
+    <p>If it can be reduced to a list of short items — 25 for a classic 5×5, or as few as 9 if you pick a 3×3 — it can be a custom bingo card: book clubs, family reunions, conference booths, gym challenges, road trips, a season finale watch party. There is no fixed category list to work around.</p>
 
     <h2>How to Make Your Custom Cards</h2>
     <div class="steps">
@@ -117,7 +117,7 @@ module.exports = {
     { q: "What's the difference between custom and template bingo cards?",
       a: "Template cards use pre-filled words you can't change. A custom bingo card generator lets you enter your own words, phrases, or theme instead, so every card matches your exact classroom, party, or event." },
     { q: "How many personalized cards can I make from one list?",
-      a: "Up to 999 per batch. Every one is shuffled separately, so a class of thirty or a reception of two hundred can all play without duplicates. The lever on how varied they feel is your list length: 25 squares is the floor, and 40 or 50 makes a large batch look far less repetitive." },
+      a: "Up to 999 per batch. Every one is shuffled separately, so a class of thirty or a reception of two hundred can all play without duplicates. The lever on how varied they feel is your list length: the floor is however many squares your grid has — 25 for a 5×5, 9 for a 3×3 — and going well past it makes a large batch look far less repetitive." },
     { q: "Can I make digital custom bingo cards, not just printable ones?",
       a: "Yes. Switch to Share Online and every custom card gets its own link players open on a phone or laptop — no printing required." },
   ],
