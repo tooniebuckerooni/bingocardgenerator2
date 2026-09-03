@@ -6,8 +6,9 @@
 //
 // The grid defaults to 5x5 but is selectable — presets 3x3/4x4/5x5/6x6 plus a
 // custom 2-8 each way, so non-square boards like 4x7 are valid. A free space
-// needs both sides odd. The differentiation from the card-maker page is
-// occasion and usage pattern, not grid size.
+// works at ANY size — only CENTRING it needs both sides odd; on an even grid it
+// is placed randomly. The differentiation from the card-maker page is occasion
+// and usage pattern, not grid size.
 module.exports = {
   slug: "bingo-board-generator",
   title: "Bingo Board Generator | Build a Custom Bingo Board Free",
@@ -40,7 +41,7 @@ module.exports = {
     step: [
       { name: "Add your squares", text: "Type at least 25 words, phrases, or predictions — meeting buzzwords, awards-show guesses, vocabulary words, whatever the board is for." },
       { name: "Pick a look", text: "Choose a font, a color theme, and a board title. A Pro pass also prints a logo or two lines of your own text on every board." },
-      { name: "Set the layout", text: "Toggle the centre free space on or off, then choose portrait for one board per page or landscape for two with a cut line." },
+      { name: "Set the layout", text: "Toggle the free space on or off — centred on an odd grid, placed randomly on an even one — then choose portrait for one board per page or landscape for two with a cut line." },
       { name: "Generate and deliver", text: "Download a print-ready PDF, a ZIP of board images, or individual shareable links — set the count to 1 for a single board or up to 999 for a packed room." },
     ],
   },
@@ -95,7 +96,7 @@ module.exports = {
     { q: "Can I make just one board, or do I need a full set?",
       a: "Either. Set the number of boards to 1 for a single meeting or prediction board, or generate more — every board is uniquely randomized, so a group doesn't end up with duplicates." },
     { q: "Does the board have to be a 5x5 grid?",
-      a: "No. 5x5 is the default because it is the classic, but you can pick 3x3, 4x4, or 6x6 with one click, or set any width and height from 2 to 8 under custom size — so a 4x7 board is fine too. A free space needs a true middle square, so it is available when both sides are odd numbers. You also fully control the words in every square, the font, and the color theme." },
+      a: "No. 5x5 is the default because it is the classic, but you can pick 3x3, 4x4, or 6x6 with one click, or set any width and height from 2 to 8 under custom size — so a 4x7 board is fine too. A free space works at any size: it sits dead centre when both sides are odd, and lands somewhere different on every card when they are not. You also fully control the words in every square, the font, and the color theme." },
     { q: "Can I use this for meeting or buzzword bingo?",
       a: "Yes. Type the phrases you expect to hear — corporate jargon, a coworker's go-to line, whatever your meeting is known for — as your squares, and generate one board per attendee or a single shared one for the screen." },
     { q: "Can I make a prediction board for a show, game, or event?",

@@ -28,7 +28,7 @@ module.exports = {
     lede: "You can begin before you even leave this page. Type your squares and the generator opens with them loaded.",
     titlePlaceholder: "e.g. Team Trivia — Round One",
     squaresPlaceholder:
-      "One square per line.\n\nsomeone joins from an airport\nthe roadmap slide gets skipped\na dog appears on camera\n\nMinimum 25 squares.",
+      "One square per line.\n\nsomeone joins from an airport\nthe roadmap slide gets skipped\na dog appears on camera\n\n25 squares for a 5 x 5 card.",
     note: "No upload, no round trip — the browser carries it across for you.",
   },
 
@@ -37,8 +37,8 @@ module.exports = {
     description:
       "Type your squares in the browser, customize instantly, then print or share digital cards.",
     step: [
-      { name: "Add your squares in the browser", text: "Type or paste at least 25 words, names, or trivia answers straight into the page, or bulk-import a CSV or TXT list — there is no file to download or open separately." },
-      { name: "Customize and watch it update", text: "Choose a font, a color theme, and a layout. Every change previews on screen immediately, so there is no export-and-check step." },
+      { name: "Add your squares in the browser", text: "Type or paste your words, names, or trivia answers straight into the page — 25 fills a classic 5 x 5, and the counter tells you the number for whatever grid size you pick — or bulk-import a CSV or TXT list. There is no file to download or open separately." },
+      { name: "Customize and watch it update", text: "Choose a card size, a font, a colour theme or your own colours, and a layout. Every change previews on screen immediately, and the colour picker checks the contrast as you go, so there is no export-and-check step." },
       { name: "Print or play digitally", text: "Download a print-ready PDF, or generate a share link per player that opens on any device — both are ready the moment you click generate." },
     ],
   },

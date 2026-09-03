@@ -32,6 +32,21 @@ blocked on more code.
    first, promo on the second — and a promo line should sit *under* an uploaded
    logo rather than replacing it.
 
+## Judge the number-bingo page
+
+`number-bingo-cards.html` shipped 2026-09-03. It exists because column fill made
+classic 1-75 cards possible for the first time, not because anyone measured the
+demand — the keyword tool was on a plan that would not return volumes, so this is
+a capability bet.
+
+**The bar:** when you re-pull Search Console below, check this page too. If it is
+still at zero impressions at the same point `custom-bingo-cards.html` is judged,
+the fifth-landing-page instinct was wrong and the next unit of content work should
+be a blog post aimed at the editorial cluster instead — which is what the numbers
+already favour.
+
+Request indexing for it in Search Console the same way as the other two above.
+
 ## Check back in ~6 weeks
 
 Re-pull the Search Console Performance export. **The single number that says
