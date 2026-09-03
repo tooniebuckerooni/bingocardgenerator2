@@ -10,12 +10,12 @@
 <link rel="shortcut icon" href="/favicon.ico">
 <script>try{document.documentElement.dataset.theme=localStorage.getItem('bcg_theme')||'light';}catch(e){}</script>
 <title>Bingo Card Generator | Create Custom Printable &amp; Digital Bingo Cards</title>
-<meta name="description" content="Create custom bingo cards in minutes — no login required. Printable and digital cards for classrooms, parties, events, and music bingo nights.">
+<meta name="description" content="Create custom bingo cards in minutes — no login required. Pick 3x3, 4x4, 5x5 or your own grid, set your own colours, and print or share. For classrooms, parties, events, and music bingo nights.">
 <meta name="robots" content="index, follow">
 <meta name="keywords" content="bingo card generator, music bingo, custom bingo cards, printable bingo cards, free bingo generator, trivia bingo, bingo card maker">
 <link rel="canonical" href="https://bingocardgenerator.online/">
 <meta property="og:title" content="Bingo Card Generator | Create Custom Printable &amp; Digital Bingo Cards">
-<meta property="og:description" content="Create custom bingo cards in minutes for classrooms, parties, events, and training. No login required. Easy to customize, share, and print. Free to start.">
+<meta property="og:description" content="Create custom bingo cards in minutes for classrooms, parties, events, and training. Choose your grid size, set your own colours, then print or share. No login required. Free to start.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://bingocardgenerator.online/">
 <meta property="og:image" content="https://bingocardgenerator.online/og-image.png">
@@ -24,7 +24,7 @@
 <meta property="og:site_name" content="BingoCardGenerator.Online">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Free Bingo Card Generator">
-<meta name="twitter:description" content="Custom bingo cards for music nights, trivia, events and more. No login required — print or share online. Free to start.">
+<meta name="twitter:description" content="Custom bingo cards for music nights, trivia, events and more. Any grid size, your own colours, no login — print or share online. Free to start.">
 <meta name="twitter:image" content="https://bingocardgenerator.online/og-image.png">
 
 <!-- Structured data — WebApplication schema -->
@@ -34,7 +34,7 @@
   "@type": "WebApplication",
   "name": "Bingo Card Generator",
   "url": "https://bingocardgenerator.online/",
-  "description": "Create custom bingo cards in minutes for classrooms, parties, events, and training. Print PDF cards or share digital cards online. No account required.",
+  "description": "Create custom bingo cards in minutes for classrooms, parties, events, and training. Choose a grid size from 3x3 to 6x6 or set your own, pick a colour theme or your own colours, then print PDF cards or share digital cards online. No account required.",
   "applicationCategory": "UtilityApplication",
   "operatingSystem": "Web",
   "browserRequirements": "Requires JavaScript",
@@ -43,6 +43,11 @@
   "screenshot": "https://bingocardgenerator.online/og-image.png",
   "featureList": [
     "Custom bingo card generation",
+    "Selectable card sizes - 3x3, 4x4, 5x5, 6x6 or a custom grid from 2 to 8 squares a side",
+    "Non-square cards such as 4 across by 7 down",
+    "Custom colour themes - set the background, square text, title bar, title text and free space, with a live contrast check",
+    "Category-per-column and per-row fill, including classic 1-75 number bingo",
+    "Square list checks for duplicates and text that will not fit the square",
     "PDF download for printing",
     "Digital card sharing with unique links",
     "Music playlist import via TuneMyMusic",
@@ -196,6 +201,30 @@
         "@type": "Answer",
         "text": "This generator is built by Fat City Entertainment — hosts who run music bingo and trivia nights in front of live audiences every week. The features here exist because we needed them at real events."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I make a 3x3 or 4x4 bingo card instead of 5x5?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. 5x5 is the default because it is the classic, but you can pick 3x3, 4x4 or 6x6 from the card size dropdown, or set any width and height from 2 to 8 squares under Custom size. Cards do not have to be square either, so 4 across by 7 down is fine. A 3x3 suits young children and quick rounds; the counter under the square list always tells you how many squares the size you picked needs."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I choose my own colours for the cards?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, and it is free. Alongside the presets there is a Custom option with five colour pickers: card background, square text, title bar, title text and the free space. The picker measures the contrast between your text and background as you go and warns you if a pairing would be hard to read across a room, so you can match a wedding palette or a company brand without ending up with an unreadable card."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I put a different category in each column?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Turn on fill by column in step one and leave a blank line between blocks: the first block fills the first column, the second block the second, and so on. Teachers use it for a category per column, quiz hosts for a round per row, and it is also how you make classic number bingo with B 1-15, I 16-30 and so on."
+      }
     }
   ]
 }
@@ -217,7 +246,7 @@
     {
       "@type": "HowToStep",
       "name": "Customize your card",
-      "text": "Choose a font, color theme, and card title. Toggle the free space on or off and adjust the font size for print legibility."
+      "text": "Choose a card size, a font, a colour theme or your own colours, and a card title. Toggle the free space on or off and adjust the font size for print legibility."
     },
     {
       "@type": "HowToStep",
@@ -671,6 +700,10 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
     <div class="nr">
       <a href="/music-bingo-generator.html" class="na">Music Bingo</a>
       <a href="/custom-bingo-cards.html" class="na">Custom Cards</a>
+      <a href="/bingo-card-maker.html" class="na">Card Maker</a>
+      <a href="/online-bingo-generator.html" class="na">Online Bingo</a>
+      <a href="/bingo-board-generator.html" class="na">Bingo Boards</a>
+      <a href="/number-bingo-cards.html" class="na">Number Bingo</a>
       <a href="/terms.html" class="na">Terms</a>
       <a href="/privacy.html" class="na">Privacy</a>
       <a href="/refund.html" class="na">Refunds</a>
@@ -1120,6 +1153,18 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
       <button class="faq-q">Who makes BingoCardGenerator.Online? <span class="faq-chev">▼</span></button>
       <div class="faq-a">This generator is built by <a href="https://www.fatcityentertainment.com/" style="color:var(--gn)" onclick="gev('fce_link_click',{placement:'faq'})">Fat City Entertainment</a> — hosts who run music bingo and trivia nights in front of live audiences every week. The features here exist because we needed them at real events.</div>
     </div>
+    <div class="faq-item" onclick="togFaq(this)">
+      <button class="faq-q">Can I make a 3x3 or 4x4 bingo card instead of 5x5? <span class="faq-chev">▼</span></button>
+      <div class="faq-a">Yes. 5x5 is the default because it is the classic, but you can pick 3x3, 4x4 or 6x6 from the card size dropdown, or set any width and height from 2 to 8 squares under Custom size. Cards do not have to be square either, so 4 across by 7 down is fine. A 3x3 suits young children and quick rounds; the counter under the square list always tells you how many squares the size you picked needs.</div>
+    </div>
+    <div class="faq-item" onclick="togFaq(this)">
+      <button class="faq-q">Can I choose my own colours for the cards? <span class="faq-chev">▼</span></button>
+      <div class="faq-a">Yes, and it is free. Alongside the presets there is a Custom option with five colour pickers: card background, square text, title bar, title text and the free space. The picker measures the contrast between your text and background as you go and warns you if a pairing would be hard to read across a room, so you can match a wedding palette or a company brand without ending up with an unreadable card.</div>
+    </div>
+    <div class="faq-item" onclick="togFaq(this)">
+      <button class="faq-q">Can I put a different category in each column? <span class="faq-chev">▼</span></button>
+      <div class="faq-a">Yes. Turn on fill by column in step one and leave a blank line between blocks: the first block fills the first column, the second block the second, and so on. Teachers use it for a category per column, quiz hosts for a round per row, and it is also how you make classic number bingo with B 1-15, I 16-30 and so on.</div>
+    </div>
   </div>
 
 </div>
@@ -1142,6 +1187,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
     <a href="/bingo-card-maker.html">Bingo Card Maker</a>
     <a href="/online-bingo-generator.html">Online Bingo</a>
     <a href="/bingo-board-generator.html">Bingo Boards</a>
+    <a href="/number-bingo-cards.html">Number Bingo</a>
     <a href="/music-bingo-generator.html">Music Bingo</a>
     <a href="/terms.html">Terms &amp; Conditions</a>
     <a href="/privacy.html">Privacy Policy</a>
