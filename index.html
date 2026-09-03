@@ -495,6 +495,11 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 .crow{display:flex;align-items:center;background:var(--sf2);border:1px solid var(--bd);border-radius:var(--rs);padding:14px 18px;margin-bottom:14px}
 .clb{flex:1;font-size:15px;font-weight:500}
 .cct{display:flex;align-items:center;gap:12px}
+.sel{width:100%;background:var(--sf2);border:1px solid var(--bd);color:var(--tx);padding:10px 12px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:13.5px;cursor:pointer}
+.sel:focus{outline:none;border-color:var(--gn)}
+.ccg{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:10px}
+.ccg label{display:flex;flex-direction:column;gap:5px;font-size:11px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;color:var(--dm)}
+.cpk{width:100%;height:32px;padding:2px;background:var(--sf3);border:1px solid var(--bd);border-radius:7px;cursor:pointer}
 .wcw{background:var(--sf2);border:1px solid var(--bd);border-left:3px solid var(--or);border-radius:var(--rs);padding:10px 13px;margin-bottom:8px}
 .wcw:last-child{margin-bottom:0}
 .wct{font-size:12px;color:var(--tx);font-weight:600;margin-bottom:6px}
@@ -790,13 +795,13 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 
     <div class="og">
       <div class="ot">Card Font</div>
-      <div class="fg">
-        <div class="fo sl" data-f="oswald" onclick="pFont(this)"><span class="fp" style="font-family:'Oswald',sans-serif;font-weight:700">BINGO</span><span class="fn">Oswald</span></div>
-        <div class="fo" data-f="playfair" onclick="pFont(this)"><span class="fp" style="font-family:'Playfair Display',serif">Bingo</span><span class="fn">Playfair</span></div>
-        <div class="fo" data-f="fredoka" onclick="pFont(this)"><span class="fp" style="font-family:'Fredoka One',sans-serif">Bingo!</span><span class="fn">Fredoka</span></div>
-        <div class="fo" data-f="righteous" onclick="pFont(this)"><span class="fp" style="font-family:'Righteous',sans-serif">Bingo</span><span class="fn">Righteous</span></div>
-        <div class="fo" data-f="mono" onclick="pFont(this)"><span class="fp" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:-1px">BINGO</span><span class="fn">Mono</span></div>
-      </div>
+      <select id="fsel" class="sel" onchange="pFont(this)">
+        <option value="oswald" style="font-family:'Oswald',sans-serif">Oswald — bold and modern</option>
+        <option value="playfair" style="font-family:'Playfair Display',serif">Playfair Display — elegant serif</option>
+        <option value="fredoka" style="font-family:'Fredoka One',sans-serif">Fredoka One — round and playful</option>
+        <option value="righteous" style="font-family:'Righteous',sans-serif">Righteous — retro display</option>
+        <option value="mono" style="font-family:'JetBrains Mono',monospace">Mono — clean and technical</option>
+      </select>
     </div>
 
     <div class="og" style="margin-bottom:0">
@@ -831,15 +836,17 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
         <div class="tsw" data-t="classroom" onclick="pTheme(this)" title="Classroom — soft, low ink, for teachers"><div class="stp" style="background:#f7f6f0"></div><div class="stb" style="background:#4a6359"></div><span class="stl" style="color:#fff">Class</span></div>
         <div class="tsw" data-t="celebration" onclick="pTheme(this)" title="Celebration — parties, showers, birthdays"><div class="stp" style="background:#fdf4f0"></div><div class="stb" style="background:#bc5156"></div><span class="stl" style="color:#fff">Party</span></div>
         <div class="tsw" data-t="retro" onclick="pTheme(this)" title="Retro — warm vintage"><div class="stp" style="background:#f0e0c4"></div><div class="stb" style="background:#6e3e1e"></div><span class="stl" style="color:#fff">Retro</span></div>
+        <div class="tsw" data-t="custom" onclick="pTheme(this)" title="Custom — pick your own colours" id="tsw-custom"><div class="stp" style="background:linear-gradient(135deg,#e8940f 0%,#bc5156 50%,#0e203b 100%)"></div><div class="stb" style="background:#3d4657"></div><span class="stl" style="color:#fff">Custom</span></div>
       </div>
-      <div style="margin-top:18px">
-        <div class="ot">Background</div>
-        <div class="ppills">
-          <button class="pp sl" type="button" data-mo="none" onclick="pMotif(this)">None</button>
-          <button class="pp" type="button" data-mo="subtle" onclick="pMotif(this)">Subtle dots</button>
-          <button class="pp" type="button" data-mo="school" onclick="pMotif(this)">School</button>
+      <div id="cc-panel" style="display:none;margin-top:12px;background:var(--sf2);border:1px solid var(--bd);border-radius:var(--rs);padding:14px">
+        <div class="ccg">
+          <label><span>Card background</span><input type="color" class="cpk" id="cc-bg" value="#ffffff" oninput="pCustom('bg',this.value)"></label>
+          <label><span>Square text</span><input type="color" class="cpk" id="cc-tx" value="#111a29" oninput="pCustom('tx',this.value)"></label>
+          <label><span>Title bar</span><input type="color" class="cpk" id="cc-hd" value="#0e203b" oninput="pCustom('hd',this.value)"></label>
+          <label><span>Title text</span><input type="color" class="cpk" id="cc-ht" value="#ffffff" oninput="pCustom('ht',this.value)"></label>
+          <label><span>Free space</span><input type="color" class="cpk" id="cc-fr" value="#a65e0a" oninput="pCustom('fr',this.value)"></label>
         </div>
-        <div style="font-size:11.5px;color:var(--mt);margin-top:8px">A faint texture behind the squares. Very light on ink — Classroom turns School on for you.</div>
+        <div id="cc-warn" style="font-size:11.5px;color:var(--mt);margin-top:10px;line-height:1.7"></div>
       </div>
     </div>
 
@@ -875,20 +882,16 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 
     <div class="og">
       <div class="ot">Card Size</div>
-      <div class="ppills">
-        <button class="pp" data-g="3x3" onclick="pGrid(this)">3 × 3</button>
-        <button class="pp" data-g="4x4" onclick="pGrid(this)">4 × 4</button>
-        <button class="pp sl" data-g="5x5" onclick="pGrid(this)">5 × 5</button>
-        <button class="pp" data-g="6x6" onclick="pGrid(this)">6 × 6</button>
-      </div>
+      <select id="gsel" class="sel" onchange="pGrid(this)">
+        <option value="3x3">3 × 3 — 9 squares</option>
+        <option value="4x4">4 × 4 — 16 squares</option>
+        <option value="5x5" selected>5 × 5 — 25 squares (classic)</option>
+        <option value="6x6">6 × 6 — 36 squares</option>
+        <option value="custom">Custom size…</option>
+      </select>
       <div style="font-size:11.5px;color:var(--mt);margin-top:8px" id="gsz-note">Classic bingo is 5 × 5. Smaller grids suit younger players and quick rounds.</div>
       <div style="margin-top:12px">
-        <button onclick="togCustomGrid()" id="cg-toggle-btn"
-          style="width:100%;background:var(--sf2);border:1px solid var(--bd);border-radius:var(--rs);padding:11px 14px;color:var(--mt);font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;text-align:left;display:flex;align-items:center;justify-content:space-between;transition:all var(--t)">
-          <span>Need a custom size? Set width and height →</span>
-          <span id="cg-chevron" style="font-size:11px;transition:transform .2s">▼</span>
-        </button>
-        <div id="cg-panel" style="display:none;margin-top:2px;background:var(--sf2);border:1px solid var(--bd);border-top:none;border-radius:0 0 var(--rs) var(--rs);padding:14px">
+        <div id="cg-panel" style="display:none;background:var(--sf2);border:1px solid var(--bd);border-radius:var(--rs);padding:14px">
           <div style="display:flex;gap:18px;flex-wrap:wrap">
             <div>
               <div class="ot" style="margin-bottom:8px">Across</div>
@@ -921,10 +924,10 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
           <label class="fl">Free Space Label</label>
           <input type="text" id="fst" value="FREE" oninput="dPrev()" style="margin-bottom:10px">
           <div class="ot" style="margin-bottom:8px">Placement</div>
-          <div class="ppills">
-            <button class="pp sl" data-p="center" onclick="pPos(this)">Center</button>
-            <button class="pp" data-p="random" onclick="pPos(this)">Random</button>
-          </div>
+          <select id="psel" class="sel" onchange="pPos(this)">
+            <option value="center">Center</option>
+            <option value="random">Random — a different spot on every card</option>
+          </select>
         </div>
       </div>
     </div>
@@ -947,18 +950,10 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
     </div>
     <div id="pp2">
       <div class="ot">Page Layout</div>
-      <div class="lrow">
-        <div class="lcrd sl" data-layout="portrait" onclick="pLayout(this)">
-          <span class="lcrd-icon">📄</span>
-          <span class="lcrd-lbl">Portrait</span>
-          <span class="lcrd-sub">1 card per page<br>Full-size · more branding room</span>
-        </div>
-        <div class="lcrd" data-layout="landscape" onclick="pLayout(this)">
-          <span class="lcrd-icon">✂️</span>
-          <span class="lcrd-lbl">Landscape</span>
-          <span class="lcrd-sub">2 cards per page<br>Cut line in center · scissors</span>
-        </div>
-      </div>
+      <select id="lsel" class="sel" onchange="pLayout(this)">
+        <option value="portrait">📄 Portrait — 1 card per page, more branding room</option>
+        <option value="landscape">✂️ Landscape — 2 cards per page with a cut line</option>
+      </select>
       <div class="crow">
         <div class="clb">Number of Cards</div>
         <div class="cct">
@@ -1238,7 +1233,6 @@ let isPro=false, font='oswald', theme='eco', freeOn=true, freePos='center';
 let pCount=5, sCount=10, mode='print', fontSize=11, layout='portrait', bingoRow=true;
 let spFmt='title'; // playlist import format: title | artist | both
 let fillMode='simple'; // simple | col | row — a blank line starts a new block
-let motif='none';     // background texture: none | subtle | school
 let gridW=5, gridH=5; // card grid dimensions (2-8 each); 5x5 is the classic default
 let logoUrl=null, logoImg=null, brandingOn=true, logoScale=100;
 
@@ -1256,6 +1250,7 @@ const THEMES={
   classroom:  {bg:[247,246,240],tx:[46,58,53],   hd:[74,99,89],  fr:[134,113,79],st:[240,239,231],bd:[196,201,187],ht:[255,255,255],ma:[139,120,88], mh:[186,163,120],eco:false},
   celebration:{bg:[253,244,240],tx:[74,35,42],   hd:[188,81,86], fr:[166,98,81], st:[248,231,224],bd:[224,180,172],ht:[255,255,255],ma:[212,150,150],mh:[240,190,180],eco:false},
   retro:      {bg:[240,224,196],tx:[59,36,20],   hd:[110,62,30], fr:[157,79,35], st:[231,211,178],bd:[181,150,105],ht:[255,255,255],ma:[168,110,45], mh:[214,158,84], eco:false},
+  custom:     {bg:[255,255,255],tx:[17,26,41],   hd:[14,32,59],  fr:[166,94,10], st:[242,244,248],bd:[198,202,210],ht:[255,255,255],ma:[232,148,15], mh:[247,186,90], eco:false},
   midnight:   {bg:[20,24,33],   tx:[229,233,240],hd:[38,46,64],  fr:[47,58,84],  st:[27,32,44],   bd:[64,72,92],   ht:[255,255,255],ma:[245,166,35], mh:[250,200,110],eco:false}
 };
 
@@ -1263,6 +1258,28 @@ const THEMES={
 // theme (showCard reads st.th) and bcg_autosave stores it. An unknown key would
 // make THEMES[theme] undefined and throw inside the renderer, which surfaces as
 // "Invalid card link" on someone else's shared card. Map them, then guard.
+// The five colours a user actually picks. st (stripe) and bd (border) are
+// derived from bg rather than exposed — they are the two that ruin a card when
+// set badly, and they only ever want to be a step away from the background.
+let customCols={bg:'#ffffff',tx:'#111a29',hd:'#0e203b',ht:'#ffffff',fr:'#a65e0a'};
+function hex2rgb(h){h=(h||'#000000').replace('#','');return[parseInt(h.slice(0,2),16)||0,parseInt(h.slice(2,4),16)||0,parseInt(h.slice(4,6),16)||0];}
+function rgb2hex(a){return'#'+a.map(v=>Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')).join('');}
+function relLum(c){const s=c.map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4);});return .2126*s[0]+.7152*s[1]+.0722*s[2];}
+function contrast(a,b){const x=relLum(a),y=relLum(b);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05);}
+function hydrateCustom(cc){
+  if(!Array.isArray(cc)||cc.length!==5)return;
+  const k=['bg','tx','hd','ht','fr'];
+  cc.forEach((v,i)=>{if(typeof v==='string'&&/^#[0-9a-f]{6}$/i.test(v))customCols[k[i]]=v;});
+  applyCustom();
+}
+function applyCustom(){
+  const bg=hex2rgb(customCols.bg),light=relLum(bg)>.4;
+  THEMES.custom={bg,tx:hex2rgb(customCols.tx),hd:hex2rgb(customCols.hd),
+    fr:hex2rgb(customCols.fr),ht:hex2rgb(customCols.ht),
+    st:drk(bg,light?-12:14),   // subtle alternating tint, matching the presets
+    bd:drk(bg,light?-58:52),   // hairline border, visible but not heavy
+    ma:[232,148,15],mh:[247,186,90],eco:false};
+}
 const THEME_ALIAS={classic:'elite',tropical:'celebration',night:'midnight',electric:'midnight'};
 function resolveTheme(k){k=THEME_ALIAS[k]||k;return THEMES[k]?k:'eco';}
 const PFONTS={
@@ -1823,15 +1840,27 @@ document.getElementById('ct').addEventListener('input',updTitle);
 // ============================================================
 // CONTROLS
 // ============================================================
-function pFont(el){document.querySelectorAll('.fo').forEach(f=>f.classList.remove('sl'));el.classList.add('sl');font=el.dataset.f;dPrev();}
+function pFont(el){font=el.value;dPrev();}
 function pTheme(el){
   document.querySelectorAll('.tsw,.tsw-eco').forEach(s=>s.classList.remove('sl'));el.classList.add('sl');theme=resolveTheme(el.dataset.t);
-  // Classroom is the theme the motif was designed for, so it arrives switched
-  // on. Anything else clears it. Either way the user can override afterwards.
-  setMotif(theme==='classroom'?'school':'none');
+  syncCustomUI();
   dPrev();
 }
-function pMotif(el){setMotif(el.dataset.mo);dPrev();}
+function pCustom(k,v){customCols[k]=v;applyCustom();syncCustomUI();dPrev();}
+function syncCustomUI(){
+  const on=theme==='custom';
+  document.getElementById('cc-panel').style.display=on?'':'none';
+  for(const k of ['bg','tx','hd','ht','fr'])document.getElementById('cc-'+k).value=customCols[k];
+  if(!on)return;
+  // Non-blocking readout — custom colours can build an unreadable card, but the
+  // download is never gated on taste.
+  const T=THEMES.custom;
+  const sq=contrast(T.tx,T.bg),ti=contrast(T.ht,T.hd);
+  const row=(lbl,v)=>`${lbl} <b style="color:${v>=4.5?'var(--gn)':'var(--or)'}">${v.toFixed(1)}:1</b>${v>=4.5?' ✓':' — hard to read'}`;
+  document.getElementById('cc-warn').innerHTML=
+    row('Square text on background:',sq)+'<br>'+row('Title text on title bar:',ti)+
+    (sq<4.5||ti<4.5?'<br><span style="color:var(--mt)">Anything under 4.5:1 gets hard to read across a room. You can still download it.</span>':'');
+}
 function openFill(v){
   document.getElementById('fill-panel').style.display=v?'':'none';
   document.getElementById('fill-chevron').style.transform=v?'rotate(180deg)':'';
@@ -1848,7 +1877,6 @@ function setFill(m){
   // never leave an active non-default mode hidden behind a collapsed panel
   if(fillMode!=='simple')openFill(true);
 }
-function setMotif(m){motif=m;selPill('.pp[data-mo]','mo',motif);}
 function pFSize(v){
   fontSize=v;
   document.getElementById('fszval').textContent=v+'pt';
@@ -1861,7 +1889,7 @@ function pFSize(v){
   scheduleWordCheck();
   dPrev();
 }
-function pLayout(el){document.querySelectorAll('.lcrd').forEach(c=>c.classList.remove('sl'));el.classList.add('sl');layout=el.dataset.layout;scheduleWordCheck();dPrev();}
+function pLayout(el){layout=el.value;scheduleWordCheck();dPrev();}
 function togFS(){freeOn=!freeOn;syncFreeUI();updW();dPrev();}
 function syncFreeUI(){
   const canCenter=centerEligible();
@@ -1869,15 +1897,15 @@ function syncFreeUI(){
   document.getElementById('fso').style.display=freeOn?'':'none';
   // On an even grid, Center isn't geometrically possible — fall back to Random
   // and disable the pill rather than pretending the choice is available.
-  const cp=document.querySelector('.pp[data-p="center"]');
-  cp.disabled=!canCenter;
-  cp.style.opacity=canCenter?'':'.45';
-  cp.style.cursor=canCenter?'':'not-allowed';
-  cp.title=canCenter?'':'Needs an odd × odd grid';
+  // Center is only geometrically possible on an odd x odd grid; disable the
+  // option rather than pretending the choice exists.
+  const co=document.querySelector('#psel option[value="center"]');
+  co.disabled=!canCenter;
+  co.textContent=canCenter?'Center':'Center — needs an odd × odd grid';
   // Never overwrite freePos: it is the user's stored preference. An even grid
   // suspends Center rather than discarding it, so returning to an odd grid
   // centres again — same contract as the B-I-N-G-O row toggle.
-  selPill('.pp[data-p]','p',freeCentered()?'center':'random');
+  document.getElementById('psel').value=freeCentered()?'center':'random';
   const na=document.getElementById('fsna');
   na.style.display=(freeOn&&!canCenter)?'':'none';
   if(freeOn&&!canCenter)document.getElementById('fsna-dim').textContent=`${gridW} × ${gridH}`;
@@ -1894,14 +1922,10 @@ function syncBingoUI(){
 
 // ---------- GRID SIZE ----------
 function pGrid(el){
-  const[w,h]=el.dataset.g.split('x').map(Number);
+  if(el.value==='custom'){document.getElementById('cg-panel').style.display='';return;}
+  const[w,h]=el.value.split('x').map(Number);
+  document.getElementById('cg-panel').style.display='none';
   setGrid(w,h);
-}
-function togCustomGrid(){
-  const p=document.getElementById('cg-panel'),c=document.getElementById('cg-chevron');
-  const open=p.style.display==='none';
-  p.style.display=open?'':'none';
-  c.style.transform=open?'rotate(180deg)':'';
 }
 function adjG(d,axis){setGrid(axis==='w'?gridW+d:gridW,axis==='h'?gridH+d:gridH);}
 function setG(el,axis){
@@ -1915,7 +1939,11 @@ function setGrid(w,h){
   syncGridUI();updW();dPrev();
 }
 function syncGridUI(){
-  selPill('.pp[data-g]','g',`${gridW}x${gridH}`);
+  // a preset key when the size matches one, otherwise the custom entry
+  const key=`${gridW}x${gridH}`,sel=document.getElementById('gsel');
+  const preset=[...sel.options].some(o=>o.value===key);
+  sel.value=preset?key:'custom';
+  document.getElementById('cg-panel').style.display=preset?'none':'';
   document.getElementById('gwi').value=gridW;
   document.getElementById('ghi').value=gridH;
   const note=document.getElementById('gsz-note');
@@ -1925,7 +1953,7 @@ function syncGridUI(){
   syncFreeUI();syncBingoUI();
   if(fillMode!=='simple')setFill(fillMode); // block count follows the grid
 }
-function pPos(el){if(el.disabled)return;document.querySelectorAll('.pp[data-p]').forEach(b=>b.classList.remove('sl'));el.classList.add('sl');freePos=el.dataset.p;dPrev();}
+function pPos(el){freePos=el.value;dPrev();}
 function pFmt(el){document.querySelectorAll('[data-fmt]').forEach(b=>b.classList.remove('sl'));el.classList.add('sl');spFmt=el.dataset.fmt;}
 function sMode(el){
   document.querySelectorAll('.mtab').forEach(t=>t.classList.remove('sl'));el.classList.add('sl');mode=el.dataset.m;
@@ -1992,98 +2020,6 @@ function buildGrid(words,seed){
   const idx=freeCentered()?Math.floor(cells/2):Math.abs(Math.floor(Math.sin(seed)*1000)%cells);
   list.splice(idx,0,null);
   return list.slice(0,cells);
-}
-
-// ============================================================
-// BACKGROUND MOTIF
-// Drawn as a FINAL overlay across the card rather than behind the grid: the cell
-// loop fills every cell opaquely, so anything painted underneath is covered.
-// Painting it behind would mean splitting that loop into fill/motif/text passes,
-// and that loop is what must stay pixel-identical on the eco default. At ~5.5%
-// an overlay is indistinguishable from sitting behind the text — the demo
-// watermark already overlays the whole card at 13%.
-// ASCII glyphs only: jsPDF's core fonts have no emoji or box-drawing symbols.
-const MOTIF_ALPHA=.055;
-
-// One source of truth for mark placement so canvas and PDF cannot drift apart.
-function motifPlan(w,h){
-  const plan={rules:[],dots:[],marks:[]};
-  if(motif==='subtle'){
-    // Squares on a wide pitch, not circles: doc.circle() writes four bezier
-    // curves per dot, which at a tight pitch made a single page 25x larger and
-    // would blow up a 999-card batch. At 5% a square reads identically.
-    const step=Math.max(15,w*.062),r=Math.max(.7,w*.0032);
-    for(let y=step/2;y<h;y+=step)for(let x=step/2;x<w;x+=step)plan.dots.push({x,y,r});
-    return plan;
-  }
-  const lh=Math.max(11,h*.052);
-  for(let y=lh;y<h-2;y+=lh)plan.rules.push(y);
-  const step=Math.max(40,w*.235),sz=Math.max(9,w*.052);
-  let i=0;
-  for(let y=step*.6;y<h;y+=step)for(let x=step*.5;x<w;x+=step)plan.marks.push({x,y,sz,t:(i++)%5});
-  return plan;
-}
-
-// mark types: 0 pencil - 1 "ABC" - 2 ruler - 3 apple - 4 "A+"
-function drawMotifCanvas(ctx,w,h,dark){
-  if(motif==='none')return;
-  const P=motifPlan(w,h),col=dark?'#ffffff':'#141414';
-  ctx.save();ctx.beginPath();ctx.rect(0,0,w,h);ctx.clip();
-  ctx.globalAlpha=MOTIF_ALPHA;ctx.strokeStyle=col;ctx.fillStyle=col;
-  P.dots.forEach(d=>ctx.fillRect(d.x-d.r,d.y-d.r,d.r*2,d.r*2));
-  ctx.lineWidth=Math.max(.4,w*.0016);
-  P.rules.forEach(y=>{ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();});
-  P.marks.forEach(m=>{
-    const s=m.sz,x=m.x,y=m.y;
-    if(m.t===0){
-      ctx.fillRect(x-s*.12,y-s*.5,s*.24,s*.72);
-      ctx.beginPath();ctx.moveTo(x-s*.12,y+s*.22);ctx.lineTo(x+s*.12,y+s*.22);ctx.lineTo(x,y+s*.5);ctx.closePath();ctx.fill();
-    } else if(m.t===2){
-      ctx.strokeRect(x-s*.5,y-s*.18,s,s*.36);
-      for(let k=1;k<4;k++){const tx=x-s*.5+k*s*.25;
-        ctx.beginPath();ctx.moveTo(tx,y-s*.18);ctx.lineTo(tx,y-s*.02);ctx.stroke();}
-    } else if(m.t===3){
-      ctx.beginPath();ctx.arc(x,y+s*.06,s*.3,0,6.2832);ctx.fill();
-      ctx.fillRect(x-s*.03,y-s*.34,s*.06,s*.18);
-    } else {
-      ctx.font=cvf(Math.round(s*.62),true);ctx.textAlign='center';ctx.textBaseline='middle';
-      ctx.fillText(m.t===1?'ABC':'A+',x,y);
-    }
-  });
-  ctx.restore();
-}
-
-function pdfDrawMotif(doc,ff,ox,oy,w,h,dark){
-  if(motif==='none')return;
-  const P=motifPlan(w,h);
-  let hasOp=false;
-  // Same guard wmPdfPage uses: GState is not guaranteed, so fall back to a very
-  // light flat tint rather than painting the motif at full strength.
-  if(doc.saveGraphicsState&&doc.GState){
-    try{doc.saveGraphicsState();doc.setGState(new doc.GState({opacity:MOTIF_ALPHA}));hasOp=true;}catch(e){}
-  }
-  const lv=hasOp?(dark?255:20):(dark?70:228);
-  doc.setDrawColor(lv,lv,lv);doc.setFillColor(lv,lv,lv);doc.setTextColor(lv,lv,lv);
-  P.dots.forEach(d=>doc.rect(ox+d.x-d.r,oy+d.y-d.r,d.r*2,d.r*2,'F'));
-  doc.setLineWidth(.4);
-  P.rules.forEach(y=>doc.line(ox,oy+y,ox+w,oy+y));
-  P.marks.forEach(m=>{
-    const s=m.sz,x=ox+m.x,y=oy+m.y;
-    if(m.t===0){
-      doc.rect(x-s*.12,y-s*.5,s*.24,s*.72,'F');
-      try{doc.triangle(x-s*.12,y+s*.22,x+s*.12,y+s*.22,x,y+s*.5,'F');}catch(e){}
-    } else if(m.t===2){
-      doc.rect(x-s*.5,y-s*.18,s,s*.36,'S');
-      for(let k=1;k<4;k++){const tx=x-s*.5+k*s*.25;doc.line(tx,y-s*.18,tx,y-s*.02);}
-    } else if(m.t===3){
-      try{doc.circle(x,y+s*.06,s*.3,'F');}catch(e){}
-      doc.rect(x-s*.03,y-s*.34,s*.06,s*.18,'F');
-    } else {
-      doc.setFont(ff,'bold');doc.setFontSize(Math.round(s*.62));
-      doc.text(m.t===1?'ABC':'A+',x,y,{align:'center'});
-    }
-  });
-  if(hasOp)doc.restoreGraphicsState();
 }
 
 // One block per column (or row). Each block is shuffled with its own seed
@@ -2255,7 +2191,6 @@ function drawCardCanvas(ctx,W,H,words,seed,opts={}){
     }
   }
 
-  drawMotifCanvas(ctx,W,H,themeIsDark());
 }
 
 // ============================================================
@@ -2483,7 +2418,6 @@ function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
     }
   }
 
-  pdfDrawMotif(doc,ff,ox,oy,cw,ch,T.eco?false:themeIsDark());
 }
 
 // Height (in pt) of the logo/branding strip, used consistently above the
@@ -2721,6 +2655,7 @@ function buildLink(words,seed,n,title,clean){
   try{
     const w=words.length>300?words.slice(0,300):words; // cap for URL safety
     const st={t:title,w,fn:font,th:theme,fo:freeOn,fp:freePos,ft:document.getElementById("fst").value||"FREE",s:seed,n,wm:clean?0:1};
+    if(theme==="custom")st.cc=[customCols.bg,customCols.tx,customCols.hd,customCols.ht,customCols.fr];
     const url=location.origin+location.pathname+"?card="+btoa(encodeURIComponent(JSON.stringify(st)));
     return url.length>6000?null:url;
   }catch(e){return null;}
@@ -2777,6 +2712,7 @@ function showCard(enc){
     const st=JSON.parse(decodeURIComponent(atob(enc)));
     sharedSt=st;
     // apply state to renderer
+    hydrateCustom(st.cc);
     font=st.fn||'oswald';theme=resolveTheme(st.th||'eco');freeOn=st.fo!==false;freePos=st.fp||'center';
     document.getElementById('fst').value=st.ft||'FREE';
     document.getElementById('gen').style.display='none';
@@ -2812,7 +2748,7 @@ const AUTOSAVE_KEY='bcg_autosave',GAMES_KEY='bcg_games';
 function collectState(){
   return{
     v:1,t:document.getElementById('ct').value,w:document.getElementById('wl').value,
-    fn:font,fz:fontSize,th:theme,fo:freeOn,fp:freePos,gw:gridW,gh:gridH,mo:motif,fm:fillMode,
+    fn:font,fz:fontSize,th:theme,fo:freeOn,fp:freePos,gw:gridW,gh:gridH,fm:fillMode,cc:[customCols.bg,customCols.tx,customCols.hd,customCols.ht,customCols.fr],
     ft:document.getElementById('fst').value,br:bingoRow,
     md:mode,ly:layout,pc:pCount,sc:sCount,
     bo:brandingOn,bt:document.getElementById('brand-text').value,
@@ -2825,18 +2761,18 @@ function applyState(st){
   if(!st)return;
   document.getElementById('ct').value=st.t||'';
   document.getElementById('wl').value=st.w||'';
-  font=st.fn||'oswald';selPill('.fo','f',font);
+  font=st.fn||'oswald';document.getElementById('fsel').value=font;
   theme=resolveTheme(st.th||'eco');document.querySelectorAll('.tsw,.tsw-eco').forEach(e=>e.classList.toggle('sl',e.dataset.t===theme));
   fontSize=st.fz||11;document.getElementById('fsz').value=fontSize;
   gridW=Math.max(2,Math.min(8,st.gw||5));gridH=Math.max(2,Math.min(8,st.gh||5));
   freeOn=st.fo!==false;
-  freePos=st.fp||'center';selPill('.pp[data-p]','p',freePos);
+  freePos=st.fp||'center';
   document.getElementById('fst').value=st.ft||'FREE';
   bingoRow=st.br!==false;
-  setMotif(['none','subtle','school'].includes(st.mo)?st.mo:'none');
+  hydrateCustom(st.cc);
   setFill(st.fm||'simple');
   syncGridUI(); // owns the free-space and BINGO-row toggles too
-  layout=st.ly||'portrait';selPill('.lcrd','layout',layout);
+  layout=st.ly||'portrait';document.getElementById('lsel').value=layout;
   pCount=st.pc||5;document.getElementById('cnp').value=pCount;
   sCount=st.sc||10;document.getElementById('cns').value=sCount;
   brandingOn=st.bo!==false;syncBrandingUI();
@@ -2904,6 +2840,7 @@ updW();
 updThemeBtn();
 // chkPro: run immediately for cached state, defer network re-verification to after paint
 chkPro();
+applyCustom();
 document.fonts.ready.then(()=>{applyProLocks();pFSize(fontSize);updW();dPrev();});
 const qp=new URLSearchParams(location.search);
 if(qp.has('code'))hCb(qp.get('code'));
