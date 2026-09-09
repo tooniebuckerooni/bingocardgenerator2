@@ -10,8 +10,11 @@
  *
  * Optional data attributes on a trigger let a page hand over more than a word
  * list. data-gw/data-gh set the grid, data-fm sets the fill mode ("col"/"row",
- * where a blank line starts a new block). Omit them and behaviour is exactly as
- * before, which is what every existing starter page does.
+ * where a blank line starts a new block), data-fo="off" turns the free space
+ * off (for a list sized to fill the grid exactly, with nothing to spare — e.g.
+ * a 25-letter or 25-prompt list where a free space would silently drop one).
+ * Omit them and behaviour is exactly as before, which is what every existing
+ * starter page does.
  *
  * Any element carrying data-starter is a trigger too, not just #st-go, so a
  * page's hero and closing buttons can hand over the same list. Binding to one id
@@ -52,6 +55,7 @@
     var d = (this && this.dataset) || {};
     var gw = clampGrid(d.gw), gh = clampGrid(d.gh);
     var fm = (d.fm === "col" || d.fm === "row") ? d.fm : null;
+    var fo = d.fo === "off" ? false : null;
     var list = lines();
     if (!list.length) return;          // nothing typed — let the plain link through
     // Block mode needs the blank lines kept intact — they are the separators.
@@ -72,6 +76,7 @@
       if (gw) blob.gw = gw;
       if (gh) blob.gh = gh;
       if (fm) blob.fm = fm;
+      if (fo === false) blob.fo = false;
       localStorage.setItem(KEY, JSON.stringify(blob));
     } catch (err) { /* private mode or storage off — the plain link still works */ }
     if (window.gtag) try {
