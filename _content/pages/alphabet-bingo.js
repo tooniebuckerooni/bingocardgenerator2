@@ -23,6 +23,7 @@ module.exports = {
     h: "Start with all 25 letters",
     lede: "A through Y are already typed in below, one per line. Open the generator and every card gets its own shuffled order — built for a room of kids who sit close enough to see each other's cards.",
     titlePlaceholder: "e.g. Ms. Rivera's Class",
+    titleValue: "Alphabet Bingo",
     squaresPlaceholder: "One letter per line.",
     prefill: "A\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK\nL\nM\nN\nO\nP\nQ\nR\nS\nT\nU\nV\nW\nX\nY",
     grid: [5, 5],
