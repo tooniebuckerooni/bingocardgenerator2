@@ -24,20 +24,28 @@ const pages = fs.readdirSync(path.join(REPO, "_content/pages"))
 const STYLES = fs.readFileSync(path.join(REPO, "_content/page-styles.css"), "utf8").trimEnd();
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
-// Footer link row + mobile nav list every real page, so a new page is reachable
-// the moment it ships rather than waiting on a hand edit somewhere else.
-const LINKS = [
-  ["/", "Generator"],
-  ["/custom-bingo-cards.html", "Custom Cards"],
-  ["/bingo-card-maker.html", "Card Maker"],
-  ["/online-bingo-generator.html", "Online"],
-  ["/bingo-board-generator.html", "Boards"],
-  ["/number-bingo-cards.html", "Number Bingo"],
-  ["/alphabet-bingo.html", "Alphabet Bingo"],
-  ["/icebreaker-bingo.html", "Icebreaker Bingo"],
-  ["/music-bingo-generator.html", "Music Bingo"],
-  ["/blog/", "Blog"],
+// Nav, grouped by what the pages actually are rather than the order they
+// shipped in (2026-09-09 reorg — see NEXT.md). The menu shows the group
+// labels; the footer flattens them back into one row, since the footer
+// has never had a crowding problem. A new page is reachable everywhere the
+// moment it's added to a group here, no hand edits elsewhere.
+const NAV_GROUPS = [
+  { label: null, links: [["/", "Generator"]] },
+  { label: "Free Games", links: [
+    ["/number-bingo-cards.html", "Number Bingo"],
+    ["/alphabet-bingo.html", "Alphabet Bingo"],
+    ["/icebreaker-bingo.html", "Icebreaker Bingo"],
+  ] },
+  { label: "More Ways to Build", links: [
+    ["/music-bingo-generator.html", "Music Bingo"],
+    ["/custom-bingo-cards.html", "Custom Cards"],
+    ["/bingo-card-maker.html", "Card Maker"],
+    ["/online-bingo-generator.html", "Online Bingo"],
+    ["/bingo-board-generator.html", "Bingo Boards"],
+  ] },
+  { label: null, links: [["/blog/", "Blog"]] },
 ];
+const LINKS = NAV_GROUPS.flatMap((g) => g.links);
 const LEGAL = [["/terms.html", "Terms"], ["/privacy.html", "Privacy"], ["/refund.html", "Refund Policy"]];
 
 // The "3 free load-and-go games" family. Each page cross-links the other two
@@ -78,8 +86,11 @@ const header = () => `<header>
   </div>
 </header>
 <div class="mnav" id="mnav">
-${LINKS.concat([["/terms.html", "Terms &amp; Conditions"], ["/privacy.html", "Privacy Policy"], ["/refund.html", "Refund Policy"]])
-  .map(([h, t]) => `  <a href="${h}">${t}</a>`).join("\n")}
+${NAV_GROUPS.map((g) => (g.label ? `  <div class="mnav-h">${g.label}</div>\n` : "") +
+    g.links.map(([h, t]) => `  <a href="${h}">${t}</a>`).join("\n")).join("\n")}
+  <div class="mnav-h">Legal</div>
+${[["/terms.html", "Terms &amp; Conditions"], ["/privacy.html", "Privacy Policy"], ["/refund.html", "Refund Policy"]]
+    .map(([h, t]) => `  <a href="${h}">${t}</a>`).join("\n")}
 </div>`;
 
 const footer = () => `<footer>
