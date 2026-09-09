@@ -1,7 +1,29 @@
-# What's next — 2026-08-30
+# What's next — 2026-09-09
 
 Everything below is either waiting on you, or waiting on data. Nothing here is
 blocked on more code.
+
+## Shipped this session — the "3 free load-and-go games" family
+
+Alphabet Bingo (`alphabet-bingo.html`) and Icebreaker Bingo (`icebreaker-bingo.html`)
+are live alongside Number Bingo, cross-linking each other from a shared module
+(`GAMES` in `_tools/build-pages.js`). Number Bingo's FAQ lost its one payment
+mention ("a pass removes the watermark") and all three now carry a
+non-upsell "make it yours" callout (color theme, event/venue name, card
+count, free space) right after the starter.
+
+Worth being clear-eyed about: this was built on your go-ahead, not on
+confirmed data. The section below already flagged Number Bingo itself as an
+unproven capability bet, and that verdict is still six weeks out — it hasn't
+moved just because two more pages shipped. Alphabet and Icebreaker Bingo are
+a separate bet on different audiences (teachers/homeschoolers; onboarding
+and mixer hosts) rather than confirmation of Number Bingo's own SEO thesis,
+and the "fourth blog post over a fifth landing page" finding two sections
+down is still an open, unresolved tension against building more landing
+pages at all — not something this shipped past.
+
+**New owner action:** request indexing for `alphabet-bingo.html` and
+`icebreaker-bingo.html` in Search Console, same as the two below.
 
 ## Do these first (owner actions, ~10 minutes total)
 
@@ -46,6 +68,13 @@ be a blog post aimed at the editorial cluster instead — which is what the numb
 already favour.
 
 Request indexing for it in Search Console the same way as the other two above.
+
+As of 2026-09-09 this page is 6 days old — nowhere near the ~6-week bar
+below, so there is no new verdict here, just a reminder that "proven" isn't
+the right word for it yet. Add `alphabet-bingo.html` and `icebreaker-bingo.html`
+to the same re-pull when it happens; judge them on their own impressions
+rather than folding them into this page's number, since they target
+different searches entirely.
 
 ## Check back in ~6 weeks
 
