@@ -320,35 +320,29 @@ nav{max-width:1140px;margin:0 auto;padding:0 24px;height:58px;display:flex;align
 .bun:hover{background:#ff8055}
 /* Mobile menu — links hidden from the bar move in here behind the ☰ toggle,
    so narrowing the nav never costs navigation. */
-.mtog{display:none;background:none;border:1px solid var(--bd);color:var(--tx);border-radius:8px;width:34px;height:32px;padding:0;font-size:15px;line-height:1;cursor:pointer;align-items:center;justify-content:center;flex-shrink:0}
+.mtog{display:inline-flex;background:none;border:1px solid var(--bd);color:var(--tx);border-radius:8px;width:34px;height:32px;padding:0;font-size:15px;line-height:1;cursor:pointer;align-items:center;justify-content:center;flex-shrink:0}
 .mtog:hover{border-color:var(--gn);color:var(--gn)}
 .mnav{display:none;flex-direction:column;border-top:1px solid var(--bd);background:var(--sf);padding:6px 0}
 .mnav a,.mnav button{display:block;width:100%;padding:12px 20px;font-family:'Outfit',sans-serif;font-size:14.5px;font-weight:500;color:var(--tx2);text-decoration:none;background:none;border:none;text-align:left;cursor:pointer}
+.mnav-h{padding:14px 20px 4px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mt)}
+.mnav-h:first-child{padding-top:8px}
 .mnav a:active,.mnav button:active,.mnav a:hover,.mnav button:hover{background:var(--sf2);color:var(--tx)}
-/* Mobile nav — .nr is a no-wrap flex row, so without these it sets a min-content
-   width wider than a phone viewport and drags the whole document into
-   horizontal scroll. Links shed here are reachable from the ☰ menu above. */
-/* Thresholds are deliberately generous: the full nav needs ~1000px of content
-   width, and media queries measure the viewport including the scrollbar while
-   the content box excludes it — tight breakpoints leave a broken sliver. */
+/* .nr now only ever holds Pro state, the theme toggle, and the ☰ menu — every
+   page link lives in #mnav instead, at every viewport width, so this never
+   needs re-tuning as pages are added. */
 @media(max-width:1040px){
   nav{padding:0 16px}
   .nl{font-size:17px;letter-spacing:1px}
   .nr{gap:10px}
-  .nr .na[href="/terms.html"],.nr .na[href="/privacy.html"],.nr .na[href="/refund.html"]{display:none}
 }
 @media(max-width:760px){
   .nl{font-size:13.5px;letter-spacing:.5px}
-  .nr .na{display:none}
   #nkey,#ntheme{display:none}
   .nr{gap:8px}
   .bun{padding:7px 13px;font-size:12.5px}
   .bun2{padding:6px 10px}
-  /* Only mount the menu where links are actually hidden, so it can't be left
-     open when the viewport widens back to the full nav. */
-  .mtog{display:inline-flex}
-  .mnav.open{display:flex}
 }
+.mnav.open{display:flex}
 /* Narrow phones: the 25-character logo is ~300px on its own at the base size,
    so it has to come down further to share the bar with the Upgrade CTA. */
 @media(max-width:440px){
@@ -698,16 +692,6 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
   <nav>
     <a href="/" class="nl">BINGO<span>CARD</span>GENERATOR.ONLINE</a>
     <div class="nr">
-      <a href="/music-bingo-generator.html" class="na">Music Bingo</a>
-      <a href="/custom-bingo-cards.html" class="na">Custom Cards</a>
-      <a href="/bingo-card-maker.html" class="na">Card Maker</a>
-      <a href="/online-bingo-generator.html" class="na">Online Bingo</a>
-      <a href="/bingo-board-generator.html" class="na">Bingo Boards</a>
-      <a href="/number-bingo-cards.html" class="na">Number Bingo</a>
-      <a href="/terms.html" class="na">Terms</a>
-      <a href="/privacy.html" class="na">Privacy</a>
-      <a href="/refund.html" class="na">Refunds</a>
-      <a href="/blog/" class="na">Blog</a>
       <span id="pb">⚡ PRO</span>
       <button class="bun2" id="ntheme" onclick="togTheme()" title="Switch light/dark theme">🌙</button>
       <button class="bun2" id="nkey" onclick="oUnlock()">🔑 Activate</button>
@@ -715,13 +699,22 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
       <button class="mtog" id="mtog" onclick="togNav()" aria-label="Menu" aria-expanded="false" aria-controls="mnav">☰</button>
     </div>
   </nav>
-  <!-- Mobile menu — holds the links hidden from the bar at narrow widths -->
+  <!-- Full site menu — the nav bar itself only ever carries Pro state + theme -->
   <div class="mnav" id="mnav">
+    <div class="mnav-h">Free Games</div>
+    <a href="/number-bingo-cards.html">Number Bingo</a>
+    <a href="/alphabet-bingo.html">Alphabet Bingo</a>
+    <a href="/icebreaker-bingo.html">Icebreaker Bingo</a>
+    <div class="mnav-h">More Ways to Build</div>
     <a href="/music-bingo-generator.html">Music Bingo</a>
     <a href="/custom-bingo-cards.html">Custom Bingo Cards</a>
+    <a href="/bingo-card-maker.html">Bingo Card Maker</a>
+    <a href="/online-bingo-generator.html">Online Bingo</a>
+    <a href="/bingo-board-generator.html">Bingo Boards</a>
     <a href="/blog/">Blog</a>
     <button type="button" onclick="togNav();oUnlock()">🔑&nbsp; Activate license</button>
     <button type="button" id="mtheme" onclick="togTheme()">🌙&nbsp; Switch to dark theme</button>
+    <div class="mnav-h">Legal</div>
     <a href="/terms.html">Terms &amp; Conditions</a>
     <a href="/privacy.html">Privacy Policy</a>
     <a href="/refund.html">Refund Policy</a>
