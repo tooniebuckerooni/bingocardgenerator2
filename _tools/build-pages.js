@@ -107,6 +107,10 @@ const stripTags = (s) => s.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replac
 // A page whose starter ships a ready-made list (number bingo) wants its hero and
 // closing buttons to hand that list over too, not just the small starter button.
 // Opt in with starter.ctaHandoff; every other page renders plain links as before.
+// `titleValue` pre-fills the title field (still editable) so a page with a ready
+// list also hands over a real title — otherwise the field is empty and the
+// generator's own preview falls back to its hardcoded "Music Bingo" default,
+// which is wrong for every page that isn't music bingo.
 const ctaData = (p) => (p.starter && p.starter.ctaHandoff)
   ? ` data-starter${p.starter.grid ? ` data-gw="${p.starter.grid[0]}" data-gh="${p.starter.grid[1]}"` : ""}${p.starter.fill ? ` data-fm="${p.starter.fill}"` : ""}`
   : "";
@@ -116,7 +120,7 @@ const starter = (p) => !p.starter ? "" : `
       <h3>${p.starter.h}</h3>
       <p class="starter-lede">${p.starter.lede}</p>
       <label for="st-t">Game title <span style="text-transform:none;letter-spacing:0;font-weight:400">(optional)</span></label>
-      <input type="text" id="st-t" maxlength="48" placeholder="${esc(p.starter.titlePlaceholder)}">
+      <input type="text" id="st-t" maxlength="48" placeholder="${esc(p.starter.titlePlaceholder)}"${p.starter.titleValue ? ` value="${esc(p.starter.titleValue)}"` : ""}>
       <label for="st-w">Your squares — one per line</label>
       <textarea id="st-w" placeholder="${esc(p.starter.squaresPlaceholder)}">${esc(p.starter.prefill || "")}</textarea>
       <div class="starter-c" id="st-c">0 squares — need 25 more</div>
