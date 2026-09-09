@@ -33,10 +33,40 @@ const LINKS = [
   ["/online-bingo-generator.html", "Online"],
   ["/bingo-board-generator.html", "Boards"],
   ["/number-bingo-cards.html", "Number Bingo"],
+  ["/alphabet-bingo.html", "Alphabet Bingo"],
+  ["/icebreaker-bingo.html", "Icebreaker Bingo"],
   ["/music-bingo-generator.html", "Music Bingo"],
   ["/blog/", "Blog"],
 ];
 const LEGAL = [["/terms.html", "Terms"], ["/privacy.html", "Privacy"], ["/refund.html", "Refund Policy"]];
+
+// The "3 free load-and-go games" family. Each page cross-links the other two
+// from the same spot, and the FAQ-drift problem sync-faq-schema.js exists to
+// repair is exactly why this is one shared list instead of three hand-copied
+// blocks: a page opts in with `games: true` and can't drift from the others.
+const GAMES = [
+  { slug: "number-bingo-cards", title: "Number Bingo", blurb: "Classic 1-75 cards with real column ranges, ready in one click." },
+  { slug: "alphabet-bingo", title: "Alphabet Bingo", blurb: "A-Y letter cards for classrooms — every card shuffled differently." },
+  { slug: "icebreaker-bingo", title: "Icebreaker Bingo", blurb: "25 host-paced prompts for a room of strangers, not a stale checklist." },
+];
+
+const gamesModule = (slug) => `
+    <h2>3 Free Load-and-Go Games</h2>
+    <p>Same idea, three starters: pick one and the generator opens with the squares already typed in. No account for any of them.</p>
+    <div class="grid">
+${GAMES.filter((g) => g.slug !== slug).map((g) => `      <a class="gcard" href="/${g.slug}.html">
+        <h3>${g.title}</h3>
+        <p>${g.blurb}</p>
+      </a>`).join("\n")}
+    </div>`;
+
+// "Then make it yours" — the one non-upsell CTA every game page carries right
+// after its starter. Same three features are free regardless of which game:
+// color theme, a title, the card count, and the free-space toggle.
+const YOURS = `
+    <div class="tip">
+      <p><strong>Then make it yours.</strong> Pick a color theme, add your event or venue name, set how many cards you need, and toggle the free space — all on the next screen, before anything prints.</p>
+    </div>`;
 
 const header = () => `<header>
   <a href="/" class="logo">BINGO<span>CARD</span>GENERATOR.ONLINE</a>
@@ -199,6 +229,7 @@ ${p.chips.map((c) => `      <span class="svc">${c}</span>`).join("\n")}
   <div class="body">
 ${p.body.trimEnd()}
 ${starter(p)}
+${p.games ? `${YOURS}\n${gamesModule(p.slug)}` : ""}
 
     <!-- FAQ -->
     <div class="faq-section">

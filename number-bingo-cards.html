@@ -125,7 +125,7 @@
       "name": "Is it free to make number bingo cards?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Designing and previewing is free with no account. Downloads on the free tier carry a small demo watermark; a pass removes it and unlocks clean PDF, PNG, ZIP and share-link downloads."
+        "text": "Yes — there's no account and no time limit. Open the generator, design your cards, and print or share when you're ready."
       }
     }
   ]
@@ -229,6 +229,8 @@ header{background:var(--hdr);backdrop-filter:blur(16px);border-bottom:1px solid 
 
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(290px,100%),1fr));gap:14px;margin:24px 0}
 .gcard{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);padding:20px}
+a.gcard{display:block;transition:border-color .15s}
+a.gcard:hover{border-color:rgba(245,166,35,.35)}
 .gcard h4,.gcard h3{font-size:15.5px;font-weight:700;margin:0 0 6px;color:var(--tx)}
 .gcard p{font-size:14px;color:var(--mt);margin:0;line-height:1.6}
 
@@ -296,6 +298,8 @@ footer a:hover{color:var(--tx)}
   <a href="/online-bingo-generator.html">Online</a>
   <a href="/bingo-board-generator.html">Boards</a>
   <a href="/number-bingo-cards.html">Number Bingo</a>
+  <a href="/alphabet-bingo.html">Alphabet Bingo</a>
+  <a href="/icebreaker-bingo.html">Icebreaker Bingo</a>
   <a href="/music-bingo-generator.html">Music Bingo</a>
   <a href="/blog/">Blog</a>
   <a href="/terms.html">Terms &amp; Conditions</a>
@@ -434,6 +438,23 @@ footer a:hover{color:var(--tx)}
       <p class="starter-n">Nothing is sent anywhere — the list is held in this browser and handed to the generator when you continue.</p>
     </div>
 
+    <div class="tip">
+      <p><strong>Then make it yours.</strong> Pick a color theme, add your event or venue name, set how many cards you need, and toggle the free space — all on the next screen, before anything prints.</p>
+    </div>
+
+    <h2>3 Free Load-and-Go Games</h2>
+    <p>Same idea, three starters: pick one and the generator opens with the squares already typed in. No account for any of them.</p>
+    <div class="grid">
+      <a class="gcard" href="/alphabet-bingo.html">
+        <h3>Alphabet Bingo</h3>
+        <p>A-Y letter cards for classrooms — every card shuffled differently.</p>
+      </a>
+      <a class="gcard" href="/icebreaker-bingo.html">
+        <h3>Icebreaker Bingo</h3>
+        <p>25 host-paced prompts for a room of strangers, not a stale checklist.</p>
+      </a>
+    </div>
+
     <!-- FAQ -->
     <div class="faq-section">
       <h2>Number bingo cards FAQ</h2>
@@ -460,7 +481,7 @@ footer a:hover{color:var(--tx)}
       </div>
       <div class="faq-item" onclick="this.classList.toggle('open')">
         <button class="faq-q">Is it free to make number bingo cards? <span class="chev">▼</span></button>
-        <div class="faq-a">Designing and previewing is free with no account. Downloads on the free tier carry a small demo watermark; a pass removes it and unlocks clean PDF, PNG, ZIP and share-link downloads.</div>
+        <div class="faq-a">Yes — there's no account and no time limit. Open the generator, design your cards, and print or share when you're ready.</div>
       </div>
     </div>
 
@@ -483,6 +504,8 @@ footer a:hover{color:var(--tx)}
     <a href="/online-bingo-generator.html">Online</a>
     <a href="/bingo-board-generator.html">Boards</a>
     <a href="/number-bingo-cards.html">Number Bingo</a>
+    <a href="/alphabet-bingo.html">Alphabet Bingo</a>
+    <a href="/icebreaker-bingo.html">Icebreaker Bingo</a>
     <a href="/music-bingo-generator.html">Music Bingo</a>
     <a href="/blog/">Blog</a>
     <a href="/terms.html">Terms</a>
