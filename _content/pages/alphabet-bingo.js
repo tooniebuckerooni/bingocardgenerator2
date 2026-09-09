@@ -27,6 +27,7 @@ module.exports = {
     squaresPlaceholder: "One letter per line.",
     prefill: "A\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK\nL\nM\nN\nO\nP\nQ\nR\nS\nT\nU\nV\nW\nX\nY",
     grid: [5, 5],
+    freeOff: true, // 25 letters exactly fill the grid — a free space would drop one
     ctaHandoff: true,
     note: "Nothing is sent anywhere — the list is held in this browser and handed to the generator when you continue.",
   },
@@ -69,7 +70,7 @@ module.exports = {
     { q: "Can I use this for younger kids with a smaller grid?",
       a: "Yes. Pick 3x3 or 4x4 from the card size dropdown, or set a custom size from 2 to 8, and match the letter list to it — a 3x3 only needs the first nine letters." },
     { q: "Is the center square free?",
-      a: "By default, yes, on a 5 x 5 card. You can turn it off or rename it in step two, the same as any other card made here." },
+      a: "Not by default here — with 25 letters exactly filling a 5 x 5 card, a free space would bump one letter off. Turn it on in step two if you'd rather have one." },
     { q: "Can I use numbers or sight words instead of letters?",
       a: "Yes. The starter loads the alphabet, but the square list is just text — clear it and type sight words, numbers, or anything else your lesson needs." },
     { q: "Is it free to make alphabet bingo cards?",
