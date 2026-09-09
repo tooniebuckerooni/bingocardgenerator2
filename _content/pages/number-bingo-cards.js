@@ -5,6 +5,7 @@
 // explanation of one.
 module.exports = {
   slug: "number-bingo-cards",
+  games: true, // part of the 3 free load-and-go games family
   title: "Printable Number Bingo Cards 1-75 | Free Generator",
   description:
     "Make classic 1-75 number bingo cards free — B 1-15, I 16-30, N 31-45, G 46-60, O 61-75, each card randomized. Print a set as PDF or share links. No account.",
@@ -74,7 +75,7 @@ module.exports = {
     { q: "Can I make number cards smaller than 5 x 5?",
       a: "Yes. Pick 3x3 or 4x4 from the card size dropdown, or set any width and height from 2 to 8, then give each column a block of numbers to match. A 3x3 makes a quick round for younger players." },
     { q: "Is it free to make number bingo cards?",
-      a: "Designing and previewing is free with no account. Downloads on the free tier carry a small demo watermark; a pass removes it and unlocks clean PDF, PNG, ZIP and share-link downloads." },
+      a: "Yes — there's no account and no time limit. Open the generator, design your cards, and print or share when you're ready." },
   ],
 
   closing: {
