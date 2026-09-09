@@ -122,9 +122,12 @@ const stripTags = (s) => s.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replac
 // list also hands over a real title — otherwise the field is empty and the
 // generator's own preview falls back to its hardcoded "Music Bingo" default,
 // which is wrong for every page that isn't music bingo.
-const ctaData = (p) => (p.starter && p.starter.ctaHandoff)
-  ? ` data-starter${p.starter.grid ? ` data-gw="${p.starter.grid[0]}" data-gh="${p.starter.grid[1]}"` : ""}${p.starter.fill ? ` data-fm="${p.starter.fill}"` : ""}`
-  : "";
+// `freeOff` turns off the default centre free space, for a list sized to fill
+// the grid exactly with nothing to spare (25 letters, 25 prompts) — otherwise
+// the free space silently swallows one entry, and which one varies per card.
+const gridAttrs = (p) => !p.starter ? "" :
+  `${p.starter.grid ? ` data-gw="${p.starter.grid[0]}" data-gh="${p.starter.grid[1]}"` : ""}${p.starter.fill ? ` data-fm="${p.starter.fill}"` : ""}${p.starter.freeOff ? ` data-fo="off"` : ""}`;
+const ctaData = (p) => (p.starter && p.starter.ctaHandoff) ? ` data-starter${gridAttrs(p)}` : "";
 
 const starter = (p) => !p.starter ? "" : `
     <div class="starter">
@@ -135,9 +138,7 @@ const starter = (p) => !p.starter ? "" : `
       <label for="st-w">Your squares — one per line</label>
       <textarea id="st-w" placeholder="${esc(p.starter.squaresPlaceholder)}">${esc(p.starter.prefill || "")}</textarea>
       <div class="starter-c" id="st-c">0 squares — need 25 more</div>
-      <a class="starter-b" id="st-go" href="/"${
-        p.starter.grid ? ` data-gw="${p.starter.grid[0]}" data-gh="${p.starter.grid[1]}"` : ""
-      }${p.starter.fill ? ` data-fm="${p.starter.fill}"` : ""}>Open the Generator →</a>
+      <a class="starter-b" id="st-go" href="/"${gridAttrs(p)}>Open the Generator →</a>
       <p class="starter-n">${p.starter.note}</p>
     </div>`;
 

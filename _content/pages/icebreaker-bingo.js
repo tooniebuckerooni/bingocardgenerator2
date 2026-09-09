@@ -27,6 +27,7 @@ module.exports = {
     squaresPlaceholder: "One prompt per line.",
     prefill: "Has the same first-letter last name as someone here\nHas lived in three or more cities\nCan name a movie from just one line of dialogue\nHas met someone semi-famous\nIs wearing something they made themselves\nHas a hidden talent nobody's guessed yet\nHas been to this city before today\nKnows all the words to a song everyone here would recognize\nHas the same go-to order at coffee shops every time\nHas been the first to arrive at an event more than once this year\nIs left-handed\nHas re-read the same book more than twice\nHas a favorite word in a language other than English\nHas been on live TV, the radio, or in a local newspaper\nHas grown a plant, vegetable, or herb from seed\nHas visited another country in the past year\nCan play a musical instrument, even just a little\nHas won a raffle, contest, or door prize before\nHas the same favorite season as you\nCan do a spot-on impression of a movie or cartoon character\nHas handwriting they're genuinely proud of\nKnows how to say \"thank you\" in three or more languages\nHas been part of a flash mob, group photo, or crowd shot that made the news\nCan name their elementary school teacher from memory\nHas a go-to karaoke song ready at all times",
     grid: [5, 5],
+    freeOff: true, // 25 prompts exactly fill the grid — a free space would drop one
     ctaHandoff: true,
     note: "Nothing is sent anywhere — the list is held in this browser and handed to the generator when you continue.",
   },
@@ -68,7 +69,7 @@ module.exports = {
     { q: "How many people does this work for?",
       a: "Any size room. Print one card per guest — landscape fits two to a page — or share individual links for a smaller or hybrid group." },
     { q: "Is the center square free?",
-      a: "By default, yes. You can turn it off, or replace it with your own prompt, in step two." },
+      a: "Not by default here — with 25 prompts exactly filling a 5 x 5 card, a free space would bump one off. Turn it on in step two if you'd rather have one." },
     { q: "Is it free to make icebreaker bingo cards?",
       a: "Yes — there's no account and no time limit. Open the generator, load the prompts, and design your cards." },
   ],
