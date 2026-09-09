@@ -7,7 +7,7 @@ module.exports = {
   games: true,
   title: "Printable Icebreaker Bingo Cards | Free Generator",
   description:
-    "Make icebreaker bingo cards free — 25 host-paced prompts for new hires, mixers, and first days, not the same tired 'find someone who' list. No account, print or share instantly.",
+    "Make icebreaker bingo cards free — 25 host-paced prompts for onboarding, mixers, and first days, not the same tired find-someone-who list. No account needed.",
   ogDescription:
     "Get-to-know-you bingo with prompts paced like a real host runs them — easy openers, real conversation starters, and a couple of fun ones. Start with all 25 loaded.",
   breadcrumb: "Icebreaker Bingo",

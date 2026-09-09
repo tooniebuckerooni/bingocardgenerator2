@@ -7,7 +7,7 @@ module.exports = {
   games: true,
   title: "Printable Alphabet Bingo Cards A-Y | Free Generator",
   description:
-    "Make printable alphabet bingo cards free — A through Y, a different shuffle on every card so no two kids can copy off each other. No account, print or share instantly.",
+    "Make printable alphabet bingo cards free — A through Y, shuffled differently on every card so no two kids can copy off each other. No account needed.",
   ogDescription:
     "Alphabet bingo cards for the classroom, A to Y, shuffled differently every time. Start with all 25 letters already loaded.",
   breadcrumb: "Alphabet Bingo",
