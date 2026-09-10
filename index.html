@@ -326,6 +326,8 @@ nav{max-width:1140px;margin:0 auto;padding:0 24px;height:58px;display:flex;align
 .mnav a,.mnav button{display:block;width:100%;padding:12px 20px;font-family:'Outfit',sans-serif;font-size:14.5px;font-weight:500;color:var(--tx2);text-decoration:none;background:none;border:none;text-align:left;cursor:pointer}
 .mnav-h{padding:14px 20px 4px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mt)}
 .mnav-h:first-child{padding-top:8px}
+.mnav-grid{display:grid;grid-template-columns:1fr 1fr}
+.mnav-grid a{padding-left:16px;padding-right:4px}
 .mnav a:active,.mnav button:active,.mnav a:hover,.mnav button:hover{background:var(--sf2);color:var(--tx)}
 /* .nr now only ever holds Pro state, the theme toggle, and the ☰ menu — every
    page link lives in #mnav instead, at every viewport width, so this never
@@ -706,11 +708,13 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
     <a href="/alphabet-bingo.html">Alphabet Bingo</a>
     <a href="/icebreaker-bingo.html">Icebreaker Bingo</a>
     <div class="mnav-h">More Ways to Build</div>
-    <a href="/music-bingo-generator.html">Music Bingo</a>
-    <a href="/custom-bingo-cards.html">Custom Bingo Cards</a>
-    <a href="/bingo-card-maker.html">Bingo Card Maker</a>
-    <a href="/online-bingo-generator.html">Online Bingo</a>
-    <a href="/bingo-board-generator.html">Bingo Boards</a>
+    <div class="mnav-grid">
+      <a href="/music-bingo-generator.html">Music Bingo</a>
+      <a href="/custom-bingo-cards.html">Custom Cards</a>
+      <a href="/bingo-card-maker.html">Card Maker</a>
+      <a href="/online-bingo-generator.html">Online Bingo</a>
+      <a href="/bingo-board-generator.html">Bingo Boards</a>
+    </div>
     <a href="/blog/">Blog</a>
     <button type="button" onclick="togNav();oUnlock()">🔑&nbsp; Activate license</button>
     <button type="button" id="mtheme" onclick="togTheme()">🌙&nbsp; Switch to dark theme</button>
