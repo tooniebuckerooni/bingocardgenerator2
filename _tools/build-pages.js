@@ -36,7 +36,7 @@ const NAV_GROUPS = [
     ["/alphabet-bingo.html", "Alphabet Bingo"],
     ["/icebreaker-bingo.html", "Icebreaker Bingo"],
   ] },
-  { label: "More Ways to Build", links: [
+  { label: "More Ways to Build", cols: 2, links: [
     ["/music-bingo-generator.html", "Music Bingo"],
     ["/custom-bingo-cards.html", "Custom Cards"],
     ["/bingo-card-maker.html", "Card Maker"],
@@ -86,8 +86,11 @@ const header = () => `<header>
   </div>
 </header>
 <div class="mnav" id="mnav">
-${NAV_GROUPS.map((g) => (g.label ? `  <div class="mnav-h">${g.label}</div>\n` : "") +
-    g.links.map(([h, t]) => `  <a href="${h}">${t}</a>`).join("\n")).join("\n")}
+${NAV_GROUPS.map((g) => {
+    const links = g.links.map(([h, t]) => `  <a href="${h}">${t}</a>`).join("\n");
+    const body = g.cols ? `  <div class="mnav-grid">\n${links}\n  </div>` : links;
+    return (g.label ? `  <div class="mnav-h">${g.label}</div>\n` : "") + body;
+  }).join("\n")}
   <div class="mnav-h">Legal</div>
 ${[["/terms.html", "Terms &amp; Conditions"], ["/privacy.html", "Privacy Policy"], ["/refund.html", "Refund Policy"]]
     .map(([h, t]) => `  <a href="${h}">${t}</a>`).join("\n")}
