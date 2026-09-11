@@ -2913,11 +2913,32 @@ chkPro();
 applyCustom();
 document.fonts.ready.then(()=>{applyProLocks();pFSize(fontSize);updW();dPrev();});
 const qp=new URLSearchParams(location.search);
-if(qp.has('code'))hCb(qp.get('code'));
+// NOTE: there used to be `if(qp.has('code'))hCb(qp.get('code'));` here and hCb
+// was never defined anywhere in this file. Any visit carrying ?code= threw a
+// ReferenceError, and because it threw mid-init everything below it died with
+// it: ?card= share links, the saved-games list, the autosave restore and the
+// ?activated post-checkout handler. Removed rather than guessed at. Nothing
+// links here with ?code=; if it is meant to carry a license key, wire it to
+// oUnlock() + tryAct() deliberately.
 if(qp.has('card'))showCard(qp.get('card'));
-// Saved games + autosave restore (skip when viewing a shared card)
+// A whole game handed over from a link: a redemption PDF, an email, a product
+// page on fatcityentertainment.com. Same encoding as the ?card= share links
+// above, but it fills the editor in rather than rendering one finished card.
+// Built by _tools/build-generator-links.js in the fat-city-entertainment repo,
+// which points at short /cards/<slug>/ stubs so a link printed inside a paid
+// download stays fixable.
+if(qp.has('load')){
+  try{
+    applyState(JSON.parse(decodeURIComponent(atob(qp.get('load')))));
+    toast('Your game came with you. Pick a look and generate.','ok');
+  }catch(e){toast('That preload link is not valid.','err');}
+}
+// Saved games + autosave restore (skip when viewing a shared card, and skip
+// when a game was just handed over: a returning visitor's autosave would
+// otherwise load on top of the preload and silently win, so the link would
+// appear to do nothing for exactly the people who use this most).
 mgRefresh();
-if(!qp.has('card')){
+if(!qp.has('card') && !qp.has('load')){
   try{
     const as=JSON.parse(localStorage.getItem(AUTOSAVE_KEY)||'null');
     // src:'starter' means the squares were typed on a landing page and handed
