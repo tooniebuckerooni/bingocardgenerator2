@@ -368,7 +368,8 @@ nav{max-width:1140px;margin:0 auto;padding:0 24px;height:58px;display:flex;align
 }
 
 /* HERO */
-.hero{max-width:1140px;margin:0 auto;padding:56px 24px 36px}
+.hero{max-width:1140px;margin:0 auto;padding:56px 24px 36px;display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+.hero-copy{flex:1 1 420px;min-width:0}
 .ey{font-size:11.5px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--gn);margin-bottom:14px}
 .hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,9vw,88px);letter-spacing:2px;line-height:.92;margin-bottom:18px}
 .hero h1 .g{color:var(--gn)}
@@ -377,6 +378,18 @@ nav{max-width:1140px;margin:0 auto;padding:0 24px;height:58px;display:flex;align
 .hav strong{color:var(--tx)}
 .hero-cta{display:inline-flex;align-items:center;background:var(--gn);color:#0F1B2D;font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;padding:13px 28px;border-radius:30px;text-decoration:none;margin-top:10px;transition:all var(--t)}
 .hero-cta:hover{background:#f7bb44;transform:translateY(-2px);box-shadow:0 6px 20px var(--gng)}
+
+/* ================================================================
+   DABBY — HALLOWEEN MASCOT (v1, seasonal thru Nov 1 2026)
+   To retire: delete this block, the .dabby-hero markup in <div
+   class="hero">, and the updDabby()/dabby-hero.img lines near togTheme().
+   ================================================================ */
+.dabby-hero{flex:0 0 auto;margin:0 auto}
+.dabby-hero img{display:block;height:clamp(170px,22vw,280px);width:auto;max-width:100%}
+@media(max-width:760px){
+  .hero{flex-direction:column}
+  .dabby-hero img{height:170px}
+}
 
 /* CONTENT SECTIONS */
 .content-sections{max-width:1140px;margin:0 auto;padding:64px 24px 0}
@@ -726,14 +739,21 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 </header>
 
 <div class="hero">
-  <div class="ey">BingoCardGenerator.Online</div>
-  <h1>Bingo Night Shouldn't<br>Take All Day to Prep</h1>
-  <p class="hs">Wrestling spreadsheets, clip-art templates, and cards that repeat the same squares? Paste your song list or vocab words, pick a theme, and walk out with professional, print-ready bingo cards in minutes — no design skills, no account.</p>
-  <div class="hero-avatars">
-    <span class="hav">🎤 <strong>Event hosts</strong> — music bingo &amp; trivia nights that fill the bar</span>
-    <span class="hav">🍎 <strong>Teachers</strong> — review games your class actually asks to play</span>
+  <div class="hero-copy">
+    <div class="ey">BingoCardGenerator.Online</div>
+    <h1>Bingo Night Shouldn't<br>Take All Day to Prep</h1>
+    <p class="hs">Wrestling spreadsheets, clip-art templates, and cards that repeat the same squares? Paste your song list or vocab words, pick a theme, and walk out with professional, print-ready bingo cards in minutes — no design skills, no account.</p>
+    <div class="hero-avatars">
+      <span class="hav">🎤 <strong>Event hosts</strong> — music bingo &amp; trivia nights that fill the bar</span>
+      <span class="hav">🍎 <strong>Teachers</strong> — review games your class actually asks to play</span>
+    </div>
+    <a href="#tool" class="hero-cta">Start Creating Free ↓</a>
   </div>
-  <a href="#tool" class="hero-cta">Start Creating Free ↓</a>
+  <!-- DABBY — HALLOWEEN MASCOT (v1, seasonal thru Nov 1 2026). Delete this div to retire. -->
+  <div class="dabby-hero">
+    <img id="dabbyImg" src="/images/dabby-teacher-halloween.png" width="750" height="900" loading="eager" alt="Dabby, the BingoCardGenerator mascot, dressed for Halloween">
+  </div>
+  <script>if(document.documentElement.dataset.theme==='dark'){var _d=document.getElementById('dabbyImg');if(_d)_d.src='/images/dabby-trivia-host-halloween.png';}</script>
 </div>
 
 <div class="pb" id="tool">
@@ -1584,7 +1604,12 @@ function togTheme(){
   document.documentElement.dataset.theme=next;
   try{localStorage.setItem('bcg_theme',next);}catch(e){}
   updThemeBtn();
+  updDabby(); // DABBY — HALLOWEEN MASCOT (v1, seasonal thru Nov 1 2026); delete this call + the function below to retire
   gev('theme_toggle',{theme:next});
+}
+function updDabby(){
+  const img=document.getElementById('dabbyImg');
+  if(img)img.src=document.documentElement.dataset.theme==='dark'?'/images/dabby-trivia-host-halloween.png':'/images/dabby-teacher-halloween.png';
 }
 function updThemeBtn(){
   const dark=document.documentElement.dataset.theme==='dark';
