@@ -1,4 +1,26 @@
-# What's next — 2026-09-09
+# What's next — 2026-09-09 (updated 2026-10-11)
+
+## 2026-10-11 — four keyword pages folded into the homepage
+
+On 2026-10-04 average position fell from ~40 to ~80 and impressions from
+~55/day to ~25/day, with no deploy since 2026-09-11. The timing matches the
+third wave (Oct 4-6) of Google's September 2026 spam update. No manual action
+in Search Console. The most doorway-like thing on the site was the four
+near-synonym keyword pages from 2026-08-30 (`custom-bingo-cards`,
+`bingo-card-maker`, `online-bingo-generator`, `bingo-board-generator`), each
+just a different way into the same tool. They are now redirect stubs to `/`
+(`REDIRECTS` in `_tools/build-pages.js`), and the five FAQ answers the homepage
+didn't already cover moved onto it.
+
+**Owner actions:** in Search Console, submit the sitemap again, and run URL Inspection on
+`/` → Request Indexing. Then leave it alone. Spam-update demotions get
+reassessed slowly, often over weeks.
+
+**The bar:** re-pull Performance in ~4 weeks (early November). The homepage's
+position on "bingo card generator" (49 avg over Jul–Oct; ~59 for the page
+overall) is the number to watch. Because of this, the "custom-bingo-cards moves off zero"
+test further down no longer applies.
+
 
 Everything below is either waiting on you, or waiting on data. Nothing here is
 blocked on more code.
