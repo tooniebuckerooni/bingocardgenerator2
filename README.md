@@ -12,7 +12,8 @@ self-contained client-side app inside `index.html`.
 |---|---|
 | `index.html` | **The whole product.** 133KB: the generator app (inline JS), its CSS, the marketing page, and the pricing/FAQ. Source of truth for design tokens, JSON-LD shape, and the `bcg_autosave` contract. |
 | `card-starter.js` | The handoff a landing page uses to send a visitor into the generator with their squares already typed. |
-| `custom-bingo-cards.html`, `bingo-card-maker.html`, `online-bingo-generator.html`, `bingo-board-generator.html`, `number-bingo-cards.html`, `alphabet-bingo.html`, `icebreaker-bingo.html` | **Generated — do not hand-edit.** Built by `_tools/build-pages.js` from `_content/pages/*.js`. (This table used to stop at four pages — it doesn't anymore; check `_content/pages/` rather than this list before assuming a page is hand-maintained.) |
+| `number-bingo-cards.html`, `alphabet-bingo.html`, `icebreaker-bingo.html` | **Generated — do not hand-edit.** Built by `_tools/build-pages.js` from `_content/pages/*.js`. (This table used to stop at four pages — it doesn't anymore; check `_content/pages/` rather than this list before assuming a page is hand-maintained.) |
+| `custom-bingo-cards.html`, `bingo-card-maker.html`, `online-bingo-generator.html`, `bingo-board-generator.html` | **Generated redirect stubs** to `/` (`REDIRECTS` in `_tools/build-pages.js`). These keyword pages were folded into the homepage on 2026-10-11; see NEXT.md. Don't bring them back as standalone pages. |
 | `music-bingo-generator.html` | Hand-maintained, predates the builder. |
 | Number Bingo, Alphabet Bingo, Icebreaker Bingo | The "3 free load-and-go games" family (`GAMES` in `_tools/build-pages.js`) — each cross-links the other two via a shared `games: true` flag on its page config, right after the starter block. |
 | `blog/` | Three long-form posts. These out-rank the tool pages and are worth more of the next hour than another landing page. |
@@ -25,7 +26,7 @@ Everything is dry-run by default; pass `--write` to apply. All are idempotent �
 a second run is a no-op.
 
 ```sh
-node _tools/build-pages.js --write        # rebuild the four generated pages + sitemap block
+node _tools/build-pages.js --write        # rebuild the generated pages, redirect stubs + sitemap block
 node _tools/sync-faq-schema.js --write    # FAQPage JSON-LD <- each page's visible FAQ
 ```
 

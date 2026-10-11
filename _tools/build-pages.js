@@ -36,15 +36,19 @@ const NAV_GROUPS = [
     ["/alphabet-bingo.html", "Alphabet Bingo"],
     ["/icebreaker-bingo.html", "Icebreaker Bingo"],
   ] },
-  { label: "More Ways to Build", cols: 2, links: [
-    ["/music-bingo-generator.html", "Music Bingo"],
-    ["/custom-bingo-cards.html", "Custom Cards"],
-    ["/bingo-card-maker.html", "Card Maker"],
-    ["/online-bingo-generator.html", "Online Bingo"],
-    ["/bingo-board-generator.html", "Bingo Boards"],
-  ] },
+  { label: null, links: [["/music-bingo-generator.html", "Music Bingo"]] },
   { label: null, links: [["/blog/", "Blog"]] },
 ];
+// Retired keyword pages, folded into the homepage on 2026-10-11 (see NEXT.md).
+// GitHub Pages can't send a server 301, so each URL keeps a stub with a
+// canonical plus an instant meta refresh, which Google treats as a permanent
+// redirect. Keep the stubs: links and bookmarks to them still exist.
+const REDIRECTS = {
+  "custom-bingo-cards": "/",
+  "bingo-card-maker": "/",
+  "online-bingo-generator": "/",
+  "bingo-board-generator": "/",
+};
 const LINKS = NAV_GROUPS.flatMap((g) => g.links);
 const LEGAL = [["/terms.html", "Terms"], ["/privacy.html", "Privacy"], ["/refund.html", "Refund Policy"]];
 
@@ -294,6 +298,29 @@ for (const p of pages) {
   if (WRITE) fs.writeFileSync(file, out);
 }
 
+for (const [slug, to] of Object.entries(REDIRECTS)) {
+  const file = path.join(REPO, slug + ".html");
+  const out = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bingo Card Generator</title>
+<link rel="canonical" href="${SITE}${to}">
+<meta http-equiv="refresh" content="0; url=${to}">
+<script>location.replace(${JSON.stringify(to)} + location.search + location.hash);</script>
+</head>
+<body>
+<p>This page has moved to <a href="${to}">${SITE}${to}</a>.</p>
+</body>
+</html>
+`;
+  const cur = fs.existsSync(file) ? fs.readFileSync(file, "utf8") : null;
+  if (cur === out) continue;
+  changed++;
+  console.log(`${WRITE ? "wrote" : "would write"}: ${slug}.html  (redirect -> ${to})`);
+  if (WRITE) fs.writeFileSync(file, out);
+}
+
 // Sitemap: the tool owns a marked block, the way the Fat City song library does.
 // Fifty-plus hand-maintained <url> entries is where the hand-add rule stops making
 // sense; four generated pages is already past it.
@@ -305,7 +332,7 @@ const block = "  <!-- bcg:pages -->\n" + pages.map((p) =>
 ).join("\n") + "\n  <!-- /bcg:pages -->";
 // drop any hand entry for a page the block now owns, then insert/replace the block
 let smOut = sm;
-for (const p of pages) {
+for (const p of pages.concat(Object.keys(REDIRECTS).map((slug) => ({ slug })))) {
   smOut = smOut.replace(new RegExp(`  <url>\\s*<loc>${SITE}/${p.slug}\\.html</loc>[\\s\\S]*?</url>\\n`, "g"), "");
 }
 smOut = /<!-- bcg:pages -->/.test(smOut)

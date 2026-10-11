@@ -225,6 +225,46 @@
         "@type": "Answer",
         "text": "Yes. Turn on fill by column in step one and leave a blank line between blocks: the first block fills the first column, the second block the second, and so on. Teachers use it for a category per column, quiz hosts for a round per row, and it is also how you make classic number bingo with B 1-15, I 16-30 and so on."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the difference between a bingo board and a bingo card?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Nothing in the file itself — both come from the same generator, at whatever grid size you pick. Board is the word a lot of people use for a single shareable one, as in meeting bingo or prediction bingo, while card usually means a printed set with one per player. Use whichever term fits how you're playing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use this for meeting or buzzword bingo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Type the phrases you expect to hear — corporate jargon, a coworker's go-to line, whatever your meeting is known for — as your squares, and generate one board per attendee or a single shared one for the screen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many unique cards can I make from one list, and will squares repeat?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Up to 999 cards from a single square list, each with its own randomized layout, so a full room can play without two players holding an identical card. More squares in your original list means less repetition across a large batch."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it work on phones and tablets?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Because it runs in the browser rather than as installed software, it works the same way on a phone, tablet, Chromebook, or desktop — anything with a modern web browser. There is nothing to download."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will my work still be there if I close the tab?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Your card saves in the browser automatically, so reopening the page picks up where you left off. It is stored on your own device rather than in an account."
+      }
     }
   ]
 }
@@ -720,14 +760,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
     <a href="/number-bingo-cards.html">Number Bingo</a>
     <a href="/alphabet-bingo.html">Alphabet Bingo</a>
     <a href="/icebreaker-bingo.html">Icebreaker Bingo</a>
-    <div class="mnav-h">More Ways to Build</div>
-    <div class="mnav-grid">
-      <a href="/music-bingo-generator.html">Music Bingo</a>
-      <a href="/custom-bingo-cards.html">Custom Cards</a>
-      <a href="/bingo-card-maker.html">Card Maker</a>
-      <a href="/online-bingo-generator.html">Online Bingo</a>
-      <a href="/bingo-board-generator.html">Bingo Boards</a>
-    </div>
+    <a href="/music-bingo-generator.html">Music Bingo</a>
     <a href="/blog/">Blog</a>
     <button type="button" onclick="togNav();oUnlock()">🔑&nbsp; Activate license</button>
     <button type="button" id="mtheme" onclick="togTheme()">🌙&nbsp; Switch to dark theme</button>
@@ -1098,7 +1131,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
   <div class="section-grid">
     <div class="content-card">
       <h2>Your Words, <span>Not a Template</span></h2>
-      <p>Every card starts from an empty list — you type the squares, so the game fits the room instead of the other way round. Building for a specific classroom, wedding, or company event? Our <a href="/custom-bingo-cards.html" style="color:var(--gn)">guide to custom bingo cards</a> has example square lists for each one.</p>
+      <p>Every card starts from an empty list — you type the squares, so the game fits the room instead of the other way round. Building for a specific classroom, wedding, or company event? Our <a href="/blog/bingo-night-ideas-parties-weddings-corporate-events.html" style="color:var(--gn)">bingo night ideas guide</a> has themes for each one.</p>
     </div>
     <div class="content-card">
       <h2>Printable and <span>Digital Bingo Cards</span></h2>
@@ -1182,6 +1215,26 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
       <button class="faq-q">Can I put a different category in each column? <span class="faq-chev">▼</span></button>
       <div class="faq-a">Yes. Turn on fill by column in step one and leave a blank line between blocks: the first block fills the first column, the second block the second, and so on. Teachers use it for a category per column, quiz hosts for a round per row, and it is also how you make classic number bingo with B 1-15, I 16-30 and so on.</div>
     </div>
+    <div class="faq-item" onclick="togFaq(this)">
+      <button class="faq-q">What's the difference between a bingo board and a bingo card? <span class="faq-chev">▼</span></button>
+      <div class="faq-a">Nothing in the file itself — both come from the same generator, at whatever grid size you pick. Board is the word a lot of people use for a single shareable one, as in meeting bingo or prediction bingo, while card usually means a printed set with one per player. Use whichever term fits how you're playing.</div>
+    </div>
+    <div class="faq-item" onclick="togFaq(this)">
+      <button class="faq-q">Can I use this for meeting or buzzword bingo? <span class="faq-chev">▼</span></button>
+      <div class="faq-a">Yes. Type the phrases you expect to hear — corporate jargon, a coworker's go-to line, whatever your meeting is known for — as your squares, and generate one board per attendee or a single shared one for the screen.</div>
+    </div>
+    <div class="faq-item" onclick="togFaq(this)">
+      <button class="faq-q">How many unique cards can I make from one list, and will squares repeat? <span class="faq-chev">▼</span></button>
+      <div class="faq-a">Up to 999 cards from a single square list, each with its own randomized layout, so a full room can play without two players holding an identical card. More squares in your original list means less repetition across a large batch.</div>
+    </div>
+    <div class="faq-item" onclick="togFaq(this)">
+      <button class="faq-q">Does it work on phones and tablets? <span class="faq-chev">▼</span></button>
+      <div class="faq-a">Yes. Because it runs in the browser rather than as installed software, it works the same way on a phone, tablet, Chromebook, or desktop — anything with a modern web browser. There is nothing to download.</div>
+    </div>
+    <div class="faq-item" onclick="togFaq(this)">
+      <button class="faq-q">Will my work still be there if I close the tab? <span class="faq-chev">▼</span></button>
+      <div class="faq-a">Yes. Your card saves in the browser automatically, so reopening the page picks up where you left off. It is stored on your own device rather than in an account.</div>
+    </div>
   </div>
 
 </div>
@@ -1200,10 +1253,6 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
   <p style="margin-top:10px">Made by <a href="https://www.fatcityentertainment.com/" style="color:var(--gn)" onclick="gev('fce_link_click',{placement:'footer_text'})">Fat City Entertainment</a> — music bingo &amp; trivia games tested on live audiences.</p>
   <p style="margin-top:8px">© 2026 BingoCardGenerator.Online · New Brunswick, Canada</p>
   <p style="margin-top:8px">
-    <a href="/custom-bingo-cards.html">Custom Bingo Cards</a>
-    <a href="/bingo-card-maker.html">Bingo Card Maker</a>
-    <a href="/online-bingo-generator.html">Online Bingo</a>
-    <a href="/bingo-board-generator.html">Bingo Boards</a>
     <a href="/number-bingo-cards.html">Number Bingo</a>
     <a href="/alphabet-bingo.html">Alphabet Bingo</a>
     <a href="/icebreaker-bingo.html">Icebreaker Bingo</a>
