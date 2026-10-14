@@ -15,22 +15,30 @@ const REPO = path.resolve(__dirname, "..");
 const html = fs.readFileSync(path.join(REPO, "index.html"), "utf8");
 const a = html.indexOf("// PLAYLIST-PARSE:BEGIN"), b = html.indexOf("// PLAYLIST-PARSE:END");
 if (a < 0 || b < a) { console.error("PLAYLIST-PARSE markers not found in index.html"); process.exit(1); }
-const { decodePlaylist, parsePlaylist, fmtTrack } =
-  new Function(html.slice(a, b) + "\nreturn {decodePlaylist, parsePlaylist, fmtTrack};")();
+const { decodePlaylist, parsePlaylist, fmtTrack, readBoxList } =
+  new Function(html.slice(a, b) + "\nreturn {decodePlaylist, parsePlaylist, fmtTrack, readBoxList};")();
 
 const utf8 = (s) => new TextEncoder().encode(s);
 const utf16le = (s, bom = true) => new Uint8Array(Buffer.concat([bom ? Buffer.from([0xff, 0xfe]) : Buffer.alloc(0), Buffer.from(s, "utf16le")]));
 const cp1252 = (s) => new Uint8Array([...s].map((c) => ({ "é": 0xe9, "ö": 0xf6 })[c] ?? c.charCodeAt(0)));
 
 // [name, file name, bytes, expected [song, artist] pairs in order]
-// (or { noTitle: true } for a file that should be refused with a reason)
+// (or { noTitle: true } / { links: true } for a file refused with a reason)
 const SAMPLES = [
-  ["TuneMyMusic TXT (artist first)", "Fathers Day.txt",
-    utf8("Beyoncé - Daddy Lessons\nKeith Urban - Song For Dad\n"),
-    [["Daddy Lessons", "Beyoncé"], ["Song For Dad", "Keith Urban"]]],
-  ["TuneMyMusic CSV", "Fathers Day.csv",
-    utf8("Track name,Artist name,Album,Playlist name,Type,ISRC\nDaddy Lessons,Beyoncé,Lemonade,Fathers Day,Playlist,USSM11603109\n\"Hello, Goodbye\",The Beatles,Magical Mystery Tour,Fathers Day,Playlist,GBAYE0601640\n"),
-    [["Daddy Lessons", "Beyoncé"], ["Hello, Goodbye", "The Beatles"]]],
+  // The first rows of real TuneMyMusic exports (Oct 2026): UTF-8 with a BOM,
+  // TXT is "Artist - Track", CSV carries a "Playlist name" column.
+  ["TuneMyMusic TXT", "My Deezer Library.txt",
+    utf8("\uFEFFThe Canton Spirituals - Father I'm Coming Home (Live)\nLuther Vandross - Dance With My Father\n047 - I Love You Daddy\nJhené Aiko - So Good (feat. Kendrick Lamar)\n"),
+    [["Father I'm Coming Home (Live)", "The Canton Spirituals"], ["Dance With My Father", "Luther Vandross"], ["I Love You Daddy", "047"], ["So Good (feat. Kendrick Lamar)", "Jhené Aiko"]]],
+  ["TuneMyMusic CSV", "My Deezer Library.csv",
+    utf8('\uFEFFTrack name,Artist name,Album,Playlist name,Type,ISRC,Deezer - id\n"Dance With My Father","Luther Vandross","Dance With My Father","FATHER’S DAY SONGS","Playlist","USJAY0300056","15397232"\n"Wind Beneath My Wings","Gerald Levert","Father And Son","FATHER’S DAY SONGS","Playlist","USEW29500105","3920161"\n'),
+    [["Dance With My Father", "Luther Vandross"], ["Wind Beneath My Wings", "Gerald Levert"]]],
+  ["TuneMyMusic CSV from YouTube: blank artists, read like the TXT", "My YouTube Music Library.csv",
+    utf8('\uFEFFTrack name,Artist name,Album,Playlist name,Type,ISRC\n"Xavi - La Diabla","","","Popular Music Videos","Playlist",""\n"Drake - You Broke My Heart","","","Popular Music Videos","Playlist",""\n'),
+    [["La Diabla", "Xavi"], ["You Broke My Heart", "Drake"]]],
+  ["Spotify links instead of names are refused", "playlist.txt",
+    utf8("https://open.spotify.com/track/0skYUMpS0AcbpjcGsAbRGj\nhttps://open.spotify.com/track/0O6u0VJ46W86TxN9wgyqDj\n"),
+    { links: true }],
   ["Exportify CSV", "fathers_day.csv",
     utf8('"Track URI","Track Name","Album Name","Artist Name(s)","Release Date","Duration (ms)","Popularity"\n"spotify:track:1","Daddy Lessons","Lemonade","Beyoncé","2016-04-23","287000","61"\n'),
     [["Daddy Lessons", "Beyoncé"]]],
@@ -85,7 +93,9 @@ let fail = 0;
 for (const [name, file, bytes, want] of SAMPLES) {
   const res = parsePlaylist(decodePlaylist(bytes), file);
   const got = res.tracks.map((t) => [t.t, t.a]);
-  const ok = want.noTitle ? !!res.noTitle && !got.length : JSON.stringify(got) === JSON.stringify(want);
+  const ok = want.noTitle ? !!res.noTitle && !got.length
+    : want.links ? !!res.links && !got.length
+    : JSON.stringify(got) === JSON.stringify(want);
   if (!ok) fail++;
   console.log(`${ok ? "ok  " : "FAIL"}  ${name}`);
   if (!ok) console.log(`        want ${JSON.stringify(want)}\n        got  ${JSON.stringify(got)}${res.noTitle ? " (noTitle)" : ""}`);
@@ -101,6 +111,27 @@ for (const [f, want] of Object.entries(FMT)) {
 }
 const solo = { t: "Jolene", a: "" };
 for (const f of Object.keys(FMT)) if (fmtTrack(solo, f) !== "Jolene") { fail++; console.log(`FAIL  format ${f} without an artist`); }
+
+// A list pasted into the box: read when it is mostly "X - Y" pairs, in
+// TuneMyMusic's order unless the list says otherwise; " – " lines are this
+// importer's own output, read in the order the pills last wrote them.
+const BOX = [
+  ["pasted TuneMyMusic lines", ["Luther Vandross - Dance With My Father", "", "Gerald Levert - Wind Beneath My Wings"], "title",
+    [["Dance With My Father", "Luther Vandross"], ["Wind Beneath My Wings", "Gerald Levert"]]],
+  ["own output, last written Song – Artist", ["Dance With My Father – Luther Vandross", "Wind Beneath My Wings – Gerald Levert"], "title_artist",
+    [["Dance With My Father", "Luther Vandross"], ["Wind Beneath My Wings", "Gerald Levert"]]],
+  ["own output, last written Artist – Song", ["Luther Vandross – Dance With My Father", "Gerald Levert – Wind Beneath My Wings"], "artist_title",
+    [["Dance With My Father", "Luther Vandross"], ["Wind Beneath My Wings", "Gerald Levert"]]],
+  ["not a song list", ["Teacher", "Principal", "Lunch - Cafeteria", "Recess"], "title", null],
+];
+for (const [name, lines, prev, want] of BOX) {
+  const r = readBoxList(lines, prev);
+  const got = r && r.tracks.map((t) => [t.t, t.a]);
+  const ok = JSON.stringify(got) === JSON.stringify(want);
+  if (!ok) fail++;
+  console.log(`${ok ? "ok  " : "FAIL"}  box: ${name}`);
+  if (!ok) console.log(`        want ${JSON.stringify(want)}\n        got  ${JSON.stringify(got)}`);
+}
 
 console.log(fail ? `\n${fail} failed` : "\nall passed");
 process.exit(fail ? 1 : 0);
