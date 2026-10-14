@@ -560,6 +560,9 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 .pp{flex:1;padding:8px;background:var(--sf2);border:1px solid var(--bd);border-radius:30px;color:var(--mt);font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer;transition:all var(--t)}
 .pp.sl{border-color:var(--gn);color:var(--gn);background:var(--gnd)}
 .fmtg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fmtg .pp:nth-child(5){grid-column:1/-1}
+.fshg{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.fshg .pp{padding:8px 2px;font-size:12px}
 .imps{margin-top:12px;padding:11px 13px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);font-size:12.5px;line-height:1.6;color:var(--tx2)}
 .imps b{color:var(--tx);font-weight:600}
 .impx{margin-top:2px;color:var(--mt);overflow-wrap:anywhere}
@@ -1006,6 +1009,17 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
             <option value="random">Random — a different spot on every card</option>
           </select>
         </div>
+        <div id="fshade" style="margin-top:14px">
+          <div class="ot" style="margin-bottom:8px">Free Space Shading</div>
+          <div class="fshg">
+            <button class="pp" type="button" data-fsh="none" onclick="pShade(this)">None</button>
+            <button class="pp" type="button" data-fsh="light" onclick="pShade(this)">Light</button>
+            <button class="pp sl" type="button" data-fsh="medium" onclick="pShade(this)">Medium</button>
+            <button class="pp" type="button" data-fsh="dark" onclick="pShade(this)">Dark</button>
+            <button class="pp" type="button" data-fsh="black" onclick="pShade(this)">Black</button>
+          </div>
+          <div style="font-size:11.5px;color:var(--mt);margin-top:8px">How dark the free space prints on Eco cards. Light through Black all show up on home and office printers.</div>
+        </div>
       </div>
     </div>
 
@@ -1339,7 +1353,9 @@ const EXPORT_TOKEN_PUBKEY_SPKI_B64 = 'MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE74W23g
 // ============================================================
 let isPro=false, font='oswald', theme='eco', freeOn=true, freePos='center';
 let pCount=5, sCount=10, mode='print', fontSize=11, layout='portrait', bingoRow=true;
-let spFmt='title'; // playlist import format: title | artist | title_artist | artist_title
+let spFmt='title'; // playlist import format: title | artist | title_artist | artist_title | title_over (see PL_FORMATS)
+let stackSq=false; // "Song over Artist": squares written "Song – Artist" print on two lines (stackParts)
+let freeShade='medium'; // Eco free-space fill: none | light | medium | dark | black (FREE_SHADES)
 let fillMode='simple'; // simple | col | row — a blank line starts a new block
 let gridW=5, gridH=5; // card grid dimensions (2-8 each); 5x5 is the classic default
 let logoUrl=null, logoImg=null, brandingOn=true, logoScale=100;
@@ -1863,7 +1879,8 @@ function parsePlaylist(text,name){
   return{tracks:segs.map(s=>plTrack(s,af)).filter(t=>t.t),how:'list',af};
 }
 
-// How a track reads on a square: the "Squares show" pills.
+// How a track reads on a square: the "Squares show" pills. Song over Artist
+// (title_over) writes the same text as Song – Artist; the card stacks it.
 function fmtTrack(tr,f){
   if(f==='artist')return tr.a||tr.t;
   if(!tr.a||f==='title')return tr.t;
@@ -1900,6 +1917,7 @@ function importPlaylistFile(input){
       return;
     }
     lastImport={tracks:res.tracks,af:res.af,name:file.name};
+    stackSq=spFmt==='title_over';
     document.getElementById('wl').value=res.tracks.map(tr=>fmtTrack(tr,spFmt)).join('\n');
     updW();dPrev();showImportSummary();
     gev('playlist_imported',{format:spFmt,count:res.tracks.length,file_type:(file.name.split('.').pop()||'').toLowerCase(),
@@ -1944,7 +1962,7 @@ function swapImport(){
 // The result card: what was read, and how the squares show it. It appears
 // after an upload, or on opening the panel over a pasted song list (raw:
 // nothing picked yet, so no pill is lit).
-const PL_FORMATS=[['title','Song only'],['artist','Artist only'],['title_artist','Song – Artist'],['artist_title','Artist – Song']];
+const PL_FORMATS=[['title','Song only'],['artist','Artist only'],['title_artist','Song – Artist'],['artist_title','Artist – Song'],['title_over','Song over Artist']];
 function showImportSummary(){
   const box=document.getElementById('impsum');
   if(!lastImport){box.style.display='none';return;}
@@ -2088,6 +2106,8 @@ function printCellSize(){
 // Mirror of fitTxt's loop, but reporting *why* rather than returning glyphs.
 // clipped:true means fitTxt would drop lines — text silently missing from the card.
 function fitReport(ctx,text,mxW,mxH){
+  const sp=stackParts(text);
+  if(sp){const f=fitStack(ctx,sp[0],sp[1],mxW,mxH,fontSize);return{sz:f.sz,clipped:f.clipped};}
   for(let sz=fontSize;sz>=5;sz--){
     const lines=wrapWords(ctx,text,mxW-4,sz);
     if(lines.length<=Math.floor((mxH-4)/(sz*1.35)))return{sz,clipped:false};
@@ -2161,7 +2181,7 @@ document.getElementById('ct').addEventListener('input',updTitle);
 function pFont(el){font=el.value;dPrev();}
 function pTheme(el){
   document.querySelectorAll('.tsw,.tsw-eco').forEach(s=>s.classList.remove('sl'));el.classList.add('sl');theme=resolveTheme(el.dataset.t);
-  syncCustomUI();
+  syncCustomUI();syncShadeUI();
   dPrev();
 }
 function pCustom(k,v){customCols[k]=v;applyCustom();syncCustomUI();dPrev();}
@@ -2209,7 +2229,13 @@ function pFSize(v){
 }
 function pLayout(el){layout=el.value;scheduleWordCheck();dPrev();}
 function togFS(){freeOn=!freeOn;syncFreeUI();updW();dPrev();}
+function syncShadeUI(){
+  document.getElementById('fshade').style.display=THEMES[theme].eco?'':'none';
+  selPill('[data-fsh]','fsh',freeShade);
+}
+function pShade(el){freeShade=el.dataset.fsh;syncShadeUI();dPrev();}
 function syncFreeUI(){
+  syncShadeUI();
   const canCenter=centerEligible();
   document.getElementById('fstg').classList.toggle('on',freeOn);
   document.getElementById('fso').style.display=freeOn?'':'none';
@@ -2278,6 +2304,9 @@ function pPos(el){freePos=el.value;dPrev();}
 function pFmt(el){
   const prev=spFmt;spFmt=el.dataset.fmt;
   try{localStorage.setItem('bcg_import_fmt',spFmt);}catch(e){}
+  // Song over Artist writes the same "Song – Artist" lines and stacks them on the card
+  const stackWas=stackSq;stackSq=spFmt==='title_over';
+  if(stackSq!==stackWas)dPrev();
   const card=document.getElementById('impsum'),kb=card.contains(document.activeElement);
   let n=0,changed=false;
   if(lastImport&&!lastImport.raw){n=reformatImport(lastImport.tracks,prev);changed=n>0&&prev!==spFmt;}
@@ -2383,8 +2412,8 @@ function buildGridGrouped(seed){
 }
 
 // Wrap text with hyphenation — respects fixed fontSize, never overflows cell width
-function wrapWords(ctx,text,maxW,sz){
-  ctx.font=cvf(sz);
+function wrapWords(ctx,text,maxW,sz,bold){
+  ctx.font=cvf(sz,bold);
   const rawWords=text.split(/\s+/).filter(Boolean);
   const lines=[];let cur='';
 
@@ -2417,22 +2446,52 @@ function wrapWords(ctx,text,maxW,sz){
   return lines;
 }
 
-function fitTxt(ctx,text,mxW,mxH,baseSz){
+function fitTxt(ctx,text,mxW,mxH,baseSz,bold){
   // baseSz defaults to global fontSize (calibrated for 316px preview)
   // callers rendering at other sizes should pass a pre-scaled value
   const start=baseSz||fontSize;
   for(let sz=start;sz>=5;sz--){
-    const lines=wrapWords(ctx,text,mxW-4,sz);
+    const lines=wrapWords(ctx,text,mxW-4,sz,bold);
     const lh=sz*1.35;
     const maxLines=Math.floor((mxH-4)/lh);
     if(lines.length<=maxLines) return{sz,lines:lines.slice(0,maxLines)};
   }
-  const lines=wrapWords(ctx,text,mxW-4,5);
+  const lines=wrapWords(ctx,text,mxW-4,5,bold);
   return{sz:5,lines:lines.slice(0,Math.max(1,Math.floor((mxH-4)/(5*1.35))))};
+}
+
+// A stacked square: the song in bold, the artist at 80% under it, shrunk
+// together until both fit. pdfFitStack is its mirror.
+function fitStack(ctx,top,bot,mxW,mxH,baseSz){
+  for(let sz=baseSz;sz>=5;sz--){
+    const bs=Math.max(5,Math.round(sz*.8)),tl=wrapWords(ctx,top,mxW-4,sz,true),bl=wrapWords(ctx,bot,mxW-4,bs);
+    if((tl.length*sz+bl.length*bs)*1.35<=mxH-4)return{sz,bs,tl,bl,clipped:false};
+  }
+  const tl=wrapWords(ctx,top,mxW-4,5,true),bl=wrapWords(ctx,bot,mxW-4,5),room=Math.max(1,Math.floor((mxH-4)/(5*1.35)));
+  const t=tl.slice(0,room);
+  return{sz:5,bs:5,tl:t,bl:bl.slice(0,room-t.length),clipped:tl.length+bl.length>room};
 }
 
 function rgb(a){return`rgb(${a[0]},${a[1]},${a[2]})`;} 
 function drk(a,d){return a.map(v=>Math.max(0,Math.min(255,v+d)));}
+function mixc(a,b,t){return a.map((v,i)=>Math.round(v+(b[i]-v)*t));}
+
+// Eco's free-space fill. It used to be a 4% grey that no printer reproduces,
+// so the free space printed like any other square. Every step here survives a
+// laser printer; dark and black flip the label to white. Colour themes keep
+// their own free-space colour.
+const FREE_SHADES={none:[255,255,255],light:[217,217,217],medium:[179,179,179],dark:[102,102,102],black:[0,0,0]};
+function freeFill(T){return T.eco?FREE_SHADES[freeShade]||FREE_SHADES.medium:T.fr;}
+function freeInk(T){return !T.eco||freeShade==='dark'||freeShade==='black'?[255,255,255]:[0,0,0];}
+
+// "Song over Artist": a square written "Song – Artist" (the importer's form)
+// shows the song in bold with the artist under it, smaller, the way Spotify
+// lists a track. Only while stackSq is on; null for any other square.
+function stackParts(word){
+  if(!stackSq)return null;
+  const i=word.indexOf(' – ');
+  return i>0&&i+3<word.length?[word.slice(0,i),word.slice(i+3)]:null;
+}
 
 // drawCardCanvas: renders to any canvas context
 function drawCardCanvas(ctx,W,H,words,seed,opts={}){
@@ -2488,13 +2547,26 @@ function drawCardCanvas(ctx,W,H,words,seed,opts={}){
   for(let r=0;r<gridH;r++){
     for(let c=0;c<gridW;c++){
       const x=M+c*cW,y=gT+r*cH,word=grid[r*gridW+c],isFree=word===null;
-      if(isFree){freeRect={x,y,w:cW,h:cH};ctx.fillStyle=T.eco?'rgb(245,245,245)':rgb(T.fr);}
-      else ctx.fillStyle=(r+c)%2===0?rgb(T.st):rgb(T.bg);
+      const cellBg=(r+c)%2===0?T.st:T.bg;
+      if(isFree){freeRect={x,y,w:cW,h:cH};ctx.fillStyle=rgb(freeFill(T));}
+      else ctx.fillStyle=rgb(cellBg);
       ctx.fillRect(x,y,cW,cH);
       ctx.strokeStyle=T.eco?'#000':rgb(T.bd);
       ctx.lineWidth=T.eco?Math.max(.4,W*.001):Math.max(.3,W*.0007);
       ctx.strokeRect(x,y,cW,cH);
-      if(!isFree){
+      const sp=!isFree&&stackParts(word);
+      if(sp){
+        // song in bold, artist smaller and a shade softer under it
+        const f=fitStack(ctx,sp[0],sp[1],cW-6,cH,scaledFontSize);
+        const tlh=f.sz*1.35,blh=f.bs*1.35;let yy=y+cH/2-(f.tl.length*tlh+f.bl.length*blh)/2;
+        ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.save();ctx.beginPath();ctx.rect(x,y,cW,cH);ctx.clip();
+        ctx.fillStyle=rgb(T.tx);ctx.font=cvf(f.sz,true);
+        f.tl.forEach(ln=>{ctx.fillText(ln,x+cW/2,yy+tlh/2);yy+=tlh;});
+        ctx.fillStyle=rgb(mixc(T.tx,cellBg,.3));ctx.font=cvf(f.bs);
+        f.bl.forEach(ln=>{ctx.fillText(ln,x+cW/2,yy+blh/2);yy+=blh;});
+        ctx.restore();
+      }else if(!isFree){
         const{sz,lines}=fitTxt(ctx,word,cW-6,cH,scaledFontSize);
         ctx.fillStyle=rgb(T.tx);ctx.font=cvf(sz);
         ctx.textAlign='center';ctx.textBaseline='middle';
@@ -2510,8 +2582,9 @@ function drawCardCanvas(ctx,W,H,words,seed,opts={}){
         // FREE SPACE caption at the bottom of the cell so it reads as one
         const capSz=/free/i.test(lbl)?0:Math.max(5,Math.round(cH*.11));
         const capZone=capSz?capSz*1.7:0;
-        const{sz,lines}=fitTxt(ctx,lbl,cW-10,cH-8-capZone,scaledFontSize);
-        ctx.fillStyle=T.eco?'#000':'#fff';
+        // a size up from the squares, so the free space reads at a glance
+        const{sz,lines}=fitTxt(ctx,lbl,cW-10,cH-8-capZone,Math.max(5,Math.min(Math.round(scaledFontSize*1.3),Math.round(cH*.2))),true);
+        ctx.fillStyle=rgb(freeInk(T));
         ctx.font=cvf(sz,true);
         ctx.textAlign='center';ctx.textBaseline='middle';
         const lh=sz*1.35,sy=y+(cH-capZone)/2-(lines.length*lh)/2+lh/2;
@@ -2674,6 +2747,19 @@ function pdfFitTxt(doc,text,maxW,maxH,baseSz){
   return{sz:5,lines:lines.slice(0,Math.max(1,Math.floor((maxH-4)/(5*1.35))))};
 }
 
+// Mirror of fitStack: song in the bold face, artist at 80% in the plain one.
+function pdfFitStack(doc,ff,fs,top,bot,maxW,maxH,baseSz){
+  const it=/italic/.test(fs),bold=it?'bolditalic':'bold',plain=it?'italic':'normal';
+  const wrap=(t,st,sz)=>{doc.setFont(ff,st);return pdfWrap(doc,t,maxW-4,sz);};
+  for(let sz=baseSz;sz>=5;sz--){
+    const bs=Math.max(5,Math.round(sz*.8)),tl=wrap(top,bold,sz),bl=wrap(bot,plain,bs);
+    if((tl.length*sz+bl.length*bs)*1.35<=maxH-4)return{sz,bs,tl,bl,bold,plain};
+  }
+  const tl=wrap(top,bold,5),bl=wrap(bot,plain,5),room=Math.max(1,Math.floor((maxH-4)/(5*1.35)));
+  const t=tl.slice(0,room);
+  return{sz:5,bs:5,tl:t,bl:bl.slice(0,room-t.length),bold,plain};
+}
+
 // Draw one bingo card into a jsPDF doc at given offset (ox, oy) and size (cw x ch area)
 function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
   const M=14;
@@ -2713,14 +2799,23 @@ function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
     for(let c=0;c<gridW;c++){
       const x=ox+M+c*colW,y=gY+r*rowH;
       const word=grid[r*gridW+c],isFree=word===null;
-      if(isFree){frd={x,y,w:colW,h:rowH};doc.setFillColor(...(T.eco?[245,245,245]:T.fr));}
-      else doc.setFillColor(...((r+c)%2===0?T.st:T.bg));
+      const cellBg=(r+c)%2===0?T.st:T.bg;
+      if(isFree){frd={x,y,w:colW,h:rowH};doc.setFillColor(...freeFill(T));}
+      else doc.setFillColor(...cellBg);
       doc.rect(x,y,colW,rowH,'F');
       doc.setDrawColor(...(T.eco?[0,0,0]:T.bd));
       doc.setLineWidth(T.eco?.4:.5);
       doc.rect(x,y,colW,rowH,'S');
 
-      if(!isFree){
+      const sp=!isFree&&stackParts(word);
+      if(sp){
+        const f=pdfFitStack(doc,ff,fs,sp[0],sp[1],colW-6,rowH,fontSize);
+        const tlh=f.sz*1.35,blh=f.bs*1.35;let yy=y+rowH/2-(f.tl.length*tlh+f.bl.length*blh)/2;
+        doc.setFont(ff,f.bold);doc.setFontSize(f.sz);doc.setTextColor(...T.tx);
+        f.tl.forEach(ln=>{doc.text(ln,x+colW/2,yy+f.sz*.75,{align:'center'});yy+=tlh;});
+        doc.setFont(ff,f.plain);doc.setFontSize(f.bs);doc.setTextColor(...mixc(T.tx,cellBg,.3));
+        f.bl.forEach(ln=>{doc.text(ln,x+colW/2,yy+f.bs*.75,{align:'center'});yy+=blh;});
+      }else if(!isFree){
         doc.setFont(ff,fs);doc.setTextColor(...T.tx);
         const{sz,lines:visLines}=pdfFitTxt(doc,word,colW-6,rowH,fontSize);
         const lh=sz*1.35;
@@ -2736,15 +2831,15 @@ function pdfDrawCard(doc,T,ff,fs,title,fl,words,seed,ox,oy,cw,ch){
         // small fixed FREE SPACE caption when the custom label doesn't say "free"
         const capSz=/free/i.test(lbl)?0:Math.max(4,Math.round(rowH*.11));
         const capZone=capSz?capSz*1.7:0;
-        const freeSz=Math.min(fontSize,Math.round(rowH*.14));
-        const fLines=pdfWrap(doc,lbl,colW-8,freeSz);
+        // a size up from the squares, fitted like the preview's (fitTxt) so a
+        // long label shrinks instead of being cut off
+        doc.setFont(ff,'bold');
+        const{sz:freeSz,lines:visFLines}=pdfFitTxt(doc,lbl,colW-10,rowH-8-capZone,Math.max(5,Math.min(Math.round(fontSize*1.3),Math.round(rowH*.2))));
         const fLh=freeSz*1.35;
-        const maxFLines=Math.max(1,Math.floor((rowH-6-capZone)/fLh));
-        const visFLines=fLines.slice(0,maxFLines);
         const fTotalH=visFLines.length*fLh;
         const fSy=y+(rowH-capZone)/2-fTotalH/2+freeSz*.75;
-        doc.setFont(ff,'bold');doc.setFontSize(freeSz);
-        doc.setTextColor(...(T.eco?[0,0,0]:[255,255,255]));
+        doc.setFontSize(freeSz);
+        doc.setTextColor(...freeInk(T));
         visFLines.forEach((ln,li)=>doc.text(ln,x+colW/2,fSy+li*fLh,{align:'center'}));
         if(capSz){
           doc.setFontSize(capSz);
@@ -2990,7 +3085,7 @@ async function dlCardPng(cv,n,title){
 function buildLink(words,seed,n,title,clean){
   try{
     const w=words.length>300?words.slice(0,300):words; // cap for URL safety
-    const st={t:title,w,fn:font,th:theme,fo:freeOn,fp:freePos,ft:document.getElementById("fst").value||"FREE",s:seed,n,wm:clean?0:1};
+    const st={t:title,w,fn:font,th:theme,fo:freeOn,fp:freePos,ft:document.getElementById("fst").value||"FREE",fsh:freeShade,sk:stackSq?1:0,s:seed,n,wm:clean?0:1};
     if(theme==="custom")st.cc=[customCols.bg,customCols.tx,customCols.hd,customCols.ht,customCols.fr];
     const url=location.origin+location.pathname+"?card="+btoa(encodeURIComponent(JSON.stringify(st)));
     return url.length>6000?null:url;
@@ -3050,6 +3145,7 @@ function showCard(enc){
     // apply state to renderer
     hydrateCustom(st.cc);
     font=st.fn||'oswald';theme=resolveTheme(st.th||'eco');freeOn=st.fo!==false;freePos=st.fp||'center';
+    freeShade=FREE_SHADES[st.fsh]?st.fsh:'medium';stackSq=!!st.sk;
     document.getElementById('fst').value=st.ft||'FREE';
     document.getElementById('gen').style.display='none';
     document.getElementById('cview').style.display='block';
@@ -3085,7 +3181,7 @@ function collectState(){
   return{
     v:1,t:document.getElementById('ct').value,w:document.getElementById('wl').value,
     fn:font,fz:fontSize,th:theme,fo:freeOn,fp:freePos,gw:gridW,gh:gridH,fm:fillMode,cc:[customCols.bg,customCols.tx,customCols.hd,customCols.ht,customCols.fr],
-    ft:document.getElementById('fst').value,br:bingoRow,
+    ft:document.getElementById('fst').value,br:bingoRow,fsh:freeShade,sk:stackSq?1:0,
     md:mode,ly:layout,pc:pCount,sc:sCount,
     bo:brandingOn,bt:document.getElementById('brand-text').value,
     bt2:document.getElementById('brand-text2').value,
@@ -3104,6 +3200,8 @@ function applyState(st){
   gridW=Math.max(2,Math.min(8,st.gw||5));gridH=Math.max(2,Math.min(8,st.gh||5));
   freeOn=st.fo!==false;
   freePos=st.fp||'center';
+  freeShade=FREE_SHADES[st.fsh]?st.fsh:'medium';
+  stackSq=!!st.sk;
   document.getElementById('fst').value=st.ft||'FREE';
   bingoRow=st.br!==false;
   hydrateCustom(st.cc);

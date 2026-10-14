@@ -39,6 +39,16 @@ const SAMPLES = [
   ["Spotify links instead of names are refused", "playlist.txt",
     utf8("https://open.spotify.com/track/0skYUMpS0AcbpjcGsAbRGj\nhttps://open.spotify.com/track/0O6u0VJ46W86TxN9wgyqDj\n"),
     { links: true }],
+  // A customer's TuneMyMusic export of a Spotify playlist (Oct 2026), rebuilt
+  // from his screenshot. The live importer read "Playlist name" as the song,
+  // so every square came out "BINGO - Love Songs #1 – <artist>".
+  ["TuneMyMusic CSV of a Spotify playlist (a customer's file)", "My Spotify Library.csv",
+    utf8('\uFEFFTrack name,Artist name,Album,Playlist name,Type,ISRC,Spotify - id\n'
+      + '"Halo","Beyoncé","I AM...SASHA FIERCE","BINGO - Love Songs #1","Playlist","USSM10804556","3ERa3mEeOnrh2Mc47qM6T1"\n'
+      + '"Make You Feel My Love","Adele","19","BINGO - Love Songs #1","Playlist","GBBKS0700586","5FgPwJ7Nh2FVmIXviKl2VF"\n'
+      + '"I Don\'t Want to Miss a Thing - From ""Armageddon"" Soundtrack","Aerosmith","Armageddon - The Album","BINGO - Love Songs #1","Playlist","USSM19801545","225xvV8r1yKMHErSWivnow"\n'
+      + '"Nothing Compares 2 U","Sinéad O\'Connor","I Do Not Want What I Haven\'t Got","BINGO - Love Songs #1","Playlist","GBAYK9000017","5GHY1DFWKz3Prg2V0Iodqo"\n'),
+    [["Halo", "Beyoncé"], ["Make You Feel My Love", "Adele"], ["I Don't Want to Miss a Thing - From \"Armageddon\" Soundtrack", "Aerosmith"], ["Nothing Compares 2 U", "Sinéad O'Connor"]]],
   ["Exportify CSV", "fathers_day.csv",
     utf8('"Track URI","Track Name","Album Name","Artist Name(s)","Release Date","Duration (ms)","Popularity"\n"spotify:track:1","Daddy Lessons","Lemonade","Beyoncé","2016-04-23","287000","61"\n'),
     [["Daddy Lessons", "Beyoncé"]]],
