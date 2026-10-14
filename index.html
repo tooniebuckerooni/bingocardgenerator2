@@ -559,6 +559,12 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 .ppills{display:flex;gap:8px;margin-top:14px}
 .pp{flex:1;padding:8px;background:var(--sf2);border:1px solid var(--bd);border-radius:30px;color:var(--mt);font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer;transition:all var(--t)}
 .pp.sl{border-color:var(--gn);color:var(--gn);background:var(--gnd)}
+.fmtg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.imps{margin-top:12px;padding:11px 13px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);font-size:12.5px;line-height:1.6;color:var(--tx2)}
+.imps b{color:var(--tx);font-weight:600}
+.impx{margin-top:2px;color:var(--mt);overflow-wrap:anywhere}
+.impw{margin-top:8px;background:none;border:1px solid var(--bhi);border-radius:20px;padding:8px 14px;font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;color:var(--tx2);cursor:pointer;transition:all var(--t)}
+.impw:hover{border-color:var(--gn);color:var(--gn)}
 
 /* MODE TABS */
 .mtabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:22px;background:var(--sf2);border:1px solid var(--bd);border-radius:var(--rs);padding:6px}
@@ -854,18 +860,21 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
           <div style="margin-top:8px"><a href="/music-bingo-generator.html" style="color:var(--gn);text-decoration:none" onclick="gev('pillar_link_click',{placement:'import_panel'})">Full music bingo walkthrough →</a></div>
         </div>
         <div style="margin-bottom:12px">
-          <div class="ot" style="margin-bottom:8px">Import format</div>
-          <div style="display:flex;gap:8px">
-            <button class="pp sl" data-fmt="title" onclick="pFmt(this)">Title only</button>
-            <button class="pp" data-fmt="artist" onclick="pFmt(this)">Artist only</button>
-            <button class="pp" data-fmt="both" onclick="pFmt(this)">Title – Artist</button>
+          <div class="ot" style="margin-bottom:8px">Squares show</div>
+          <div class="fmtg">
+            <button class="pp sl" type="button" data-fmt="title" onclick="pFmt(this)">Song only</button>
+            <button class="pp" type="button" data-fmt="artist" onclick="pFmt(this)">Artist only</button>
+            <button class="pp" type="button" data-fmt="title_artist" onclick="pFmt(this)">Song – Artist</button>
+            <button class="pp" type="button" data-fmt="artist_title" onclick="pFmt(this)">Artist – Song</button>
           </div>
+          <div style="font-size:11.5px;color:var(--mt);margin-top:8px">Change it after uploading too — your squares update instantly.</div>
         </div>
         <div class="ldz" onclick="document.getElementById('pl-file').click()" style="padding:14px">
-          <input type="file" id="pl-file" accept=".txt,.csv" style="display:none" onchange="importPlaylistFile(this)">
+          <input type="file" id="pl-file" accept=".txt,.csv,.tsv" style="display:none" onchange="importPlaylistFile(this)">
           <div class="ldt">Click to upload your TXT or CSV file</div>
           <div class="lds">Spotify · Apple Music · YouTube Music · Tidal · Amazon · and more</div>
         </div>
+        <div id="impsum" class="imps" style="display:none"></div>
       </div>
     </div>
     <div style="font-size:11.5px;color:var(--mt);margin-top:10px">Short on time? Grab a <a href="https://www.fatcityentertainment.com/trivia-store.html" style="color:var(--gn);text-decoration:none" onclick="gev('fce_store_click',{placement:'step1'})">ready-to-run game pack</a> from Fat City Entertainment instead — cards and playlist included.</div>
@@ -1345,7 +1354,7 @@ const EXPORT_TOKEN_PUBKEY_SPKI_B64 = 'MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE74W23g
 // ============================================================
 let isPro=false, font='oswald', theme='eco', freeOn=true, freePos='center';
 let pCount=5, sCount=10, mode='print', fontSize=11, layout='portrait', bingoRow=true;
-let spFmt='title'; // playlist import format: title | artist | both
+let spFmt='title'; // playlist import format: title | artist | title_artist | artist_title
 let fillMode='simple'; // simple | col | row — a blank line starts a new block
 let gridW=5, gridH=5; // card grid dimensions (2-8 each); 5x5 is the classic default
 let logoUrl=null, logoImg=null, brandingOn=true, logoScale=100;
@@ -1680,81 +1689,216 @@ function togImport(){
 // ============================================================
 // PLAYLIST IMPORT — TuneMyMusic TXT/CSV export from any music service
 // ============================================================
+// Song/artist order is not consistent between exporters, and this importer has
+// already been burned by assuming one: the plain-text reader was flipped from
+// "Title - Artist" to "Artist - Title" in June 2026, which fixed some files and
+// reversed everyone else's. So nothing here assumes. Tables (CSV, and the
+// tab-separated .txt Apple Music writes) are read by their column names, plain
+// "X - Y" lists are read by evidence (guessListOrder), and the result is shown
+// back with a one-click swap. The parsed tracks stay in lastImport so the
+// "Squares show" pills can re-render the list after the upload.
+//
+// Everything between the PLAYLIST-PARSE markers is pure (no DOM), so
+// _tools/test-playlist-import.js can lift it out and run it on sample exports.
+
+// PLAYLIST-PARSE:BEGIN
+// Bytes → text. FileReader.readAsText assumes UTF-8, which turns a UTF-16 file
+// (Apple Music's export) into NUL-riddled noise and an old Excel CSV's "é" into "�".
+function decodePlaylist(b){
+  const dec=(enc,fatal)=>new TextDecoder(enc,{fatal:!!fatal}).decode(b);
+  if(b[0]===0xFF&&b[1]===0xFE)return dec('utf-16le');
+  if(b[0]===0xFE&&b[1]===0xFF)return dec('utf-16be');
+  // BOM-less UTF-16: plain ASCII leaves every other byte zero
+  let z0=0,z1=0;const n=Math.min(b.length,512);
+  for(let i=0;i<n;i++)if(!b[i]){if(i%2)z1++;else z0++;}
+  if(n>16&&z1>n/4&&z0<n/32)return dec('utf-16le');
+  if(n>16&&z0>n/4&&z1<n/32)return dec('utf-16be');
+  try{return dec('utf-8',true);}catch(e){return dec('windows-1252');}
+}
+
+const PL_SEP=/(\s+[-–—]\s+)/; // captured, so a split keeps each separator as typed
+const PL_PAREN=/[(\[]/; // "(feat. X)", "(Live)", "[Remastered]": brackets ride on songs, rarely on artists
+// a version tag an export hangs off the song as its own segment: "… - Live", "… - 2011 Remaster"
+const PL_VER=/\b(re-?master(ed)?|remix|mix|edit|version|live|mono|stereo|acoustic|demo|instrumental|bonus|from)\b/i;
+// Plain lists with no evidence either way: TuneMyMusic's TXT (the route the
+// import panel sends people down) writes the artist first.
+const PL_LIST_ARTIST_FIRST=true;
+
+function plClean(s){return (s||'').replace(/\s+/g,' ').trim();}
+
+// "Artist - Song" or "Song - Artist"? Ask the list. Artists repeat down a
+// playlist and song names mostly don't, and brackets and version tags ride on
+// the song. rows: the text segments of each line that had a separator.
+// True when the artist comes first; def when the list gives no evidence.
+function guessListOrder(rows,def){
+  let s=0;const L=new Map(),R=new Map();
+  const bump=(m,k)=>m.set(k,(m.get(k)||0)+1),ver=x=>x.length<=48&&PL_VER.test(x);
+  for(const p of rows){
+    const a=p[0],z=p[p.length-1];
+    bump(L,a.toLowerCase());bump(R,z.toLowerCase());
+    if(PL_PAREN.test(z))s++;
+    if(PL_PAREN.test(a))s--;
+    if(p.length>2){if(ver(z))s++;else if(p.slice(1,-1).some(ver))s--;}
+  }
+  const reps=m=>{let n=0;m.forEach(c=>{n+=c-1;});return n;};
+  s+=reps(L)-reps(R);
+  return s?s>0:def;
+}
+
+// One list line, already split on PL_SEP: [text, sep, text, sep, text…]. Cut at
+// the separator next to the artist, so a song's own " - Live" stays on the song.
+// s is kept so a swap can re-cut the line from the other end.
+function plTrack(seg,af){
+  if(seg.length<3)return{t:seg[0],a:''};
+  return af?{t:seg.slice(2).join(''),a:seg[0],s:seg}:{t:seg.slice(0,-2).join(''),a:seg[seg.length-1],s:seg};
+}
+
+// One song per line: TuneMyMusic's TXT, or any list typed by hand.
+function parsePlaylistList(lines,def){
+  const segs=[];
+  for(let l of lines){
+    l=plClean(l).replace(/^"(.*)"$/,'$1');
+    if(!l||/^#(EXT|\s|$)/i.test(l))continue; // blanks, M3U and comment lines ("#1 Crush" is a song)
+    l=l.replace(/^\d+[.)]\s*/,'');           // "1. " / "12) " numbering
+    if(l)segs.push(l.split(PL_SEP));
+  }
+  const af=guessListOrder(segs.filter(s=>s.length>2).map(s=>s.filter((_,i)=>i%2===0)),def);
+  return{tracks:segs.map(s=>plTrack(s,af)).filter(t=>t.t),how:'list',af};
+}
+
+// Header cells compared as bare lowercase letters: "Artist Name(s)" is
+// artistnames, "Track_Name" trackname. Exact matches only, in priority order;
+// a looser "contains" match once let "Album Name" or "Playlist name" stand in
+// for the song, and would read a headerless first row like "Song 2,Blur" as
+// a header.
+function plKey(h){return plClean(h).toLowerCase().replace(/[^a-z0-9#]+/g,'');}
+const PL_TITLE=['trackname','songname','songtitle','tracktitle','title','name','song','track'];
+const PL_ARTIST=['artistname','artistnames','artists','artist','performer','band','author'];
+// column names that mark a header row even with no song column in it
+const PL_HEADWORD=/^(#|id|uri|isrc|album|albumname|duration|durationms|time|year|genre|genres|playlist|playlistname|videoid|trackuri|spotifyid|addedat|addedby)$/;
+function plCol(K,keys){for(const k of keys){const i=K.indexOf(k);if(i>=0)return i;}return -1;}
+
+// Delimited text → rows of cells. CSV quoting per RFC 4180, since a song can
+// carry commas, quotes and even line breaks. Tab-separated exports don't quote,
+// and there a title that opens with a quote ("Heroes") must not swallow the file.
+function plRows(text,d){
+  const rows=[];
+  if(d==='\t'){
+    for(const l of text.split('\n'))rows.push(l.split('\t').map(c=>{const m=plClean(c).match(/^"(.*)"$/);return m?m[1].replace(/""/g,'"'):c;}));
+  }else{
+    let row=[],cur='',q=false;
+    for(let i=0;i<text.length;i++){
+      const c=text[i];
+      if(q){if(c!=='"')cur+=c;else if(text[i+1]==='"'){cur+='"';i++;}else q=false;}
+      else if(c==='"'&&!cur.trim()){q=true;cur='';}
+      else if(c===d){row.push(cur);cur='';}
+      else if(c==='\n'){row.push(cur);rows.push(row);row=[];cur='';}
+      else cur+=c;
+    }
+    row.push(cur);rows.push(row);
+  }
+  return rows.map(r=>r.map(plClean)).filter(r=>r.some(Boolean));
+}
+
+// Text → {tracks:[{t:song,a:artist}], how:'header'|'list', af}. noTitle marks a
+// table that has a header but no song names (Google Takeout's IDs-only CSV).
+function parsePlaylist(text,name){
+  text=text.replace(/^\uFEFF/,'').replace(/\r\n?/g,'\n');
+  const first=text.split('\n').find(l=>l.trim())||'';
+  const K0=first.split(/[,;]/).map(plKey);
+  let d=null;
+  if(first.includes('\t'))d='\t';
+  else if(/\.csv$/i.test(name||'')||(plCol(K0,PL_TITLE)>=0&&plCol(K0,PL_ARTIST)>=0))
+    d=first.split(';').length>first.split(',').length?';':','; // ";" is Excel's CSV in comma-decimal locales
+  if(!d)return parsePlaylistList(text.split('\n'),PL_LIST_ARTIST_FIRST);
+
+  const rows=plRows(text,d);
+  if(!rows.length)return{tracks:[],how:'header'};
+  const K=rows[0].map(plKey),ti=plCol(K,PL_TITLE);
+  if(ti>=0){
+    const ai=plCol(K,PL_ARTIST);
+    return{tracks:rows.slice(1).map(r=>({t:r[ti]||'',a:ai>=0&&r[ai]||''})).filter(t=>t.t),how:'header'};
+  }
+  if(K.length>1&&K.some(k=>PL_HEADWORD.test(k)||PL_ARTIST.includes(k)))return{tracks:[],how:'header',noTitle:true};
+  // No header row. Drop index columns ("1", "2", …); one text column left is a
+  // plain list, two are a pair whose order is read like a list's — defaulting
+  // to song first, which is how spreadsheets and every named export lay it out.
+  const w=rows.reduce((m,r)=>Math.max(m,r.length),0);
+  const keep=[...Array(w).keys()].filter(c=>rows.some(r=>r[c]&&!/^\d+$/.test(r[c])));
+  if(keep.length<2)return parsePlaylistList(rows.map(r=>r[keep[0]]||''),PL_LIST_ARTIST_FIRST);
+  const segs=rows.map(r=>{const x=r[keep[0]]||'',y=r[keep[1]]||'';return x&&y?[x,' – ',y]:[x||y];});
+  const af=guessListOrder(segs.filter(s=>s.length>2).map(s=>[s[0],s[2]]),false);
+  return{tracks:segs.map(s=>plTrack(s,af)).filter(t=>t.t),how:'list',af};
+}
+
+// How a track reads on a square: the "Squares show" pills.
+function fmtTrack(tr,f){
+  if(f==='artist')return tr.a||tr.t;
+  if(!tr.a||f==='title')return tr.t;
+  return f==='artist_title'?`${tr.a} – ${tr.t}`:`${tr.t} – ${tr.a}`;
+}
+// PLAYLIST-PARSE:END
+
+let lastImport=null; // {tracks, af, name}: the latest upload, kept so the pills can re-render it
+
 function importPlaylistFile(input){
   const file=input.files[0];if(!file)return;
   const reader=new FileReader();
   reader.onload=e=>{
-    const raw=e.target.result;
-    const isCsv=file.name.toLowerCase().endsWith('.csv');
-    let entries=[];
-
-    if(isCsv){
-      const lines=raw.split('\n').filter(l=>l.trim());
-      // TuneMyMusic CSV: detect title/artist columns by header name
-      const firstLine=lines[0].toLowerCase();
-      const startIdx=firstLine.includes('song')||firstLine.includes('title')||firstLine.includes('name')||firstLine.includes('artist')?1:0;
-      const headers=startIdx>0?parseCsvRow(lines[0]).map(h=>h.toLowerCase()):[];
-      // Default: title=col0, artist=col1; swap if headers say otherwise
-      let titleCol=0,artistCol=1;
-      headers.forEach((h,i)=>{
-        if(h.includes('song')||h.includes('title')||(h.includes('name')&&!h.includes('artist')))titleCol=i;
-        if(h.includes('artist')||h.includes('author')||h.includes('performer'))artistCol=i;
-      });
-      // Sanity check: if both resolve to same column, reset to defaults
-      if(titleCol===artistCol){titleCol=0;artistCol=1;}
-      for(let i=startIdx;i<lines.length;i++){
-        const cols=parseCsvRow(lines[i]);
-        if(!cols.length)continue;
-        const title=(cols[titleCol]||'').trim();
-        const artist=(cols[artistCol]||'').trim();
-        if(!title)continue;
-        if(spFmt==='title') entries.push(title);
-        else if(spFmt==='artist') entries.push(artist||title);
-        else entries.push(artist?`${title} – ${artist}`:title);
-      }
-    } else {
-      // TuneMyMusic TXT: one track per line, format varies
-      // Spotify-style exports use "Artist - Title" (not "Title - Artist")
-      const lines=raw.split('\n').map(l=>l.trim()).filter(l=>l&&!l.startsWith('#'));
-      lines.forEach(line=>{
-        // Strip leading numbers like "1. " or "1) "
-        const stripped=line.replace(/^\d+[\.\)]\s*/,'').trim();
-        if(!stripped)return;
-        // Try to split on " - " to get artist/title
-        const parts=stripped.split(/\s+[-–—]\s+/);
-        let title=stripped,artist='';
-        if(parts.length>=2){
-          artist=parts[0].trim();
-          title=parts[1].trim();
-        }
-        if(spFmt==='title') entries.push(title);
-        else if(spFmt==='artist') entries.push(artist||title);
-        else entries.push(artist?`${title} – ${artist}`:title);
-      });
+    let res;
+    try{res=parsePlaylist(decodePlaylist(new Uint8Array(e.target.result)),file.name);}
+    catch(err){toast('Could not read that file — export it from TuneMyMusic as TXT or CSV.','err');return;}
+    if(!res.tracks.length){
+      toast(res.noTitle?'That file has no song names in it — export the playlist from TuneMyMusic as TXT or CSV.':'No tracks found — check the file format.','err');
+      return;
     }
-
-    if(!entries.length){toast('No tracks found — check the file format.','err');return;}
-    document.getElementById('wl').value=entries.join('\n');
-    updW();dPrev();
-    gev('playlist_imported',{format:spFmt,count:entries.length,file_type:isCsv?'csv':'txt'});
-    toast(`Imported ${entries.length} tracks!`,'ok');
+    lastImport={tracks:res.tracks,af:res.af,name:file.name};
+    document.getElementById('wl').value=res.tracks.map(tr=>fmtTrack(tr,spFmt)).join('\n');
+    updW();dPrev();showImportSummary();
+    gev('playlist_imported',{format:spFmt,count:res.tracks.length,file_type:(file.name.split('.').pop()||'').toLowerCase(),
+      read_as:res.how==='header'?'columns':res.af?'artist_first':'song_first'});
+    toast(`Imported ${res.tracks.length} songs!`,'ok');
   };
   reader.onerror=()=>toast('Could not read file.','err');
-  reader.readAsText(file);
+  reader.readAsArrayBuffer(file);
   input.value=''; // allow re-upload of same file
 }
 
-// Simple CSV row parser (handles quoted fields with commas inside)
-function parseCsvRow(line){
-  const cols=[];let cur='',inQ=false;
-  for(let i=0;i<line.length;i++){
-    const ch=line[i];
-    if(ch==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++;}else inQ=!inQ;}
-    else if(ch===','&&!inQ){cols.push(cur);cur='';}
-    else cur+=ch;
-  }
-  cols.push(cur);
-  return cols.map(c=>c.replace(/^"|"$/g,'').trim());
+// Re-render imported squares in place. A line still exactly as the import (in
+// oldFmt) wrote it becomes its new form; anything typed, edited or added since
+// stays as it is, and blank lines (column/row blocks) survive. Returns the
+// number of lines changed.
+function reformatImport(oldTracks,oldFmt){
+  const q=new Map();
+  oldTracks.forEach((tr,i)=>{const k=fmtTrack(tr,oldFmt);if(q.has(k))q.get(k).push(i);else q.set(k,[i]);});
+  const wl=document.getElementById('wl');let n=0;
+  wl.value=wl.value.split('\n').map(l=>{
+    const ids=q.get(l.trim());
+    if(!ids||!ids.length)return l;
+    n++;return fmtTrack(lastImport.tracks[ids.shift()],spFmt);
+  }).join('\n');
+  if(n){updW();dPrev();}
+  showImportSummary();
+  return n;
+}
+
+function swapImport(){
+  if(!lastImport)return;
+  const old=lastImport.tracks,af=!lastImport.af;
+  lastImport.af=af;
+  lastImport.tracks=old.map(tr=>tr.s?plTrack(tr.s,af):tr.a?{t:tr.a,a:tr.t}:tr);
+  if(reformatImport(old,spFmt))toast('Swapped song and artist.','ok');
+  gev('playlist_swapped',{format:spFmt});
+}
+
+function showImportSummary(){
+  const box=document.getElementById('impsum');
+  if(!lastImport){box.style.display='none';return;}
+  const n=lastImport.tracks.length,ex=lastImport.tracks.find(tr=>tr.a);
+  box.innerHTML=`✓ <b>${n} song${n!==1?'s':''}</b> from ${esc(lastImport.name)}`+(ex
+    ?`<div class="impx">Song: <b>${esc(ex.t)}</b> · Artist: <b>${esc(ex.a)}</b></div><button type="button" class="impw" onclick="swapImport()">⇄ Swap song &amp; artist</button>`
+    :'');
+  box.style.display='';
 }
 
 // ============================================================
@@ -2073,7 +2217,14 @@ function syncGridUI(){
   if(fillMode!=='simple')setFill(fillMode); // block count follows the grid
 }
 function pPos(el){freePos=el.value;dPrev();}
-function pFmt(el){document.querySelectorAll('[data-fmt]').forEach(b=>b.classList.remove('sl'));el.classList.add('sl');spFmt=el.dataset.fmt;}
+// A per-browser preference: a host who reads squares as Artist – Song wants it
+// every time. After an upload it also re-renders the imported squares.
+function pFmt(el){
+  const prev=spFmt;spFmt=el.dataset.fmt;
+  selPill('[data-fmt]','fmt',spFmt);
+  try{localStorage.setItem('bcg_import_fmt',spFmt);}catch(e){}
+  if(lastImport&&prev!==spFmt&&reformatImport(lastImport.tracks,prev))toast(`Squares updated: ${el.textContent}`,'ok');
+}
 function sMode(el){
   document.querySelectorAll('.mtab').forEach(t=>t.classList.remove('sl'));el.classList.add('sl');mode=el.dataset.m;
   document.getElementById('pp2').style.display=mode==='print'?'':'none';
@@ -2880,6 +3031,7 @@ function applyState(st){
   if(!st)return;
   document.getElementById('ct').value=st.t||'';
   document.getElementById('wl').value=st.w||'';
+  lastImport=null;showImportSummary(); // a different list now; the pills no longer map onto it
   font=st.fn||'oswald';document.getElementById('fsel').value=font;
   theme=resolveTheme(st.th||'eco');document.querySelectorAll('.tsw,.tsw-eco').forEach(e=>e.classList.toggle('sl',e.dataset.t===theme));
   fontSize=st.fz||11;document.getElementById('fsz').value=fontSize;
@@ -2957,6 +3109,8 @@ function mgDel(){
 updTitle();
 updW();
 updThemeBtn();
+// the "Squares show" import format this browser picked last time (see pFmt)
+try{const f=localStorage.getItem('bcg_import_fmt');if(f&&document.querySelector(`.pp[data-fmt="${f}"]`)){spFmt=f;selPill('[data-fmt]','fmt',f);}}catch(e){}
 // chkPro: run immediately for cached state, defer network re-verification to after paint
 chkPro();
 applyCustom();
