@@ -28,6 +28,7 @@ a second run is a no-op.
 ```sh
 node _tools/build-pages.js --write        # rebuild the generated pages, redirect stubs + sitemap block
 node _tools/sync-faq-schema.js --write    # FAQPage JSON-LD <- each page's visible FAQ
+node _tools/test-playlist-import.js       # playlist importer vs real export samples (no --write; read-only)
 ```
 
 **Editing a generated page:** change `_content/pages/<slug>.js`, re-run
@@ -82,9 +83,11 @@ that last one is the document a customer gets pointed at in a dispute.
 
 `localStorage['bcg_autosave']` holds `{v:1, t:<title>, w:<newline-separated
 squares>, gw:<grid width>, gh:<grid height>, fm:<fill mode>, cc:<5 custom
-colours>, …}`. Everything after `w` is optional with a safe default — `gw`/`gh`
-fall back to 5, `fm` to `'simple'`, `cc` to the built-in custom palette — so
-blobs written by any earlier version still restore.
+colours>, fsh:<Eco free-space shade>, sk:<1 = stack "Song – Artist" squares>,
+…}`. Everything after `w` is optional with a safe default — `gw`/`gh` fall back
+to 5, `fm` to `'simple'`, `cc` to the built-in custom palette, `fsh` to
+`'medium'`, `sk` to off — so blobs written by any earlier version still restore.
+`?card=` share links carry `fsh` and `sk` too.
 On load, with no `?card=` param, `index.html` calls `applyState()`
 on it and toasts the user. Any page can hand work to the generator by writing
 that key and navigating to `/` — no forking required. `src:"starter"` marks a
