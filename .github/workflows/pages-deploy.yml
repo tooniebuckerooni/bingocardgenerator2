@@ -23,6 +23,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # The repo is public, but the live site shouldn't serve internal notes:
+      # GitHub Pages renders any .md as a crawlable page (NEXT.md -> /NEXT.html).
+      # The files stay in the repo; clean: true below drops them from gh-pages.
+      - name: Keep internal notes off the live site
+        run: rm -rf docs NEXT.md README.md worker.js
+
       - name: Deploy main to gh-pages root
         uses: JamesIves/github-pages-deploy-action@v4
         with:

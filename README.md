@@ -17,7 +17,7 @@ self-contained client-side app inside `index.html`.
 | `music-bingo-generator.html` | Hand-maintained, predates the builder. |
 | Number Bingo, Alphabet Bingo, Icebreaker Bingo | The "3 free load-and-go games" family (`GAMES` in `_tools/build-pages.js`) — each cross-links the other two via a shared `games: true` flag on its page config, right after the starter block. |
 | `blog/` | Three long-form posts. These out-rank the tool pages and are worth more of the next hour than another landing page. |
-| `docs/` | `brand-entity-plan.md` (architecture, hub-and-spoke, WS-C) and `monetization-strategy.md` (the north star). Read both before a content decision. |
+| Strategy docs (formerly `docs/`) | `brand-entity-plan.md` (architecture, hub-and-spoke, WS-C) and `monetization-strategy.md` (the north star). Moved on 2026-10-15 to the owner's private Google Drive folder "BingoCardGenerator – private docs", because this repo is public. Read both (Drive connector, or ask the owner) before a content decision. |
 | `worker.js` | The Lemon Squeezy licence-verification Worker. |
 
 ## Tooling (`_tools/`)
