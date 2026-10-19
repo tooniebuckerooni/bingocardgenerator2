@@ -18,7 +18,37 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # A preview is served from /pr-preview/pr-N/, but the site writes its
+      # links from the root (href="/blog/"), so every click inside a preview
+      # used to land on the live site, where a PR's new pages don't exist yet.
+      # The preview is built from a copy whose root links point back into the
+      # preview: href/src/action attributes, the meta-refresh and
+      # location.replace() in the redirect stubs. card-starter.js follows its
+      # button's href, so the one-click handoff stays in the preview too.
+      # The repo itself is never changed, and production deploys as before.
+      #
+      # The copy also leaves out what the production deploy leaves out
+      # (internal notes) and CNAME. The remove step keeps any CNAME it finds,
+      # which is what left an empty pr-preview/pr-N/ behind every closed PR.
+      - name: Build the preview copy
+        env:
+          P: /pr-preview/pr-${{ github.event.number }}
+        run: |
+          mkdir -p _preview-site
+          git archive HEAD | tar -x -C _preview-site
+          rm -rf _preview-site/.github _preview-site/CNAME _preview-site/docs \
+                 _preview-site/NEXT.md _preview-site/README.md _preview-site/worker.js
+          find _preview-site -name '*.html' -print0 | xargs -0 -r sed -i -E \
+            -e "s#(href|src|action)=([\"'])/([^/\"']|[\"'])#\1=\2${P}/\3#g" \
+            -e "s#(http-equiv=\"refresh\" content=\"[0-9]+; *url=)/#\1${P}/#g" \
+            -e "s#location\.replace\(([\"'])/#location.replace(\1${P}/#g"
+          left=$(grep -rhoE "(href|src|action)=[\"']/[^/][^\"']*" _preview-site --include='*.html' | grep -vF "=\"${P}/" | grep -vF "='${P}/" || true)
+          if [ -n "$left" ]; then
+            echo "::warning::Root links that still leave the preview:"
+            echo "$left" | sort | uniq -c
+          fi
+
       - name: Deploy or remove PR preview
         uses: rossjrw/pr-preview-action@v1
         with:
-          source-dir: .
+          source-dir: _preview-site
