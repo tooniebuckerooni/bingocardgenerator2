@@ -1,5 +1,0 @@
-User-agent: *
-Disallow: /pr-preview/
-Allow: /
-
-Sitemap: https://bingocardgenerator.online/sitemap.xml
