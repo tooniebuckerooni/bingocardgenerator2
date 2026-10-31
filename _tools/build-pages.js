@@ -209,12 +209,12 @@ function render(p) {
 <meta property="og:description" content="${esc(p.ogDescription || p.description)}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${url}">
-<meta property="og:image" content="${SITE}/og-image.png">
+<meta property="og:image" content="${SITE}/${p.ogImage || "og-image.png"}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="BingoCardGenerator.Online">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="${SITE}/og-image.png">
+<meta name="twitter:image" content="${SITE}/${p.ogImage || "og-image.png"}">
 
 <!-- GA4 + Google Ads -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-97J4XBSHBW"></script>
@@ -239,7 +239,7 @@ ${header()}
     <div class="breadcrumb"><a href="/">Home</a> › ${p.breadcrumb}</div>
     <div class="eyebrow">${p.eyebrow}</div>
     <h1>${p.h1}</h1>
-    <p class="answer">${p.answer}</p>
+${p.play ? `    <div class="play-wrap" style="max-width:520px;margin:14px auto 22px">\n      <div class="play-card" data-notitle data-src="${p.play}"><p style="text-align:center;color:var(--mt);font-size:14px;padding:40px 0">Loading your card...</p></div>\n    </div>\n` : ""}    <p class="answer">${p.answer}</p>
     <div class="hero-cta">
       <a href="/" class="btn-primary"${ctaData(p)} onclick="gtag('event','pillar_cta_click',{placement:'hero',page:'${p.slug}'})">${p.heroCta}</a>
       <span class="cta-sub">Free to start · no login · print or play online</span>
@@ -279,7 +279,7 @@ function togNav(){
   b.textContent=open?'✕':'☰';
 }
 </script>
-<script src="/card-starter.js" defer></script>
+<script src="/card-starter.js" defer></script>${p.play ? '\n<script src="/play-card.js" defer></script>' : ""}
 </body>
 </html>
 `;
