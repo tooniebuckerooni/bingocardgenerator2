@@ -70,11 +70,11 @@
     ".pc{max-width:520px;margin:0 auto;font-family:'Outfit',system-ui,sans-serif;color:var(--pc-ink)}" +
     ".pc-k{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pc-mark);text-align:center}" +
     ".pc-t{font-family:'Bebas Neue',Impact,sans-serif;font-size:42px;letter-spacing:1.5px;line-height:1;text-align:center;margin:4px 0 12px;color:var(--pc-ink)}" +
-    ".pc-card{background:var(--pc-bg);border-radius:14px;padding:10px;box-shadow:0 10px 30px rgba(15,27,45,.18)}" +
-    ".pc-hd{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:6px}" +
+    ".pc-card{background:var(--pc-bg);border-radius:14px;padding:8px;box-shadow:0 10px 30px rgba(15,27,45,.18)}" +
+    ".pc-hd{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin-bottom:5px}" +
     ".pc-hd span{background:var(--pc-head);color:var(--pc-headink);font-family:'Bebas Neue',Impact,sans-serif;font-size:26px;text-align:center;border-radius:8px;line-height:1.5}" +
-    ".pc-g{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}" +
-    ".pc-s{min-height:66px;border:2px solid var(--pc-line);background:#fff;border-radius:8px;font:600 11px/1.15 'Outfit',system-ui,sans-serif;color:var(--pc-ink);padding:4px 2px;cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center;overflow-wrap:normal;word-break:normal;hyphens:manual;-webkit-tap-highlight-color:transparent;transition:transform .08s;position:relative}" +
+    ".pc-g{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}" +
+    ".pc-s{min-height:66px;border:2px solid var(--pc-line);background:#fff;border-radius:8px;font:600 clamp(9px,2.55vw,12px)/1.15 'Outfit',system-ui,sans-serif;color:var(--pc-ink);padding:4px 2px;min-width:0;cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center;overflow-wrap:anywhere;word-break:normal;-webkit-hyphens:auto;hyphens:auto;-webkit-tap-highlight-color:transparent;transition:transform .08s;position:relative}" +
     ".pc-s:active{transform:scale(.95)}" +
     ".pc-s[aria-pressed=true]{background:var(--pc-mark);border-color:var(--pc-mark);color:var(--pc-ink)}" +
     ".pc-s[aria-pressed=true]:after{content:'\\2713';position:absolute;top:1px;right:3px;font:700 12px/1 system-ui,sans-serif;color:var(--pc-ink)}" +
@@ -92,7 +92,7 @@
     ".pc-emb summary{cursor:pointer;font-weight:600;color:#5B7186}" +
     ".pc-emb textarea{width:100%;height:84px;margin-top:8px;font:12px/1.4 ui-monospace,monospace;border:1px solid #ccc;border-radius:8px;padding:8px;color:#1D2C3C;background:#fff}" +
     ".pc-new{background:none;border:0;color:#5B7186;font-size:12.5px;text-decoration:underline;cursor:pointer;display:block;margin:8px auto 0}" +
-    "@media(max-width:400px){.pc-s{font-size:9.5px;min-height:60px}.pc-t{font-size:34px}}.pc-notitle .pc-k,.pc-notitle .pc-t{display:none}";
+    "@media(max-width:400px){.pc-s{min-height:60px}.pc-t{font-size:34px}}.pc-notitle .pc-k,.pc-notitle .pc-t{display:none}";
 
   function injectCss() {
     if (document.getElementById("pc-css")) return;
@@ -136,7 +136,7 @@
     }
 
     el.innerHTML =
-      '<div class="pc' + (won ? " pc-bingo" : "") + (el.hasAttribute("data-notitle") ? " pc-notitle" : "") + '">' +
+      '<div lang="en" class="pc' + (won ? " pc-bingo" : "") + (el.hasAttribute("data-notitle") ? " pc-notitle" : "") + '">' +
       '<div class="pc-k">' + esc(g.kicker || "") + '</div>' +
       '<div class="pc-t">' + esc(g.title) + '</div>' +
       '<div class="pc-card"><div class="pc-hd"><span>B</span><span>I</span><span>N</span><span>G</span><span>O</span></div><div class="pc-g">' +
@@ -163,6 +163,31 @@
       '</div>';
 
     var root = el.firstChild;
+    // Fit each square's text so its longest word never splits mid-word. Phones
+    // differ in font, width and accessibility text size (the 31 Oct report was
+    // an Android phone where "headquarters" pushed its column wider than the
+    // card), so this measures on the device instead of trusting one font size.
+    // Shrinks in half-pixel steps, never below 8px; overflow-wrap:anywhere in
+    // the CSS is the last resort only if 8px still cannot fit the word.
+    var meas = document.createElement("canvas").getContext("2d");
+    function fit() {
+      Array.prototype.forEach.call(root.querySelectorAll(".pc-s[data-k]"), function (c) {
+        c.style.fontSize = "";
+        var cs = getComputedStyle(c);
+        var room = c.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 1;
+        var size = parseFloat(cs.fontSize);
+        var words = c.textContent.split(/\s+/);
+        function widest() {
+          meas.font = cs.fontWeight + " " + size + "px " + cs.fontFamily;
+          return Math.max.apply(null, words.map(function (w) { return meas.measureText(w).width; }));
+        }
+        while (widest() > room && size > 8) size -= 0.5;
+        if (size !== parseFloat(cs.fontSize)) c.style.fontSize = size + "px";
+      });
+    }
+    fit();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+    var fitT; window.addEventListener("resize", function () { clearTimeout(fitT); fitT = setTimeout(fit, 150); });
     var xa = root.querySelector('[data-act="x"]'), fa = root.querySelector('[data-act="fb"]');
     function refreshLinks() {
       var text = won ? g.bingoText : g.shareText;
