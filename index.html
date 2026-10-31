@@ -420,17 +420,12 @@ nav{max-width:1140px;margin:0 auto;padding:0 24px;height:58px;display:flex;align
 .hero-cta{display:inline-flex;align-items:center;background:var(--gn);color:#0F1B2D;font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;padding:13px 28px;border-radius:30px;text-decoration:none;margin-top:10px;transition:all var(--t)}
 .hero-cta:hover{background:#f7bb44;transform:translateY(-2px);box-shadow:0 6px 20px var(--gng)}
 
-/* ================================================================
-   DABBY — HALLOWEEN MASCOT (v1, seasonal thru Nov 1 2026)
-   To retire: delete this block, the .dabby-hero markup in <div
-   class="hero">, and the updDabby()/dabby-hero.img lines near togTheme().
-   ================================================================ */
-.dabby-hero{flex:0 0 auto;margin:0 auto}
-.dabby-hero img{display:block;height:clamp(170px,22vw,280px);width:auto;max-width:100%}
-@media(max-width:760px){
-  .hero{flex-direction:column}
-  .dabby-hero img{height:170px}
-}
+/* SEASONAL CALLOUT: Election Night Bingo (31 Oct to 6 Nov 2026). To retire:
+   delete this rule and the .season-pill link in <div class="hero-copy">.
+   (Replaced the Halloween Dabby mascot, retired 31 Oct 2026.) */
+.season-pill{display:inline-flex;align-items:center;gap:8px;margin:0 0 14px;padding:9px 16px;border-radius:999px;background:#1B2A4A;color:#F3E3B5!important;font-size:14px;font-weight:600;text-decoration:none!important;border:2px solid #C9A227}
+.season-pill b{color:#C9A227}
+.season-pill:hover{transform:translateY(-1px)}
 
 /* CONTENT SECTIONS */
 .content-sections{max-width:1140px;margin:0 auto;padding:64px 24px 0}
@@ -783,6 +778,7 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 
 <div class="hero">
   <div class="hero-copy">
+    <a href="/election-night-bingo.html?utm_source=bcg-home&amp;utm_medium=referral&amp;utm_campaign=election-night-2026" class="season-pill" onclick="gev('season_pill_click',{season:'election-night'})">🗳️ <span><b>New:</b> Election Night Bingo, free on your phone →</span></a>
     <h1><span class="ey">Free Bingo Card Generator</span> Bingo Night Shouldn't<br>Take All Day to Prep</h1>
     <p class="hs">Wrestling spreadsheets, clip-art templates, and cards that repeat the same squares? Paste your song list or vocab words, pick a theme, and walk out with professional, print-ready bingo cards in minutes — no design skills, no account.</p>
     <div class="hero-avatars">
@@ -791,11 +787,6 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
     </div>
     <a href="#tool" class="hero-cta">Start Creating Free ↓</a>
   </div>
-  <!-- DABBY — HALLOWEEN MASCOT (v1, seasonal thru Nov 1 2026). Delete this div to retire. -->
-  <div class="dabby-hero">
-    <img id="dabbyImg" src="/images/dabby-teacher-halloween.png" width="750" height="900" loading="eager" alt="Dabby, the BingoCardGenerator mascot, dressed for Halloween">
-  </div>
-  <script>if(document.documentElement.dataset.theme==='dark'){var _d=document.getElementById('dabbyImg');if(_d)_d.src='/images/dabby-trivia-host-halloween.png';}</script>
 </div>
 
 <div class="pb" id="tool">
@@ -1663,12 +1654,7 @@ function togTheme(){
   document.documentElement.dataset.theme=next;
   try{localStorage.setItem('bcg_theme',next);}catch(e){}
   updThemeBtn();
-  updDabby(); // DABBY — HALLOWEEN MASCOT (v1, seasonal thru Nov 1 2026); delete this call + the function below to retire
   gev('theme_toggle',{theme:next});
-}
-function updDabby(){
-  const img=document.getElementById('dabbyImg');
-  if(img)img.src=document.documentElement.dataset.theme==='dark'?'/images/dabby-trivia-host-halloween.png':'/images/dabby-teacher-halloween.png';
 }
 function updThemeBtn(){
   const dark=document.documentElement.dataset.theme==='dark';
