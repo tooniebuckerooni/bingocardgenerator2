@@ -33,9 +33,27 @@ const ALLOWED_ORIGINS = [
 
 const TOKEN_TTL_MS = 5 * 60 * 1000; // export token valid for 5 minutes
 
+// Exact match (4 Nov 2026): startsWith let https://bingocardgenerator.online.evil.com
+// through. CORS is not the security boundary here, but there is no reason to be loose.
 function getAllowedOrigin(request) {
   const origin = request.headers.get('Origin') || '';
-  return ALLOWED_ORIGINS.find(o => origin.startsWith(o)) || ALLOWED_ORIGINS[0];
+  return ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+}
+
+// Which LemonSqueezy licences may unlock Pro (4 Nov 2026). The store is shared
+// with fatcityentertainment.com, so without this ANY active licence key from that
+// store would pass. Optional on purpose: with neither variable set, behaviour is
+// exactly as before, so re-pasting this file can never lock anyone out.
+//   LS_STORE_ID     e.g. "12345"            (Settings > Stores in LemonSqueezy)
+//   LS_PRODUCT_IDS  e.g. "111,222,333"      (the Generator pass products only)
+function licenceAllowed(data, env) {
+  const meta = (data && data.meta) || {};
+  if (env.LS_STORE_ID && String(meta.store_id) !== String(env.LS_STORE_ID).trim()) return false;
+  if (env.LS_PRODUCT_IDS) {
+    const ids = String(env.LS_PRODUCT_IDS).split(',').map(s => s.trim()).filter(Boolean);
+    if (ids.length && ids.indexOf(String(meta.product_id)) === -1) return false;
+  }
+  return true;
 }
 
 export default {
@@ -93,7 +111,7 @@ export default {
           body: JSON.stringify({ license_key, instance_id: instance_id || undefined }),
         });
         const data = await res.json();
-        const isActive = data.valid === true && data.license_key?.status === 'active';
+        const isActive = data.valid === true && data.license_key?.status === 'active' && licenceAllowed(data, env);
         if (!isActive) {
           return new Response(JSON.stringify({ valid: false }), { headers });
         }
@@ -125,7 +143,7 @@ export default {
         const data = await res.json();
 
         // LS returns activated: true on success
-        if (data.activated) {
+        if (data.activated && licenceAllowed(data, env)) {
           return new Response(JSON.stringify({
             valid: true,
             instance_id: data.instance?.id || null,
@@ -156,7 +174,7 @@ export default {
       const data = await res.json();
 
       // Active status means subscription is paid and current
-      const isActive = data.valid === true && data.license_key?.status === 'active';
+      const isActive = data.valid === true && data.license_key?.status === 'active' && licenceAllowed(data, env);
 
       return new Response(JSON.stringify({
         valid: isActive,

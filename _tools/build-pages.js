@@ -287,12 +287,14 @@ function togNav(){
 
 let changed = 0;
 const built = [];
+const touched = new Set(); // slugs whose HTML this run actually changes (drives sitemap lastmod)
 for (const p of pages) {
   const file = path.join(REPO, p.slug + ".html");
   const out = render(p);
   const cur = fs.existsSync(file) ? fs.readFileSync(file, "utf8") : null;
   built.push(p.slug);
   if (cur === out) continue;
+  touched.add(p.slug);
   changed++;
   console.log(`${WRITE ? "wrote" : "would write"}: ${p.slug}.html  (${out.length} bytes${cur ? ", was " + cur.length : ", new"})`);
   if (WRITE) fs.writeFileSync(file, out);
@@ -326,9 +328,16 @@ for (const [slug, to] of Object.entries(REDIRECTS)) {
 // sense; four generated pages is already past it.
 const smFile = path.join(REPO, "sitemap.xml");
 let sm = fs.readFileSync(smFile, "utf8");
+function sm0() { return fs.readFileSync(path.join(REPO, "sitemap.xml"), "utf8"); }
 const today = new Date().toISOString().slice(0, 10);
+// lastmod moves only for a page this run actually changes (4 Nov 2026). It used
+// to stamp today on all of them on every --write, so a homepage-only commit
+// re-dated three untouched game pages: the false freshness signal Google
+// discounts, and it made every later dry run report "sitemap would change".
+const prevMod = {};
+for (const m of sm0().matchAll(/<loc>[^<]*\/([a-z0-9-]+)\.html<\/loc>\s*<lastmod>([0-9-]+)<\/lastmod>/g)) prevMod[m[1]] = m[2];
 const block = "  <!-- bcg:pages -->\n" + pages.map((p) =>
-  `  <url>\n    <loc>${SITE}/${p.slug}.html</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.9</priority>\n  </url>`
+  `  <url>\n    <loc>${SITE}/${p.slug}.html</loc>\n    <lastmod>${touched.has(p.slug) || !prevMod[p.slug] ? today : prevMod[p.slug]}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.9</priority>\n  </url>`
 ).join("\n") + "\n  <!-- /bcg:pages -->";
 // drop any hand entry for a page the block now owns, then insert/replace the block
 let smOut = sm;

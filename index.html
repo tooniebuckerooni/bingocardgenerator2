@@ -297,7 +297,7 @@
 }
 </script>
 
-<!-- GA4 — replace G-97J4XBSHBW with your Measurement ID -->
+<!-- GA4 (G-97J4XBSHBW) + Google Ads -->
 <!-- CONFIGURE: create property at analytics.google.com then paste your ID below -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-97J4XBSHBW"></script>
 <script>
@@ -420,12 +420,6 @@ nav{max-width:1140px;margin:0 auto;padding:0 24px;height:58px;display:flex;align
 .hero-cta{display:inline-flex;align-items:center;background:var(--gn);color:#0F1B2D;font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;padding:13px 28px;border-radius:30px;text-decoration:none;margin-top:10px;transition:all var(--t)}
 .hero-cta:hover{background:#f7bb44;transform:translateY(-2px);box-shadow:0 6px 20px var(--gng)}
 
-/* SEASONAL CALLOUT: Election Night Bingo (31 Oct to 6 Nov 2026). To retire:
-   delete this rule and the .season-pill link in <div class="hero-copy">.
-   (Replaced the Halloween Dabby mascot, retired 31 Oct 2026.) */
-.season-pill{display:inline-flex;align-items:center;gap:8px;margin:0 0 14px;padding:9px 16px;border-radius:999px;background:#1B2A4A;color:#F3E3B5!important;font-size:14px;font-weight:600;text-decoration:none!important;border:2px solid #C9A227}
-.season-pill b{color:#C9A227}
-.season-pill:hover{transform:translateY(-1px)}
 
 /* CONTENT SECTIONS */
 .content-sections{max-width:1140px;margin:0 auto;padding:64px 24px 0}
@@ -778,7 +772,6 @@ textarea:focus{border-color:rgba(245,166,35,.5)}
 
 <div class="hero">
   <div class="hero-copy">
-    <a href="/election-night-bingo.html?utm_source=bcg-home&amp;utm_medium=referral&amp;utm_campaign=election-night-2026" class="season-pill" onclick="gev('season_pill_click',{season:'election-night'})">🗳️ <span><b>New:</b> Election Night Bingo, free on your phone →</span></a>
     <h1><span class="ey">Free Bingo Card Generator</span> Bingo Night Shouldn't<br>Take All Day to Prep</h1>
     <p class="hs">Wrestling spreadsheets, clip-art templates, and cards that repeat the same squares? Paste your song list or vocab words, pick a theme, and walk out with professional, print-ready bingo cards in minutes — no design skills, no account.</p>
     <div class="hero-avatars">
@@ -1315,7 +1308,7 @@ async function loadZipLib(){await loadScript(JSZIP_SRC);}
 
 // ============================================================
 // CONFIGURE — edit before deploying
-// 1. LS_DAYPASS_URL / LS_ANNUAL_URL — Lemon Squeezy checkout URLs per plan
+// 1. LS_DAYPASS_URL / LS_MONTHLY_URL / LS_ANNUAL_URL — Lemon Squeezy checkout URLs per plan
 // 2. WORKER_URL — Cloudflare Worker URL (source: worker.js in this repo)
 // 3. EXPORT_TOKEN_PUBKEY_SPKI_B64 — base64 of the Worker's ECDSA P-256 PUBLIC
 //    key (SPKI DER). The matching PRIVATE key lives ONLY as a Worker secret and

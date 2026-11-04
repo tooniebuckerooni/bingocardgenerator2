@@ -1,4 +1,30 @@
-# What's next — 2026-09-09 (updated 2026-10-11)
+# What's next — 2026-09-09 (updated 2026-11-04)
+
+## 2026-11-04: where things stand
+
+- **Shipped since 10-15:** four holiday posts (10-19: Thanksgiving, Christmas,
+  office holiday party, New Year's Eve); **Election Night Bingo** (PR #41, 10-31),
+  a free card played on the phone (`play-card.js`, `play/election-night.json`),
+  with its layout fixed for Android in PR #42; the Halloween Dabby mascot retired
+  (10-31).
+- **Election night ran with minimal results** (owner, 11-04). The homepage pill
+  is gone and the page is evergreen (no dates), reachable from the sitemap only.
+  Re-promote it before the next big election rather than leaving it in the nav.
+- **Sitemap lastmod is honest again:** `build-pages.js` now moves a page's date
+  only when that page's HTML changes, and the wrong dates were corrected (`/`,
+  `music-bingo-generator.html`, the three game pages).
+- **Owner actions, newest first:**
+  1. **Re-paste `worker.js`** in the Cloudflare dashboard, then set
+     `LS_PRODUCT_IDS` to the Generator pass product ids (the store is shared
+     with Fat City, so today any active licence from that store unlocks Pro).
+  2. **Re-pull Search Console around 8 Nov** (the four-week check after the
+     10-11 fold, below): the homepage position on "bingo card generator", and
+     the verdict on Number, Alphabet and Icebreaker Bingo that was due mid-October.
+  3. Delete the stale remote branches in the browser. Thirteen of them still
+     carry the strategy docs that moved to Drive on 10-15.
+- **Next seasonal build:** office Christmas party bingo is one JSON file for
+  `play-card.js` plus a page config.
+
 
 ## 2026-10-11 — four keyword pages folded into the homepage
 

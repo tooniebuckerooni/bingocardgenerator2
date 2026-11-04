@@ -10,15 +10,19 @@ self-contained client-side app inside `index.html`.
 
 | Path | What it is |
 |---|---|
-| `index.html` | **The whole product.** 133KB: the generator app (inline JS), its CSS, the marketing page, and the pricing/FAQ. Source of truth for design tokens, JSON-LD shape, and the `bcg_autosave` contract. |
+| `index.html` | **The whole product.** About 190KB: the generator app (inline JS), its CSS, the marketing page, and the pricing/FAQ. Source of truth for design tokens, JSON-LD shape, and the `bcg_autosave` contract. |
 | `card-starter.js` | The handoff a landing page uses to send a visitor into the generator with their squares already typed. |
 | `number-bingo-cards.html`, `alphabet-bingo.html`, `icebreaker-bingo.html` | **Generated — do not hand-edit.** Built by `_tools/build-pages.js` from `_content/pages/*.js`. (This table used to stop at four pages — it doesn't anymore; check `_content/pages/` rather than this list before assuming a page is hand-maintained.) |
 | `custom-bingo-cards.html`, `bingo-card-maker.html`, `online-bingo-generator.html`, `bingo-board-generator.html` | **Generated redirect stubs** to `/` (`REDIRECTS` in `_tools/build-pages.js`). These keyword pages were folded into the homepage on 2026-10-11; see NEXT.md. Don't bring them back as standalone pages. |
 | `music-bingo-generator.html` | Hand-maintained, predates the builder. |
 | Number Bingo, Alphabet Bingo, Icebreaker Bingo | The "3 free load-and-go games" family (`GAMES` in `_tools/build-pages.js`) — each cross-links the other two via a shared `games: true` flag on its page config, right after the starter block. |
-| `blog/` | Three long-form posts. These out-rank the tool pages and are worth more of the next hour than another landing page. |
+| `blog/` | Seven posts (three long-form guides, plus Thanksgiving, Christmas, office holiday party and New Year's Eve, added 2026-10-19). The posts' nav and footer are hand-maintained and still list Number Bingo only, not the whole free-games family. |
+| `election-night-bingo.html` | **Generated**, but deliberately outside `GAMES`/`NAV_GROUPS`: a seasonal page whose card is played on a phone (`play-card.js`), evergreen since 2026-11-04 and reachable from the sitemap only. See its page config. |
+| `play-card.js`, `play/<game>.json`, `play/<game>.html` | The play-on-your-phone engine (2026-10-26). A new game is a JSON file plus a `play` field on a page config; `play/<game>.html` is the noindex embed copy. |
+| `images/` | Page images: `election-night-bingo-og.png` (link preview), and the retired Halloween Dabby mascot PNGs, kept for next October and referenced by nothing. |
+| `games/g01-cf8po.html` | Pro game pack page, `noindex,nofollow`, linked from nothing on purpose. |
 | Strategy docs (formerly `docs/`) | `brand-entity-plan.md` (architecture, hub-and-spoke, WS-C) and `monetization-strategy.md` (the north star). Moved on 2026-10-15 to the owner's private Google Drive folder "BingoCardGenerator – private docs", because this repo is public. Read both (Drive connector, or ask the owner) before a content decision. |
-| `worker.js` | The Lemon Squeezy licence-verification Worker. |
+| `worker.js` | The Lemon Squeezy licence-verification Worker, deployed by pasting into the Cloudflare dashboard (so the repo copy is live only after a re-paste). Since 2026-11-04 it can restrict which licences unlock Pro: set `LS_STORE_ID` and/or `LS_PRODUCT_IDS` (comma-separated Generator pass product ids) as Worker variables. Unset, it behaves as before. |
 
 ## Tooling (`_tools/`)
 
