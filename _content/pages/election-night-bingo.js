@@ -15,18 +15,20 @@
 // one out of each card, which is variety rather than a bug (see the skill's
 // free-space rule: this is the deliberate case).
 //
-// Not in GAMES or NAV_GROUPS: it is seasonal. After election week it stays live
-// as an evergreen page for 2027 locals and 2028; no takedown needed.
+// Not in GAMES or NAV_GROUPS: it is seasonal. Made evergreen 4 Nov 2026, after
+// election night (owner: "minimal results. Remove it from main pages"): no dates
+// in the copy, no homepage link; it lives on in the sitemap for 2027 locals and
+// the 2028 presidential cycle. Re-promote it in the weeks before a big election.
 module.exports = {
   slug: "election-night-bingo",
-  title: "Election Night Bingo: Free Card to Play on Your Phone | US Midterms 2026",
+  title: "Election Night Bingo: Free Card to Play on Your Phone | Watch Party Game",
   description:
-    "Free election night bingo for the US midterms. Get your own card on your phone, tap squares as the results come in, and share it. Non-partisan.",
+    "Free election night bingo for any US election. Get your own card on your phone, tap squares as the results come in, and share it. Non-partisan.",
   ogDescription:
     "Everyone who opens the link gets their own free card. Tap squares as the broadcast happens, share it when you hit BINGO. No parties, no candidates.",
   ogImage: "images/election-night-bingo-og.png",
   breadcrumb: "Election Night Bingo",
-  eyebrow: "US Midterms · Tuesday, 3 November",
+  eyebrow: "US election nights · Free · Non-partisan",
   h1: "Election Night Bingo",
   answer:
     "That's your free card, and it's yours alone: <strong>everyone who opens this page gets a different one.</strong> Tap a square when it happens on the broadcast, shout when you fill a line, then share your card. Every square is something that happens on every results night. No candidates, no parties, nothing that depends on who wins.",
@@ -85,8 +87,8 @@ module.exports = {
       a: "Tap Share my card on your phone and pick Instagram, TikTok or any app from the share sheet. If your browser can't share pictures, the card saves to your photos instead, ready to post." },
     { q: "Can I print cards for a watch party?",
       a: "Yes. Use the starter on this page to load all 25 squares into the generator, set how many cards you need, and print a different one for each guest." },
-    { q: "When is election night?",
-      a: "The US midterm elections are on Tuesday, 3 November 2026. Results coverage usually runs from early evening Eastern time until well past midnight." },
+    { q: "Which elections does it work for?",
+      a: "Any US election night: midterms, presidential years, primaries and local races. Every square is a moment from the results broadcast, so it works whenever the coverage is on." },
   ],
 
   closing: {

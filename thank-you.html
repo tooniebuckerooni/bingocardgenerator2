@@ -85,7 +85,7 @@ footer a:hover{color:var(--text)}
   // show up on a real order so the key names here can be corrected once known.
   const orderValue = num('total', 'amount', 'price');
   const orderId = str('order_id', 'checkout_id', 'id');
-  const orderCurrency = str('currency') || 'CAD';
+  const orderCurrency = str('currency') || 'USD'; // every pass is priced in USD (was 'CAD' until 4 Nov 2026)
 
   gtag('event', 'conversion', {
       'send_to': 'AW-18347447832/5IdRCL3WidYcEJis36xE',
