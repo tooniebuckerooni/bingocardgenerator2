@@ -154,7 +154,7 @@
       '<button type="button" class="pc-b" data-act="save">Save image</button>' +
       '<button type="button" class="pc-b" data-act="copy">Copy link</button>' +
       '</div>' +
-      '<p class="pc-hint">Tap a square when it happens on the broadcast. Everyone who opens the link gets their own card.' +
+      '<p class="pc-hint">' + esc(g.hint || "Tap a square when it happens on the broadcast.") + ' Everyone who opens the link gets their own card.' +
       (embed ? ' <a href="' + esc(link("embed")) + '" target="_blank" rel="noopener">Play full screen</a>' : '') + '</p>' +
       (embed ? '' :
         '<details class="pc-emb"><summary>Put this playable card on your own site</summary>' +
