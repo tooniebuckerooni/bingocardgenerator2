@@ -1,4 +1,68 @@
-# What's next — 2026-09-09 (updated 2026-11-04)
+# What's next — 2026-09-09 (updated 2026-11-10)
+
+## 2026-11-10: the Search Console verdict, and how to land what is in flight
+
+**The four-week check came back, and the demotion has not lifted.** Search
+Console, 28 days to 10 Nov against the previous 28:
+
+- 1 click (was 15), 568 impressions (was 1,527).
+- All 192 queries now sit at position 80 to 95; none is better than 30. "bingo
+  card generator" 45 -> 92, "bingo card maker" 36 -> 96, "bingo maker online"
+  9 -> 78. Everything falling to the same place at once is a site-wide
+  demotion, not weak pages.
+- Zero impressions for the four holiday posts, Election Night Bingo and
+  Alphabet Bingo. Number Bingo and Icebreaker Bingo: 1 and 2 impressions.
+- Over the same 28 days fatcityentertainment.com got 588 clicks, and its
+  election night post, new that period, got 178 at position 7.
+
+**What that changes:**
+
+- **Do not build new landing pages or posts here until this lifts.** They are
+  not being shown. Seasonal content goes on Fat City, with this site as the
+  tool it links to. A play card (one JSON file for `play-card.js`) is fine,
+  because Fat City sends the traffic to it.
+- **The Fat City nav link to this site is `rel="nofollow"` since 10 Nov**
+  (about 1,000 identical template links from one domain was the likeliest
+  cause on that side; insurance, not proven). Links in Fat City's page copy
+  stay followed. Details in that repo's `MERGE-PLAN.md` section 7.
+- **Re-pull both exports around 8 Dec.** If the homepage is still at 80 or
+  worse in January, the question is whether the generator moves onto
+  fatcityentertainment.com. Owner's decision; the brand plan says no domain
+  change today.
+
+**Shipped 10 Nov:** new favicon (serif "B!" on a crimson tile, amber
+exclamation mark). Five files, same names, no page markup changed.
+
+**Branches, measured 10 Nov:**
+
+| Branch | What | Collides with `main`? | Do |
+|---|---|---|---|
+| `claude/thanksgiving-bf` (6 Nov) | Thanksgiving Bingo play card: new page, `play/thanksgiving.*`, a share image, one line in `play-card.js`, a link from the Thanksgiving post, a sitemap entry | **No.** Test merge clean; it touches no favicon file | Owner's review, then merge. Thanksgiving is Thu 26 Nov, so it is only useful if it lands this week |
+| `claude/markdown-execution-cq9j8a`, `claude/social-keyword-monitoring-agents-7sgfac`, `parity-free-tier` | June and July work, 70 to 95 commits behind | Yes | Stale. Never merge. Delete in the browser |
+| `cloudflare/workers-autoconfig` | Shares no history with `main` | n/a | Leave alone; delete if Workers Builds was never set up |
+
+Rules that keep it collision-free:
+
+1. **Merge `main` into a branch before running `build-pages.js` on it.** The
+   builder rewrites generated pages and the sitemap block from whatever is
+   checked out.
+2. **After the Thanksgiving branch lands**, the Fat City Thanksgiving post
+   should link the play card as well as the blog post (that edit is in the
+   other repo, from a fresh `main` there).
+3. **A push to `main` deploys by itself** (`pages-deploy.yml`). Check the run
+   went green; a preview deploy can hold the `gh-pages` ref for a moment.
+4. **After 26 Nov** the Thanksgiving card stays up, evergreen, the same way
+   Election Night did. Nothing to take down.
+
+**Owner actions still open, newest first:**
+
+1. **Re-paste `worker.js`** in the Cloudflare dashboard, then set
+   `LS_PRODUCT_IDS` (unchanged from 4 Nov, below; nothing merged since touches
+   `worker.js`).
+2. **Search Console:** nothing to request while the demotion holds. Re-pull
+   around 8 Dec.
+3. **Delete the stale remote branches** in the browser.
+
 
 ## 2026-11-04: where things stand
 
